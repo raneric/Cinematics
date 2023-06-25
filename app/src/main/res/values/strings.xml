@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">Cinematics</string>
     <string name="title_activity_main">MainActivity</string>
+
+    <string name="content_descrip_trending">trending movies</string>
+    <string name="txt_trending">Trending</string>
+
+    <string name="content_descrip_top_rated">top rated movies</string>
+    <string name="txt_top_rated">Top Rated</string>
+
+    <string name="content_descrip_watch_list">watchlist movies</string>
+    <string name="txt_watch_list">Watchlist</string>
 </resources>
