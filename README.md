@@ -1,5 +1,6 @@
 # Cinematics
 Hello world! 😀 
+
 This app is the implementation of the Cinematics app on App Design Apprentice.
 The main goal of this app is to learn Jetpack Compose by implementing a design from figma file.
 
