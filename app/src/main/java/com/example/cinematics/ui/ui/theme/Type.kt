@@ -32,7 +32,7 @@ val Typography = Typography(
     )
 )
 val ratingTypo = TextStyle(
-    fontFamily = FontFamily(Font(R.font.rubik_mono_one_regular)),
+    fontFamily = FontFamily(Font(R.font.rubik_one_regular)),
     fontWeight = FontWeight.Normal,
     fontSize = 32.sp,
     lineHeight = 24.sp,

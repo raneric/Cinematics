@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.cinematics.ui.appbar.AppBar
 import com.example.cinematics.ui.bottomnav.BottomNavScreen
 import com.example.cinematics.ui.bottomnav.bottomNavItemList
-import com.example.cinematics.ui.components.Genre
+import com.example.cinematics.ui.components.Rating
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
 class MainActivity : ComponentActivity() {
@@ -46,7 +46,7 @@ fun ContentScreen(modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background) {
-        Genre()
+        Rating(ratingStars = 3, "4.5")
     }
 }
 
