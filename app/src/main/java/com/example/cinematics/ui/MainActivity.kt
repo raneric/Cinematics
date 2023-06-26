@@ -4,7 +4,7 @@ import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -13,11 +13,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.cinematics.ui.appbar.AppBar
-import com.example.cinematics.ui.bottomnav.BottomNavScreen
-import com.example.cinematics.ui.bottomnav.bottomNavItemList
-import com.example.cinematics.ui.components.Rating
+import com.example.cinematics.ui.components.AppBar
+import com.example.cinematics.ui.components.BottomNavScreen
+import com.example.cinematics.ui.components.bottomNavItemList
+import com.example.cinematics.ui.components.Genre
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
+import com.example.cinematics.ui.ui.theme.md_theme_light_tertiary
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,9 +45,8 @@ fun CinematicsApp() {
 @Composable
 fun ContentScreen(modifier: Modifier = Modifier) {
     Surface(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier,
         color = MaterialTheme.colorScheme.background) {
-        Rating(ratingStars = 3, "4.5")
     }
 }
 

@@ -66,3 +66,4 @@ val md_theme_dark_scrim = Color(0xFF000000)
 
 val seed = Color(0xFF4F64E0)
 val rating_positive = Color(0xFF71CC2A)
+

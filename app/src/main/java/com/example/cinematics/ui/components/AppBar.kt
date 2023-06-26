@@ -1,4 +1,4 @@
-package com.example.cinematics.ui.appbar
+package com.example.cinematics.ui.components
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme

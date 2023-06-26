@@ -1,4 +1,4 @@
-package com.example.cinematics.ui.bottomnav
+package com.example.cinematics.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
