@@ -11,7 +11,7 @@ import com.example.cinematics.R
 val Typography = Typography(
     titleLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.chivo_bold)),
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
         lineHeight = 28.sp,
         letterSpacing = 0.sp
@@ -29,7 +29,15 @@ val Typography = Typography(
         fontSize = 14.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = FontFamily(Font(R.font.chivo_regular)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
     )
+
 )
 val ratingTypo = TextStyle(
     fontFamily = FontFamily(Font(R.font.rubik_one_regular)),

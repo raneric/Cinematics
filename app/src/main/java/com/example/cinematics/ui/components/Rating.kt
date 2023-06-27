@@ -3,9 +3,11 @@ package com.example.cinematics.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -15,10 +17,15 @@ import com.example.cinematics.ui.ui.theme.ratingTypo
 import com.example.cinematics.ui.ui.theme.rating_positive
 
 @Composable
-fun Rating(ratingStars: Int,ratingValue:String) {
+fun Rating(ratingStars: Int,
+           ratingValue: String,
+           modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(text = ratingValue, style = ratingTypo)
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier) {
+        Text(text = ratingValue,
+             style = ratingTypo,
+             color = MaterialTheme.colorScheme.onPrimary)
         StarRating(ratingStars)
     }
 }
@@ -43,7 +50,7 @@ fun StarRating(ratingStars: Int) {
 @Composable
 fun RatingPreview() {
     CinematicsTheme {
-        Rating(3,"4.4")
+        Rating(3, "4.4")
     }
 }
 

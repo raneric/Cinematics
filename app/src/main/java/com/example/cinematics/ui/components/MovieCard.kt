@@ -1,11 +1,17 @@
 package com.example.cinematics.ui.components
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,19 +22,47 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
+import com.example.cinematics.data.MovieModel
+import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
 @Composable
-fun MovieCad() {
-
+fun MovieCad(movie: MovieModel,
+             modifier: Modifier = Modifier) {
+    Box(modifier = modifier
+            .fillMaxWidth()
+            .height(263.dp)) {
+        Poster(movie.picture)
+        // FIXME: Column item spacing must follow figma template
+        Column(modifier = Modifier.offset(x = 16.dp, y = 76.dp)) {
+            Text(
+                text = movie.title,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+            Info(year = movie.year,
+                 duration = movie.duration,
+                 author = movie.author,
+                 modifier = Modifier.offset(y = 8.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.offset(y = 32.dp)) {
+                movie.genres.forEach {
+                    Genre(text = it)
+                }
+            }
+            Rating(ratingStars = movie.stars, ratingValue = movie.ratingNote.toString(),
+                   modifier = Modifier.offset(y = 40.dp))
+        }
+    }
 }
 
 @Composable
-fun Poster(modifier: Modifier = Modifier) {
+fun Poster(@DrawableRes picture: Int,
+           modifier: Modifier = Modifier) {
     Box(modifier = modifier
             .fillMaxWidth()
-            .height(200.dp)) {
-        Image(painter = painterResource(id = R.drawable.birds_of_prey),
+            .height(263.dp)) {
+        Image(painter = painterResource(id = picture),
               alignment = Alignment.Center,
               contentScale = ContentScale.Crop,
               contentDescription = "", modifier = Modifier.matchParentSize())
@@ -47,7 +81,7 @@ fun BackDropGradient() {
     val brush = Brush.verticalGradient(colorStops = colorStop)
     Box(modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(263.dp)
             .background(brush)) {
     }
 }
@@ -56,6 +90,14 @@ fun BackDropGradient() {
 @Composable
 fun PosterPreview() {
     CinematicsTheme {
-        Poster()
+        Poster(movieList[0].picture)
+    }
+}
+
+@Preview
+@Composable
+fun MovieCadPreview() {
+    CinematicsTheme {
+        MovieCad(movieList[1])
     }
 }
