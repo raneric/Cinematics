@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.cinematics.R
 import com.example.cinematics.data.MovieModel
 import com.example.cinematics.data.movieList
@@ -33,25 +34,36 @@ fun MovieCad(movie: MovieModel,
             .fillMaxWidth()
             .height(263.dp)) {
         Poster(movie.picture)
-        // FIXME: Column item spacing must follow figma template
-        Column(modifier = Modifier.offset(x = 16.dp, y = 76.dp)) {
+        ConstraintLayout(modifier = Modifier.offset(x = 16.dp)) {
+            val (tittle, movieInfo, genre, rating) = createRefs()
+
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onPrimary
+                color = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.constrainAs(tittle) {
+                    top.linkTo(parent.top, margin = 76.dp)
+                }
             )
             Info(year = movie.year,
                  duration = movie.duration,
                  author = movie.author,
-                 modifier = Modifier.offset(y = 8.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.offset(y = 32.dp)) {
+                 modifier = Modifier.constrainAs(movieInfo) {
+                     top.linkTo(tittle.bottom, margin = 16.dp)
+                 })
+            Row(modifier = Modifier.constrainAs(genre) {
+                top.linkTo(movieInfo.bottom, margin = 32.dp)
+            }) {
                 movie.genres.forEach {
                     Genre(text = it)
                 }
             }
-            Rating(ratingStars = movie.stars, ratingValue = movie.ratingNote.toString(),
-                   modifier = Modifier.offset(y = 40.dp))
+            Rating(ratingStars = movie.stars,
+                   ratingValue = movie.ratingNote.toString(),
+                   modifier = Modifier.constrainAs(rating) {
+                       top.linkTo(genre.bottom, margin = 8.dp)
+                   }
+            )
         }
     }
 }

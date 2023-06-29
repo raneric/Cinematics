@@ -5,6 +5,16 @@ import com.example.cinematics.R
 val movieList = listOf(
     MovieModel(
         id = 0,
+        title = "Star Wars Rise Of Skywalker",
+        year = 2019,
+        duration = "02h22",
+        genres = listOf("Action", "Si-Fi"),
+        ratingNote = 4.0,
+        picture = R.drawable.star_wars_rise_of_skywalker,
+        stars = 3,
+        author = "Cathy Yan"),
+    MovieModel(
+        id = 0,
         title = "Bird Of Prey",
         year = 2019,
         duration = "01h42",
@@ -15,23 +25,13 @@ val movieList = listOf(
         author = "Cathy Yan"),
     MovieModel(
         id = 0,
-        title = "Star Wars Rise Of Skywalker",
-        year = 2019,
-        duration = "01h42",
-        genres = listOf("Action", "Drama", "Horor"),
-        ratingNote = 4.5,
-        picture = R.drawable.star_wars_rise_of_skywalker,
-        stars = 4,
-        author = "Cathy Yan"),
-    MovieModel(
-        id = 0,
         title = "Avengers End Game",
         year = 2019,
         duration = "01h42",
-        genres = listOf("Action", "Drama", "Horor"),
-        ratingNote = 4.5,
+        genres = listOf("Action", "Si-Fi"),
+        ratingNote = 5.0,
         picture = R.drawable.endgame,
-        stars = 4,
+        stars = 5,
         author = "Cathy Yan"),
     MovieModel(
         id = 0,
