@@ -106,6 +106,8 @@ fun CinematicsTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
+        shapes = CustomShapes,
         content = content
+
     )
 }

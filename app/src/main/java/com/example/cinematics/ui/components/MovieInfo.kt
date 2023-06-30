@@ -24,6 +24,5 @@ fun Info(year: Int,
         Text(text = author,
              color = MaterialTheme.colorScheme.onPrimary,
              style = MaterialTheme.typography.labelMedium)
-
     }
 }
