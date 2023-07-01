@@ -41,7 +41,7 @@ fun CastItem(@DrawableRes imageId: Int,
           contentDescription = "cast image",
           alignment = Alignment.Center,
           contentScale = ContentScale.Crop,
-          modifier = Modifier
+          modifier = modifier
                   .size(width = 70.dp, height = 70.dp)
                   .clip(CircleShape))
 }
@@ -51,7 +51,7 @@ fun CastItem(@DrawableRes imageId: Int,
 @Composable
 fun CastItemPreview() {
     CinematicsTheme {
-        CastItem(imageId = R.drawable.birds_of_prey)
+        CastItem(userList[0].picture)
     }
 }
 
