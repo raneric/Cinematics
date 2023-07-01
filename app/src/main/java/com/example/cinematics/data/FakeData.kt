@@ -114,3 +114,55 @@ val movieList = listOf(
         stars = 4,
         author = "Cathy Yan"))
 
+val userList = listOf(
+    User(
+        name = "Kate",
+        userName = "kat_m",
+        picture = R.drawable.profil1
+    ),
+    User(
+        name = "Hong Lee",
+        userName = "lee_h",
+        picture = R.drawable.profil2
+    ),
+    User(
+        name = "Jack Rose",
+        userName = "r_jack",
+        picture = R.drawable.profil4
+    ),
+    User(
+        name = "Catherine Knowles",
+        userName = "cath_kon",
+        picture = R.drawable.profil3
+    ),
+    User(
+        name = "Ahmed Marks",
+        userName = "ahmed",
+        picture = R.drawable.profil5
+    ),
+    User(
+        name = "Lola Oneal",
+        userName = "lola",
+        picture = R.drawable.profil6
+    ),
+    User(
+        name = "Ollie Nelson",
+        userName = "ollie",
+        picture = R.drawable.profil7
+    ),
+    User(
+        name = "Bianca Brock",
+        userName = "bianca",
+        picture = R.drawable.profil8
+    ),
+    User(
+        name = "Lewis Lowe",
+        userName = "lewis",
+        picture = R.drawable.profil9
+    ),
+    User(
+        name = "Asia Bush",
+        userName = "asia",
+        picture = R.drawable.profil10
+    )
+)

@@ -18,6 +18,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
@@ -103,18 +105,13 @@ fun CinematicsTheme(
         // FIXME: Using an alternative to all deprecated 
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = Color.Transparent.toArgb()
-            window.decorView.systemUiVisibility = (
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    )
+            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
-                insets.consumeSystemWindowInsets()
+            window.statusBarColor = Color.Transparent.toArgb()
+            ViewCompat.setOnApplyWindowInsetsListener(view) { _, _ ->
+                WindowInsetsCompat.CONSUMED
             }
-            WindowCompat.getInsetsController(window, view)?.isAppearanceLightStatusBars = true
+            WindowCompat.getInsetsController(window, view)?.isAppearanceLightStatusBars = darkTheme
         }
     }
 
