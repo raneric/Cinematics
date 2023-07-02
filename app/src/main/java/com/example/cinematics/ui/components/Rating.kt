@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,15 +19,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
-import com.example.cinematics.data.User
 import com.example.cinematics.data.UserRating
 import com.example.cinematics.data.userRatingList
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 import com.example.cinematics.ui.ui.theme.ratingTypo
 import com.example.cinematics.ui.ui.theme.rating_positive
 import com.example.cinematics.utils.formatedDate
-import java.time.format.DateTimeFormatter
 
+/**
+ * A composable that display the average rating the movies got
+ * @param ratingStars: Int value of the average stars for [StarRating] composable
+ * @param ratingValue: String of the double value for the average rating note
+ * @param modifier: A modifier with default value [Modifier]
+ */
 @Composable
 fun Rating(ratingStars: Int,
            ratingValue: String,
@@ -41,6 +46,11 @@ fun Rating(ratingStars: Int,
     }
 }
 
+/**
+ * User rating list
+ * @param ratingList : List of [UserRating] composable
+ * @param modifier: A modifier with default value [Modifier]
+ */
 @Composable
 fun UserRatings(ratingList: List<UserRating>,
                 modifier: Modifier = Modifier) {
@@ -51,6 +61,11 @@ fun UserRatings(ratingList: List<UserRating>,
     }
 }
 
+/**
+ * User rating row composable to display each user rating note
+ * @param userRating: [UserRating] object to display
+ * @param modifier: A modifier with default value [Modifier]
+ */
 @Composable
 fun RatingRow(userRating: UserRating,
               modifier: Modifier = Modifier) {
@@ -70,6 +85,10 @@ fun RatingRow(userRating: UserRating,
     }
 }
 
+/**
+ * A [Row] of star that display the nb of rating
+ * @param ratingStars : Int that is the nb of star. Range from 0 to 5
+ */
 @Composable
 fun StarRating(ratingStars: Int) {
     val positiveRating = 1..ratingStars

@@ -3,15 +3,11 @@ package com.example.cinematics.ui.components
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,11 +21,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.example.cinematics.R
 import com.example.cinematics.data.MovieModel
 import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
+/**
+ * A card composable that display movies information and using [Poster] as background
+ * @param movie: [MovieModel] object to display
+ * @param modifier: A modifier with default value [Modifier]
+ */
 @Composable
 fun MovieCad(movie: MovieModel,
              modifier: Modifier = Modifier) {
@@ -71,6 +71,11 @@ fun MovieCad(movie: MovieModel,
     }
 }
 
+/**
+ * A card composable that is a variant of [MovieCad] with a rounded border
+ * @param movie: [MovieModel] object to display
+ * @param modifier: A modifier with default value [Modifier]
+ */
 @Composable
 fun MovieCadRoundedBorder(movie: MovieModel,
                           modifier: Modifier = Modifier) {
@@ -79,6 +84,11 @@ fun MovieCadRoundedBorder(movie: MovieModel,
     )
 }
 
+/**
+ * The card background photo with [BackDropGradient] as gradient shade
+ * @param picture : Drawable resources integer which is the ID of the picture resource to show
+ * @param modifier: A modifier with default value [Modifier]
+ */
 @Composable
 fun Poster(@DrawableRes picture: Int,
            modifier: Modifier = Modifier) {
@@ -93,6 +103,9 @@ fun Poster(@DrawableRes picture: Int,
     }
 }
 
+/**
+ * A gradient shade composable used as shade on the top of the background photo
+ */
 @Composable
 fun BackDropGradient() {
     val colorStop = arrayOf(

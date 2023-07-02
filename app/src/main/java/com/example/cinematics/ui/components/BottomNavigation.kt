@@ -3,7 +3,6 @@ package com.example.cinematics.ui.components
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
@@ -16,15 +15,21 @@ import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
-
+/**
+ * Custom bottom navigation composable that use [NavigationBar] from MUI3
+ * @param bottomNavList : A list of [BottomNavItemVariant] object which is the navigation destination
+ * @param activeDestination: A [BottomNavItemVariant] item that is the current active destination
+ *                           with [BottomNavItemVariant.Trending] as default value
+ * @param modifier: A modifier with default value [Modifier]
+ */
 @Composable
 fun BottomNavScreen(bottomNavList: List<BottomNavItemVariant>,
-                    activeTab: BottomNavItemVariant = BottomNavItemVariant.Trending,
+                    activeDestination: BottomNavItemVariant = BottomNavItemVariant.Trending,
                     modifier: Modifier = Modifier) {
 
     NavigationBar(tonalElevation = 5.dp) {
         bottomNavList.forEach { item ->
-            NavigationBarItem(selected = item == activeTab,
+            NavigationBarItem(selected = item == activeDestination,
                               icon = {
                                   Icon(painter = painterResource(id = item.iconId),
                                        contentDescription = stringResource(id = item.iconContentDescription))
@@ -44,6 +49,14 @@ fun BottomNavScreenPreview() {
 
 }
 
+/**
+ * A sealed base class for each BottomNavItem
+ * @constructor :
+ * @param textId : Int StringRes ID for theBottom nav item display text
+ * @param iconContentDescription : Int StringRes ID for the icon content description
+ * @param iconId : Int DrawableRes ID for the icon
+ * @param route: String rout for the navigation destination
+ */
 sealed class BottomNavItemVariant(@StringRes val textId: Int,
                                   @StringRes val iconContentDescription: Int,
                                   @DrawableRes val iconId: Int,
