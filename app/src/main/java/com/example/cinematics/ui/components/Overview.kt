@@ -12,6 +12,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Icon
@@ -53,18 +54,21 @@ fun Overview(text: String,
     var gradientVisibility by remember {
         mutableStateOf(true)
     }
-
+    // FIXME: Fix collapsing animation bug  
     Box(modifier = modifier
             .fillMaxWidth()
             .then(overviewSate.boxModifier)) {
         Text(style = MaterialTheme.typography.bodyLarge,
              text = text,
              modifier = Modifier
+                     .padding(start = 16.dp,
+                              top = 8.dp,
+                              end = 16.dp)
                      .then(overviewSate.textModifier)
                      .animateContentSize(
                          animationSpec = spring(
                              dampingRatio = Spring.DampingRatioMediumBouncy,
-                             stiffness = Spring.StiffnessMedium
+                             stiffness = Spring.StiffnessLow
                          )
                      ))
 
@@ -98,16 +102,13 @@ fun Overview(text: String,
  */
 sealed class OverviewState(@DrawableRes val buttonIcon: Int,
                            val boxModifier: Modifier,
-                           val textModifier: Modifier) {
+                           val textModifier: Modifier = Modifier) {
 
     abstract fun reverseState(): OverviewState
 
     object Collapsed :
             OverviewState(buttonIcon = R.drawable.chevron_double_down,
-                          boxModifier = Modifier.height(OVERVIEW_HEIGHT),
-                          textModifier = Modifier.padding(start = 16.dp,
-                                                          top = 8.dp,
-                                                          end = 16.dp)) {
+                          boxModifier = Modifier.height(OVERVIEW_HEIGHT)) {
         override fun reverseState(): OverviewState {
             return Expanded
         }
@@ -115,11 +116,8 @@ sealed class OverviewState(@DrawableRes val buttonIcon: Int,
 
     object Expanded :
             OverviewState(buttonIcon = R.drawable.chevron_double_up,
-                          boxModifier = Modifier.wrapContentHeight(),
-                          textModifier = Modifier.padding(start = 16.dp,
-                                                          top = 8.dp,
-                                                          end = 16.dp,
-                                                          bottom = 40.dp)) {
+                          boxModifier = Modifier.heightIn(OVERVIEW_HEIGHT),
+                          textModifier = Modifier.padding(bottom = 40.dp)) {
         override fun reverseState(): OverviewState {
             return Collapsed
         }
@@ -130,15 +128,7 @@ sealed class OverviewState(@DrawableRes val buttonIcon: Int,
 @Composable
 fun OverviewPreview() {
     CinematicsTheme {
-        Overview(text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                "Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. " +
-                "Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, " +
-                "at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, " +
-                "varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. " +
-                "Donec nec venenatis libero.Curabitur laoreet finibus facilisis. Morbi sit " +
-                "amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque " +
-                "placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a " +
-                "eros malesuada congue. Donec nec venenatis libero")
+        Overview(text = stringResource(id = R.string.txt_overview_preview_example))
     }
 }
 

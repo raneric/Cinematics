@@ -13,4 +13,12 @@
 
     <string name="content_descrip_read_more">Button read more on overview</string>
 
+    <string name="txt_overview_preview_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper.
+        Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat.
+        Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est.
+        Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero.
+        Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est.
+        Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero</string>
+
 </resources>
