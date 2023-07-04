@@ -10,7 +10,8 @@ data class MovieModel(
         val genres: List<String>,
         val ratingNote: Double,
         val stars: Int,
-        var watched: Boolean = false,
         @DrawableRes val picture: Int,
         val author: String,
+        var overview: String = "N/A",
+        var watched: Boolean = false,
 )

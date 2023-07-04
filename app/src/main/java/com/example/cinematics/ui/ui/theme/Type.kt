@@ -23,10 +23,10 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
-    bodyMedium = TextStyle(
+    bodyLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.rubik_regular)),
         fontWeight = FontWeight.Normal,
-        fontSize = 14.sp,
+        fontSize = 16.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     ),

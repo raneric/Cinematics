@@ -85,7 +85,7 @@ fun MovieCadRoundedBorder(movie: MovieModel,
 }
 
 /**
- * The card background photo with [BackDropGradient] as gradient shade
+ * The card background photo with [GradientForeground] as gradient shade
  * @param picture : Drawable resources integer which is the ID of the picture resource to show
  * @param modifier: A modifier with default value [Modifier]
  */
@@ -99,26 +99,7 @@ fun Poster(@DrawableRes picture: Int,
               alignment = Alignment.Center,
               contentScale = ContentScale.Crop,
               contentDescription = "", modifier = Modifier.matchParentSize())
-        BackDropGradient()
-    }
-}
-
-/**
- * A gradient shade composable used as shade on the top of the background photo
- */
-@Composable
-fun BackDropGradient() {
-    val colorStop = arrayOf(
-        0.0f to Color.Transparent,
-        0.3f to Color.Black.copy(alpha = 0.3f),
-        0.6f to Color.Black.copy(alpha = 0.5f),
-        1f to Color.Black
-    )
-    val brush = Brush.verticalGradient(colorStops = colorStop)
-    Box(modifier = Modifier
-            .fillMaxWidth()
-            .height(263.dp)
-            .background(brush)) {
+        GradientForeground(color = Color.Black, modifier = Modifier.height(263.dp))
     }
 }
 

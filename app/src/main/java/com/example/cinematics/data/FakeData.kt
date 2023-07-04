@@ -10,31 +10,34 @@ val movieList = listOf(
         title = "Star Wars Rise Of Skywalker",
         year = 2019,
         duration = "02h22",
-        genres = listOf("Action", "Si-Fi"),
+        genres = listOf("Action", "Adventure", "Fantasy"),
         ratingNote = 4.0,
         picture = R.drawable.star_wars_rise_of_skywalker,
         stars = 3,
-        author = "Cathy Yan"),
+        author = "J.J. Abrams",
+        overview = "The revival of Emperor Palpatine resurrects the battle between the Resistance and the First Order while the Jedi's legendary conflict with the Sith Lord comes to a head."),
     MovieModel(
         id = 1,
-        title = "Bird Of Prey",
-        year = 2019,
+        title = "Birds Of Prey",
+        year = 2020,
         duration = "01h42",
         genres = listOf("Action", "Drama", "Horor"),
         ratingNote = 4.5,
         picture = R.drawable.birds_of_prey,
         stars = 4,
-        author = "Cathy Yan"),
+        author = "Christina Hodson",
+        overview = "Birds of Prey (and the Fantabulous Emancipation of One Harley Quinn), also known as Harley Quinn: Birds of Prey[6][7] or simply Birds of Prey, is a 2020 American superhero film directed by Cathy Yan and written by Christina Hodson, based on the DC Comics team, the Birds of Prey. Produced by Warner Bros., DC Films, LuckyChap Entertainment, Clubhouse Pictures, and Kroll & Co. Entertainment, it is the eighth installment in the DC Extended Universe (DCEU), and serves as a spin-off and sequel to Suicide Squad (2016). It stars Margot Robbie as Harley Quinn alongside Mary Elizabeth Winstead, Jurnee Smollett-Bell, Rosie Perez, Chris Messina, Ella Jay Basco, Ali Wong, and Ewan McGregor."),
     MovieModel(
         id = 2,
         title = "Avengers End Game",
         year = 2019,
-        duration = "01h42",
-        genres = listOf("Action", "Si-Fi"),
+        duration = "03h01",
+        genres = listOf("Action", "Si-Fi", "Adventure"),
         ratingNote = 5.0,
         picture = R.drawable.endgame,
         stars = 5,
-        author = "Cathy Yan"),
+        author = " Joe Russo",
+        overview = "After Thanos, an intergalactic warlord, disintegrates half of the universe, the Avengers must reunite and assemble again to reinvigorate their trounced allies and restore balance.\n"),
     MovieModel(
         id = 3,
         title = "Grey hound",
@@ -44,7 +47,8 @@ val movieList = listOf(
         ratingNote = 4.5,
         picture = R.drawable.greyhound,
         stars = 4,
-        author = "Cathy Yan"),
+        author = "Cathy Yan",
+        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."),
     MovieModel(
         id = 4,
         title = "Hamilton",
@@ -54,7 +58,8 @@ val movieList = listOf(
         ratingNote = 4.5,
         picture = R.drawable.hamilton,
         stars = 4,
-        author = "Cathy Yan"),
+        author = "Cathy Yan",
+        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."),
     MovieModel(
         id = 5,
         title = "Frozen 2",
@@ -64,7 +69,8 @@ val movieList = listOf(
         ratingNote = 4.5,
         picture = R.drawable.frozen_2,
         stars = 4,
-        author = "Cathy Yan"),
+        author = "Cathy Yan",
+        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."),
     MovieModel(
         id = 6,
         title = "Avengers Infinity War",
@@ -74,7 +80,8 @@ val movieList = listOf(
         ratingNote = 4.5,
         picture = R.drawable.infinity_war,
         stars = 4,
-        author = "Cathy Yan"),
+        author = "Cathy Yan",
+        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."),
     MovieModel(
         id = 7,
         title = "Interstellar",
@@ -84,7 +91,8 @@ val movieList = listOf(
         ratingNote = 4.5,
         picture = R.drawable.interstellar,
         stars = 4,
-        author = "Cathy Yan"),
+        author = "Cathy Yan",
+        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."),
     MovieModel(
         id = 8,
         title = "Onward",
@@ -94,7 +102,8 @@ val movieList = listOf(
         ratingNote = 4.5,
         picture = R.drawable.onward,
         stars = 4,
-        author = "Cathy Yan"),
+        author = "Cathy Yan",
+        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."),
     MovieModel(
         id = 9,
         title = "Spiderman far from home",
@@ -104,7 +113,8 @@ val movieList = listOf(
         ratingNote = 4.5,
         picture = R.drawable.spiderman_far_from_home,
         stars = 4,
-        author = "Cathy Yan"),
+        author = "Cathy Yan",
+        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."),
     MovieModel(
         id = 10,
         title = "Star wars the last jedi",
@@ -114,7 +124,8 @@ val movieList = listOf(
         ratingNote = 4.5,
         picture = R.drawable.star_wars_last_jedi,
         stars = 4,
-        author = "Cathy Yan"))
+        author = "Cathy Yan",
+        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."))
 
 val userList = listOf(
     User(

@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.components.BottomNavScreen
+import com.example.cinematics.ui.components.Overview
 import com.example.cinematics.ui.components.bottomNavItemList
 import com.example.cinematics.ui.content.MovieListScreen
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
@@ -32,8 +33,8 @@ class MainActivity : ComponentActivity() {
 fun CinematicsApp() {
     Scaffold(
         bottomBar = { BottomNavScreen(bottomNavItemList) }
-    ) { padding ->
-        ContentScreen(modifier = Modifier.padding(padding))
+    ) { paddingValue ->
+        ContentScreen(modifier = Modifier.padding(paddingValue))
     }
 }
 
