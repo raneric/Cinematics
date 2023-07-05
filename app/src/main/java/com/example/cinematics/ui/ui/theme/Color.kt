@@ -66,4 +66,5 @@ val md_theme_dark_scrim = Color(0xFF000000)
 
 val seed = Color(0xFF4F64E0)
 val rating_positive = Color(0xFF89E045)
-
+val rating_negative = Color(0xFF8F8F8F)
+val addToWatchButtonColor = Color(0xFFF34444)

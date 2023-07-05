@@ -2,19 +2,22 @@ package com.example.cinematics.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -33,34 +36,31 @@ import com.example.cinematics.ui.ui.theme.CinematicsTheme
 @Composable
 fun MovieCad(movie: MovieModel,
              modifier: Modifier = Modifier) {
-    Box(modifier = modifier
-            .fillMaxWidth()
-            .height(263.dp)) {
+
+    Box(modifier = modifier.height(263.dp)) {
         Poster(movie.picture)
         ConstraintLayout(modifier = Modifier.offset(x = 16.dp)) {
             val (tittle, movieInfo, genre, rating) = createRefs()
-
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.constrainAs(tittle) {
-                    top.linkTo(parent.top, margin = 76.dp)
+                    top.linkTo(anchor = parent.top, margin = 76.dp)
                 }
             )
-            Info(year = movie.year,
-                 duration = movie.duration,
-                 author = movie.author,
-                 modifier = Modifier.constrainAs(movieInfo) {
-                     top.linkTo(tittle.bottom, margin = 16.dp)
-                 })
-            Row(modifier = Modifier.constrainAs(genre) {
-                top.linkTo(movieInfo.bottom, margin = 32.dp)
-            }) {
-                movie.genres.forEach {
-                    Genre(text = it)
-                }
-            }
+            MovieInfo(year = movie.year,
+                      duration = movie.duration,
+                      author = movie.author,
+                      compact = false,
+                      modifier = Modifier.constrainAs(movieInfo) {
+                          top.linkTo(tittle.bottom, margin = 16.dp)
+                      })
+            GenreRow(genres = movie.genres,
+                     compact = false,
+                     modifier = Modifier.constrainAs(genre) {
+                         top.linkTo(movieInfo.bottom, margin = 32.dp)
+                     })
             Rating(ratingStars = movie.stars,
                    ratingValue = movie.ratingNote.toString(),
                    modifier = Modifier.constrainAs(rating) {
@@ -80,8 +80,48 @@ fun MovieCad(movie: MovieModel,
 fun MovieCadRoundedBorder(movie: MovieModel,
                           modifier: Modifier = Modifier) {
     MovieCad(movie = movie,
-             modifier = modifier.clip(MaterialTheme.shapes.small)
+             modifier = modifier
+                     .clip(MaterialTheme.shapes.small)
     )
+}
+
+@Composable
+fun MovieCadRoundedBorderCompact(movie: MovieModel,
+                                 modifier: Modifier = Modifier) {
+    Box(modifier = modifier
+            .size(width = 348.dp, height = 210.dp)
+            .clip(MaterialTheme.shapes.small)) {
+        Poster(movie.picture)
+        ConstraintLayout(modifier = Modifier.offset(x = 12.dp)) {
+            val (tittle, movieInfo, genre, rating) = createRefs()
+            Text(
+                text = movie.title,
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.constrainAs(tittle) {
+                    top.linkTo(anchor = parent.top, margin = 50.dp)
+                }
+            )
+            MovieInfo(year = movie.year,
+                      duration = movie.duration,
+                      author = movie.author,
+                      compact = true,
+                      modifier = Modifier.constrainAs(movieInfo) {
+                          top.linkTo(tittle.bottom, margin = 12.dp)
+                      })
+            GenreRow(genres = movie.genres,
+                     compact = true,
+                     modifier = Modifier.constrainAs(genre) {
+                         top.linkTo(movieInfo.bottom, margin = 24.dp)
+                     })
+            Rating(ratingStars = movie.stars,
+                   ratingValue = movie.ratingNote.toString(),
+                   modifier = Modifier.constrainAs(rating) {
+                       top.linkTo(genre.bottom, margin = 8.dp)
+                   }
+            )
+        }
+    }
 }
 
 /**
@@ -93,7 +133,6 @@ fun MovieCadRoundedBorder(movie: MovieModel,
 fun Poster(@DrawableRes picture: Int,
            modifier: Modifier = Modifier) {
     Box(modifier = modifier
-            .fillMaxWidth()
             .height(263.dp)) {
         Image(painter = painterResource(id = picture),
               alignment = Alignment.Center,
@@ -115,7 +154,7 @@ fun PosterPreview() {
 @Composable
 fun MovieCadPreview() {
     CinematicsTheme {
-        MovieCad(movieList[1])
+        MovieCad(movieList[0])
     }
 }
 
@@ -125,4 +164,10 @@ fun MovieCadRoundedPreview() {
     CinematicsTheme {
         MovieCadRoundedBorder(movieList[1])
     }
+}
+
+@Preview
+@Composable
+fun MovieCadRoundedBorderCompactPreview() {
+    MovieCadRoundedBorderCompact(movieList[0])
 }

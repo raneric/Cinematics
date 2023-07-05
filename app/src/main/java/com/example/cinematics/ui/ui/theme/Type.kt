@@ -23,17 +23,24 @@ val Typography = Typography(
         lineHeight = 28.sp,
         letterSpacing = 0.sp
     ),
-    bodyLarge = TextStyle(
+    bodyMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.rubik_regular)),
         fontWeight = FontWeight.Normal,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
         letterSpacing = 0.5.sp
     ),
     labelMedium = TextStyle(
         fontFamily = FontFamily(Font(R.font.chivo_regular)),
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.5.sp
+    ),
+    labelSmall = TextStyle(
+        fontFamily = FontFamily(Font(R.font.chivo_regular)),
+        fontWeight = FontWeight.Normal,
+        fontSize = 11.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.5.sp
     )

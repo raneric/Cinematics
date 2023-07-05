@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
@@ -23,6 +24,7 @@ import com.example.cinematics.data.UserRating
 import com.example.cinematics.data.userRatingList
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 import com.example.cinematics.ui.ui.theme.ratingTypo
+import com.example.cinematics.ui.ui.theme.rating_negative
 import com.example.cinematics.ui.ui.theme.rating_positive
 import com.example.cinematics.utils.formatedDate
 
@@ -54,7 +56,7 @@ fun Rating(ratingStars: Int,
 @Composable
 fun UserRatings(ratingList: List<UserRating>,
                 modifier: Modifier = Modifier) {
-    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = modifier) {
         ratingList.forEach {
             RatingRow(userRating = it)
         }
@@ -96,11 +98,13 @@ fun StarRating(ratingStars: Int) {
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         positiveRating.forEach { _ ->
             Icon(painter = painterResource(id = R.drawable.star_24),
-                 contentDescription = "",
+                 contentDescription = stringResource(id = R.string.content_descrip_star_rating),
                  tint = rating_positive)
         }
         negativeRating.forEach { _ ->
-            Icon(painter = painterResource(id = R.drawable.star_24), contentDescription = "")
+            Icon(painter = painterResource(id = R.drawable.star_24),
+                 contentDescription = stringResource(id = R.string.content_descrip_star_rating),
+                 tint = rating_negative)
         }
     }
 }

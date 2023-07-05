@@ -51,19 +51,13 @@ fun Overview(text: String,
         mutableStateOf(OverviewState.Collapsed)
     }
 
-    var gradientVisibility by remember {
-        mutableStateOf(true)
-    }
     // FIXME: Fix collapsing animation bug  
     Box(modifier = modifier
             .fillMaxWidth()
             .then(overviewSate.boxModifier)) {
-        Text(style = MaterialTheme.typography.bodyLarge,
+        Text(style = MaterialTheme.typography.bodyMedium,
              text = text,
              modifier = Modifier
-                     .padding(start = 16.dp,
-                              top = 8.dp,
-                              end = 16.dp)
                      .then(overviewSate.textModifier)
                      .animateContentSize(
                          animationSpec = spring(
@@ -72,17 +66,14 @@ fun Overview(text: String,
                          )
                      ))
 
-        AnimatedVisibility(visible = gradientVisibility,
+        AnimatedVisibility(visible = overviewSate.isCollapsed(),
                            enter = fadeIn(),
                            exit = fadeOut()) {
             GradientForeground(color = MaterialTheme.colorScheme.surface,
                                modifier = Modifier.height(OVERVIEW_HEIGHT))
         }
 
-        IconButton(onClick = {
-            overviewSate = overviewSate.reverseState()
-            gradientVisibility = overviewSate is OverviewState.Collapsed
-        },
+        IconButton(onClick = { overviewSate = overviewSate.reverseState() },
                    modifier = Modifier
                            .align(Alignment.BottomCenter)) {
             Icon(painter = painterResource(id = overviewSate.buttonIcon),
@@ -105,6 +96,9 @@ sealed class OverviewState(@DrawableRes val buttonIcon: Int,
                            val textModifier: Modifier = Modifier) {
 
     abstract fun reverseState(): OverviewState
+
+    fun isCollapsed() = this is Collapsed
+
 
     object Collapsed :
             OverviewState(buttonIcon = R.drawable.chevron_double_down,

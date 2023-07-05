@@ -8,10 +8,21 @@
     <string name="content_descrip_top_rated">top rated movies</string>
     <string name="txt_top_rated">Top Rated</string>
 
+    <string name="content_descrip_star_rating">Star number rating</string>
+
+    <string name="content_descrip_back_fab">Back button</string>
+
+    <string name="txt_add_to_watch_btn">Add to watchlist</string>
+
     <string name="content_descrip_watch_list">watchlist movies</string>
     <string name="txt_watch_list">Watchlist</string>
 
     <string name="content_descrip_read_more">Button read more on overview</string>
+
+    <string name="txt_overview_section">Overview</string>
+    <string name="txt_cast_section">Cast</string>
+    <string name="txt_rating_section">Ratings - %1$.1f</string>
+    <string name="txt_recomendation_section">You may also like</string>
 
     <string name="txt_overview_preview_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper.
