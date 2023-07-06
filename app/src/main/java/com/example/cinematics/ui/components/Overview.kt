@@ -51,24 +51,25 @@ fun Overview(text: String,
         mutableStateOf(OverviewState.Collapsed)
     }
 
-    // FIXME: Fix collapsing animation bug  
     Box(modifier = modifier
             .fillMaxWidth()
             .then(overviewSate.boxModifier)) {
-        Text(style = MaterialTheme.typography.bodyMedium,
-             text = text,
-             modifier = Modifier
-                     .then(overviewSate.textModifier)
-                     .animateContentSize(
-                         animationSpec = spring(
-                             dampingRatio = Spring.DampingRatioMediumBouncy,
-                             stiffness = Spring.StiffnessLow
-                         )
-                     ))
+        Text(
+            style = MaterialTheme.typography.bodyMedium,
+            text = text,
+            modifier = Modifier
+                    .then(overviewSate.textModifier)
+                    .animateContentSize(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioMediumBouncy,
+                            stiffness = Spring.StiffnessLow
+                        )
+                    ))
 
-        AnimatedVisibility(visible = overviewSate.isCollapsed(),
-                           enter = fadeIn(),
-                           exit = fadeOut()) {
+        AnimatedVisibility(
+            visible = overviewSate.isCollapsed(),
+            enter = fadeIn(),
+            exit = fadeOut()) {
             GradientForeground(color = MaterialTheme.colorScheme.surface,
                                modifier = Modifier.height(OVERVIEW_HEIGHT))
         }
@@ -98,7 +99,6 @@ sealed class OverviewState(@DrawableRes val buttonIcon: Int,
     abstract fun reverseState(): OverviewState
 
     fun isCollapsed() = this is Collapsed
-
 
     object Collapsed :
             OverviewState(buttonIcon = R.drawable.chevron_double_down,

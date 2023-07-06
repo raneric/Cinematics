@@ -1,5 +1,6 @@
 package com.example.cinematics.ui.components
 
+import androidx.annotation.IntRange
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -92,7 +93,7 @@ fun RatingRow(userRating: UserRating,
  * @param ratingStars : Int that is the nb of star. Range from 0 to 5
  */
 @Composable
-fun StarRating(ratingStars: Int) {
+fun StarRating(@IntRange(from = 0, to = 5) ratingStars: Int) {
     val positiveRating = 1..ratingStars
     val negativeRating = 1..(5 - ratingStars)
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {

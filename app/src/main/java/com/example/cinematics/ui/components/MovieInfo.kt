@@ -25,6 +25,7 @@ fun MovieInfo(year: Int,
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = modifier) {
         Text(text = year.toString(), color = textColor, style = textStyle)
         Text(text = duration, color = textColor, style = textStyle)
-        Text(text = author, color = textColor, style = textStyle)
     }
+
+    Text(text = author, color = textColor, style = textStyle)
 }

@@ -28,13 +28,16 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.offset
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.cinematics.R
 import com.example.cinematics.data.MovieModel
@@ -60,17 +63,20 @@ import com.example.cinematics.ui.ui.theme.md_theme_light_tertiary
 fun DetailsScreen(movie: MovieModel,
                   modifier: Modifier = Modifier) {
 
-    BottomSheetScaffold(sheetContent = { DetailsContent(movie) },
-                        sheetDragHandle = {},
-                        sheetPeekHeight = 600.dp) {
+    BottomSheetScaffold(
+        sheetContent = { DetailsContent(movie) },
+        sheetDragHandle = {},
+        sheetContainerColor = MaterialTheme.colorScheme.surface,
+        sheetPeekHeight = 600.dp) {
         BackDrop(movie.picture)
 
-        FloatingActionButton(onClick = { /*TODO*/ },
-                             elevation = FloatingActionButtonDefaults.elevation(12.dp),
-                             containerColor = MaterialTheme.colorScheme.surface,
-                             contentColor = MaterialTheme.colorScheme.onSurface,
-                             shape = CircleShape,
-                             modifier = Modifier.offset(x = 16.dp, y = 60.dp)) {
+        FloatingActionButton(
+            onClick = { /*TODO*/ },
+            elevation = FloatingActionButtonDefaults.elevation(12.dp),
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface,
+            shape = CircleShape,
+            modifier = Modifier.offset(x = 16.dp, y = 60.dp)) {
             Icon(painter = painterResource(id = R.drawable.arrow_back_24),
                  contentDescription = stringResource(id = R.string.content_descrip_back_fab))
         }
@@ -91,12 +97,13 @@ fun BackDrop(@DrawableRes imageId: Int,
 
 @Composable
 fun DetailsContent(movie: MovieModel) {
+
     Column(modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
             .verticalScroll(rememberScrollState()),
            verticalArrangement = Arrangement.spacedBy(32.dp)) {
-        Row(horizontalArrangement = Arrangement.spacedBy(28.dp)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             MovieDetailsImage(imageId = movie.picture)
 
             //---------------------- Movie Info -----------------------------------------------
@@ -109,11 +116,13 @@ fun DetailsContent(movie: MovieModel) {
                     duration = movie.duration,
                     author = movie.author,
                     textColor = MaterialTheme.colorScheme.onSurfaceVariant)
-                GenreRow(genres = movie.genres,
-                         color = md_theme_light_tertiary)
             }
         }
-
+        GenreRow(genres = movie.genres,
+                 compact = true,
+                 color = md_theme_light_tertiary,
+                 modifier = Modifier.align(
+                     Alignment.CenterHorizontally))
         //---------------------- Overview section -----------------------------------------------
         DetailsSection(title = stringResource(id = R.string.txt_overview_section)) {
             Overview(text = movie.overview)

@@ -23,41 +23,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CinematicsTheme {
-                DetailsScreen(movie = movieList[1])
-               // CinematicsApp()
+                DetailsScreen(movie = movieList[0])
+                // CinematicsApp()
             }
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CinematicsApp() {
-    Scaffold(
-        bottomBar = { BottomNavScreen(bottomNavItemList) }
-    ) { paddingValue ->
-        ContentScreen(modifier = Modifier.padding(paddingValue))
-    }
-}
-
-@Composable
-fun ContentScreen(modifier: Modifier = Modifier) {
-    MovieListScreen(movieList = movieList, modifier = modifier)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CinematicsAppPreview() {
-    CinematicsTheme {
-        CinematicsApp()
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES,
-         showBackground = true)
-@Composable
-fun CinematicsAppPreviewDark() {
-    CinematicsTheme {
-        CinematicsApp()
     }
 }
