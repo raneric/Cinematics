@@ -2,6 +2,7 @@ package com.example.cinematics.ui.content
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -98,15 +99,15 @@ fun BackDrop(@DrawableRes imageId: Int,
 @Composable
 fun DetailsContent(movie: MovieModel) {
 
-    Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-           verticalArrangement = Arrangement.spacedBy(32.dp)) {
+    Column(
+        modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(32.dp),
+    ) {
         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             MovieDetailsImage(imageId = movie.picture)
-
-            //---------------------- Movie Info -----------------------------------------------
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                 Text(text = movie.title,
                      modifier = Modifier.widthIn(max = 200.dp),
@@ -123,18 +124,17 @@ fun DetailsContent(movie: MovieModel) {
                  color = md_theme_light_tertiary,
                  modifier = Modifier.align(
                      Alignment.CenterHorizontally))
-        //---------------------- Overview section -----------------------------------------------
+
         DetailsSection(title = stringResource(id = R.string.txt_overview_section)) {
             Overview(text = movie.overview)
         }
 
-        //---------------------- Cast section -----------------------------------------------
         DetailsSection(
             title = stringResource(id = R.string.txt_cast_section),
             modifier = Modifier) {
             Cast(users = userList)
         }
-        //---------------------- Ratings section -----------------------------------------------
+
         Row(horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()) {
             Text(
@@ -143,10 +143,8 @@ fun DetailsContent(movie: MovieModel) {
             StarRating(ratingStars = movie.stars)
         }
 
-        //---------------------- User Ratings section -----------------------------------------------
         UserRatings(ratingList = userRatingList)
 
-        //---------------------- Recommendation  section -----------------------------------------------
         DetailsSection(title = stringResource(id = R.string.txt_recomendation_section)) {
             LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(movieList) {
@@ -169,14 +167,6 @@ fun DetailsContent(movie: MovieModel) {
                      style = customButtonTextStyle)
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PrevT() {
-    CinematicsTheme {
-        DetailsContent(movieList[0])
     }
 }
 

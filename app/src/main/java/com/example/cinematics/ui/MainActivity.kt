@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CinematicsTheme {
-                DetailsScreen(movie = movieList[0])
+                DetailsScreen(movie = movieList[1])
                 // CinematicsApp()
             }
         }

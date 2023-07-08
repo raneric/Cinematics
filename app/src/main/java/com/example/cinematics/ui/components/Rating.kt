@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +26,7 @@ import com.example.cinematics.ui.ui.theme.CinematicsTheme
 import com.example.cinematics.ui.ui.theme.ratingTypo
 import com.example.cinematics.ui.ui.theme.rating_negative
 import com.example.cinematics.ui.ui.theme.rating_positive
-import com.example.cinematics.utils.formatedDate
+import com.example.cinematics.utils.formatDate
 
 /**
  * A composable that display the average rating the movies got
@@ -82,7 +81,7 @@ fun RatingRow(userRating: UserRating,
                       .size(width = 45.dp, height = 45.dp)
                       .clip(CircleShape))
         Column {
-            Text(text = "${userRating.user.name} - ${userRating.date.formatedDate}")
+            Text(text = "${userRating.user.name} - ${userRating.date.formatDate}")
             StarRating(ratingStars = userRating.rating)
         }
     }
