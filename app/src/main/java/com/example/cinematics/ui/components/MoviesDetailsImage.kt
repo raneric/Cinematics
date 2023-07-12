@@ -12,27 +12,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
 val DETAILS_IMAGE_WIDTH = 175.dp
+val DETAILS_IMAGE_HEIGHT = 221.dp
 
 @Composable
 fun MovieDetailsImage(@DrawableRes imageId: Int,
                       modifier: Modifier = Modifier) {
     Surface(shadowElevation = 8.dp,
             shape = MaterialTheme.shapes.small,
-            modifier = modifier.size(width = DETAILS_IMAGE_WIDTH, height = 221.dp)) {
+            modifier = modifier.size(width = DETAILS_IMAGE_WIDTH, height = DETAILS_IMAGE_HEIGHT)) {
         Image(painter = painterResource(id = imageId),
               alignment = Alignment.Center,
               contentScale = ContentScale.Crop,
-              contentDescription = "test",
+              contentDescription = stringResource(id = R.string.content_descrip_movie_image),
               modifier = Modifier
                       .border(
                           width = 5.dp,
-                          color = Color.White,
+                          color = MaterialTheme.colorScheme.surface,
                           shape = MaterialTheme.shapes.small,
                       ))
     }

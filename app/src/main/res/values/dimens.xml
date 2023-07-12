@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="extra_low_dp">8dp</dimen>
+    <dimen name="low_dp">16dp</dimen>
+    <dimen name="medium_dp">24dp</dimen>
+    <dimen name="high_dp">32dp</dimen>
+    <dimen name="extra_high_dp">64dp</dimen>
+</resources>

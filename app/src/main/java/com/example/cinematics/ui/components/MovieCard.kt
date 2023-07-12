@@ -20,10 +20,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.example.cinematics.R
 import com.example.cinematics.data.MovieModel
 import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
@@ -39,7 +41,7 @@ fun MovieCad(movie: MovieModel,
 
     Box(modifier = modifier.height(263.dp)) {
         Poster(movie.picture)
-        ConstraintLayout(modifier = Modifier.offset(x = 16.dp)) {
+        ConstraintLayout(modifier = Modifier.offset(x = dimensionResource(id = R.dimen.low_dp))) {
             val (tittle, movieInfo, genre, rating) = createRefs()
             Text(
                 text = movie.title,
