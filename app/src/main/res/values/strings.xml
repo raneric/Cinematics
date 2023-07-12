@@ -19,6 +19,10 @@
 
     <string name="content_descrip_read_more">Button read more on overview</string>
 
+    <string name="label_movie_year">Year: %1$s</string>
+    <string name="label_movie_duration">Duration: %1$s</string>
+    <string name="label_movie_author">Author: %1$s</string>
+
     <string name="txt_overview_section">Overview</string>
     <string name="txt_cast_section">Cast</string>
     <string name="txt_rating_section">Ratings - %1$.1f</string>

@@ -9,8 +9,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -19,12 +17,14 @@ import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
+val DETAILS_IMAGE_WIDTH = 175.dp
+
 @Composable
 fun MovieDetailsImage(@DrawableRes imageId: Int,
                       modifier: Modifier = Modifier) {
     Surface(shadowElevation = 8.dp,
             shape = MaterialTheme.shapes.small,
-            modifier = modifier.size(width = 175.dp, height = 221.dp)) {
+            modifier = modifier.size(width = DETAILS_IMAGE_WIDTH, height = 221.dp)) {
         Image(painter = painterResource(id = imageId),
               alignment = Alignment.Center,
               contentScale = ContentScale.Crop,

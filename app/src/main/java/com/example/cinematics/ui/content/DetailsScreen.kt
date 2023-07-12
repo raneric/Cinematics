@@ -2,7 +2,6 @@ package com.example.cinematics.ui.content
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,18 +26,17 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.offset
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.cinematics.R
 import com.example.cinematics.data.MovieModel
@@ -50,7 +48,7 @@ import com.example.cinematics.ui.components.GenreRow
 import com.example.cinematics.ui.components.GradientForeground
 import com.example.cinematics.ui.components.MovieCadRoundedBorderCompact
 import com.example.cinematics.ui.components.MovieDetailsImage
-import com.example.cinematics.ui.components.MovieInfo
+import com.example.cinematics.ui.components.MovieInfoDetails
 import com.example.cinematics.ui.components.Overview
 import com.example.cinematics.ui.components.StarRating
 import com.example.cinematics.ui.components.UserRatings
@@ -67,7 +65,6 @@ fun DetailsScreen(movie: MovieModel,
     BottomSheetScaffold(
         sheetContent = { DetailsContent(movie) },
         sheetDragHandle = {},
-        sheetContainerColor = MaterialTheme.colorScheme.surface,
         sheetPeekHeight = 600.dp) {
         BackDrop(movie.picture)
 
@@ -97,75 +94,130 @@ fun BackDrop(@DrawableRes imageId: Int,
 }
 
 @Composable
-fun DetailsContent(movie: MovieModel) {
+fun DetailsLayout(
+        moviePicture: @Composable () -> Unit,
+        content: @Composable () -> Unit,
+        backdrop: @Composable () -> Unit,
+        modifier: Modifier = Modifier) {
 
-    Column(
-        modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(32.dp),
-    ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            MovieDetailsImage(imageId = movie.picture)
-            Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+    Layout(contents = listOf(moviePicture,
+                             backdrop,
+                             content),
+           modifier = modifier) { (moviePictureMeasurable, backdropMeasurable, contentMeasurable), constraint ->
+
+        val moviePicturePlaceble = moviePictureMeasurable.first()
+                .measure(constraint)
+        val contentPlaceble = contentMeasurable.first()
+                .measure(constraint)
+
+        val backdropPlacable = backdropMeasurable.first()
+                .measure(constraint)
+        val contentY = backdropPlacable.height / 2
+        val pictureYMargin = contentY - moviePicturePlaceble.height / 5
+        val pictureXMargin = moviePicturePlaceble.width / 10
+        val totalHeight = contentY + contentPlaceble.height
+
+        layout(width = contentPlaceble.width, height = totalHeight) {
+            backdropPlacable.place(x = 0, y = 0)
+            contentPlaceble.place(x = 0, y = contentY)
+            moviePicturePlaceble.place(x = pictureXMargin, y = pictureYMargin)
+        }
+    }
+}
+
+@Composable
+fun DetailsContent(movie: MovieModel) {
+    Surface(modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
+        ConstraintLayout(modifier = Modifier
+                .padding(horizontal = 16.dp)
+        ) {
+            val (movieInfo, genre, overview, cast, rating, userRatings, recommendation, button) = createRefs()
+
+            Column(verticalArrangement = Arrangement.spacedBy(16.dp),
+                   modifier = Modifier
+                           .constrainAs(movieInfo) {
+                               top.linkTo(anchor = parent.top, margin = 24.dp)
+                               absoluteRight.linkTo(anchor = parent.absoluteRight)
+
+                           }) {
                 Text(text = movie.title,
-                     modifier = Modifier.widthIn(max = 200.dp),
+                     modifier = Modifier.widthIn(max = 165.dp),
                      style = MaterialTheme.typography.titleLarge)
-                MovieInfo(
+                MovieInfoDetails(
                     year = movie.year,
                     duration = movie.duration,
                     author = movie.author,
                     textColor = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-        }
-        GenreRow(genres = movie.genres,
-                 compact = true,
-                 color = md_theme_light_tertiary,
-                 modifier = Modifier.align(
-                     Alignment.CenterHorizontally))
 
-        DetailsSection(title = stringResource(id = R.string.txt_overview_section)) {
-            Overview(text = movie.overview)
-        }
+            GenreRow(genres = movie.genres,
+                     compact = true,
+                     color = md_theme_light_tertiary,
+                     modifier = Modifier.constrainAs(genre) {
+                         top.linkTo(anchor = movieInfo.bottom, margin = 62.dp)
+                         absoluteLeft.linkTo(anchor = parent.absoluteLeft)
+                         absoluteRight.linkTo(anchor = parent.absoluteRight)
+                     })
 
-        DetailsSection(
-            title = stringResource(id = R.string.txt_cast_section),
-            modifier = Modifier) {
-            Cast(users = userList)
-        }
+            DetailsSection(title = stringResource(id = R.string.txt_overview_section),
+                           modifier = Modifier.constrainAs(overview) {
+                               top.linkTo(anchor = genre.bottom, margin = 32.dp)
+                           }) {
+                Overview(text = movie.overview)
+            }
 
-        Row(horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()) {
-            Text(
-                text = stringResource(id = R.string.txt_rating_section, movie.ratingNote),
-                style = MaterialTheme.typography.titleMedium)
-            StarRating(ratingStars = movie.stars)
-        }
+            DetailsSection(title = stringResource(id = R.string.txt_cast_section),
+                           modifier = Modifier.constrainAs(cast) {
+                               top.linkTo(overview.bottom)
+                           }) {
+                Cast(users = userList)
+            }
 
-        UserRatings(ratingList = userRatingList)
+            Row(horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .constrainAs(rating) {
+                            top.linkTo(anchor = cast.bottom, margin = 32.dp)
+                        }) {
+                Text(
+                    text = stringResource(id = R.string.txt_rating_section, movie.ratingNote),
+                    style = MaterialTheme.typography.titleMedium)
+                StarRating(ratingStars = movie.stars)
+            }
 
-        DetailsSection(title = stringResource(id = R.string.txt_recomendation_section)) {
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                items(movieList) {
-                    MovieCadRoundedBorderCompact(movie = it)
+            UserRatings(ratingList = userRatingList, modifier = Modifier.constrainAs(userRatings) {
+                top.linkTo(anchor = rating.bottom, margin = 32.dp)
+            })
+
+            DetailsSection(title = stringResource(id = R.string.txt_recomendation_section),
+                           modifier = Modifier.constrainAs(recommendation) {
+                               top.linkTo(anchor = userRatings.bottom, margin = 32.dp)
+                           }) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(movieList) {
+                        MovieCadRoundedBorderCompact(movie = it)
+                    }
                 }
             }
-        }
 
-        Button(onClick = { /*TODO*/ },
-               shape = MaterialTheme.shapes.small,
-               colors = ButtonDefaults.buttonColors(containerColor = addToWatchButtonColor,
-                                                    contentColor = Color.White),
-               modifier = Modifier
-                       .fillMaxWidth()
-                       .height(50.dp)) {
-            Row {
-                Icon(painter = painterResource(id = R.drawable.icon_watch_list_24),
-                     contentDescription = "")
-                Text(text = stringResource(id = R.string.txt_add_to_watch_btn),
-                     style = customButtonTextStyle)
+            Button(onClick = { /*TODO*/ },
+                   shape = MaterialTheme.shapes.small,
+                   colors = ButtonDefaults.buttonColors(containerColor = addToWatchButtonColor,
+                                                        contentColor = Color.White),
+                   modifier = Modifier
+                           .fillMaxWidth()
+                           .height(50.dp)
+                           .constrainAs(button) {
+                               top.linkTo(anchor = recommendation.bottom, margin = 32.dp)
+                           }) {
+                Row {
+                    Icon(painter = painterResource(id = R.drawable.icon_watch_list_24),
+                         contentDescription = "")
+                    Text(text = stringResource(id = R.string.txt_add_to_watch_btn),
+                         style = customButtonTextStyle)
+                }
             }
+
         }
     }
 }
@@ -185,7 +237,13 @@ fun DetailsSection(title: String,
 @Preview
 @Composable
 fun DetailsScreenPreview() {
+    val movie = movieList[1]
     CinematicsTheme {
-        DetailsScreen(movie = movieList[0])
+        DetailsLayout(
+            moviePicture = { MovieDetailsImage(imageId = movie.picture) },
+            content = { DetailsContent(movie = movie) },
+            backdrop = { BackDrop(imageId = movie.picture) },
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        )
     }
 }

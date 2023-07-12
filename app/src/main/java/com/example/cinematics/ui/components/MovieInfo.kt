@@ -1,13 +1,16 @@
 package com.example.cinematics.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.cinematics.R
 
 @Composable
 fun MovieInfo(year: Int,
@@ -25,7 +28,25 @@ fun MovieInfo(year: Int,
     Row(horizontalArrangement = Arrangement.spacedBy(8.dp), modifier = modifier) {
         Text(text = year.toString(), color = textColor, style = textStyle)
         Text(text = duration, color = textColor, style = textStyle)
+        Text(text = author, color = textColor, style = textStyle)
     }
+}
 
-    Text(text = author, color = textColor, style = textStyle)
+@Composable
+fun MovieInfoDetails(year: Int,
+                     duration: String,
+                     author: String,
+                     textColor: Color = MaterialTheme.colorScheme.onPrimary,
+                     modifier: Modifier = Modifier) {
+    Column {
+        Text(text = stringResource(id = R.string.label_movie_year, year.toString()),
+             color = textColor,
+             style = MaterialTheme.typography.labelMedium)
+        Text(text = stringResource(id = R.string.label_movie_duration, duration),
+             color = textColor,
+             style = MaterialTheme.typography.labelMedium)
+        Text(text = stringResource(id = R.string.label_movie_author, author),
+             color = textColor,
+             style = MaterialTheme.typography.labelMedium)
+    }
 }
