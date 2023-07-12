@@ -1,4 +1,4 @@
-package com.example.cinematics.ui.components
+package com.example.cinematics.ui.commonui
 
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.CircleShape

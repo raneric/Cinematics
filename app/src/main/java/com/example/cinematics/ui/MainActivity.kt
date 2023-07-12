@@ -14,6 +14,7 @@ import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.components.BottomNavScreen
 import com.example.cinematics.ui.components.Overview
 import com.example.cinematics.ui.components.bottomNavItemList
+import com.example.cinematics.ui.content.CinematicsAppScreen
 import com.example.cinematics.ui.content.DetailsScreen
 import com.example.cinematics.ui.content.MovieListScreen
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
@@ -23,8 +24,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CinematicsTheme {
-                DetailsScreen(movie = movieList[0])
-                // CinematicsApp()
+                CinematicsAppScreen()
             }
         }
     }

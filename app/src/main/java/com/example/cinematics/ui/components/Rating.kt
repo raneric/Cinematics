@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -45,6 +46,19 @@ fun Rating(ratingStars: Int,
              style = ratingTypo,
              color = MaterialTheme.colorScheme.onPrimary)
         StarRating(ratingStars)
+    }
+}
+
+@Composable
+fun AverageDetailRating(ratingStars: Int,
+                        ratingValue: Double,
+                        modifier: Modifier = Modifier) {
+    Row(horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(id = R.string.txt_rating_section, ratingValue),
+            style = MaterialTheme.typography.titleMedium)
+        StarRating(ratingStars = ratingStars)
     }
 }
 
