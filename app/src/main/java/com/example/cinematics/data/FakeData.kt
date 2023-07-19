@@ -1,8 +1,11 @@
 package com.example.cinematics.data
 
 import com.example.cinematics.R
+import com.example.cinematics.data.model.MovieModel
+import com.example.cinematics.data.model.UserModel
+import com.example.cinematics.data.model.UserRatingModel
+import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
-import java.util.Date
 
 val movieList = listOf(
     MovieModel(
@@ -128,62 +131,62 @@ val movieList = listOf(
         author = "Cathy Yan",
         overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."))
 
-val userList = listOf(
-    User(
+val userModelLists = listOf(
+    UserModel(
         id = 1,
         name = "Kate Lane",
         userName = "kat_m",
         picture = R.drawable.profil1
     ),
-    User(
+    UserModel(
         id = 2,
         name = "Hong Lee",
         userName = "lee_h",
         picture = R.drawable.profil2
     ),
-    User(
+    UserModel(
         id = 3,
         name = "Jack Rose",
         userName = "r_jack",
         picture = R.drawable.profil4
     ),
-    User(
+    UserModel(
         id = 4,
         name = "Catherine Knowles",
         userName = "cath_kon",
         picture = R.drawable.profil3
     ),
-    User(
+    UserModel(
         id = 5,
         name = "Ahmed Marks",
         userName = "ahmed",
         picture = R.drawable.profil5
     ),
-    User(
+    UserModel(
         id = 6,
         name = "Lola Oneal",
         userName = "lola",
         picture = R.drawable.profil6
     ),
-    User(
+    UserModel(
         id = 7,
         name = "Ollie Nelson",
         userName = "ollie",
         picture = R.drawable.profil7
     ),
-    User(
+    UserModel(
         id = 8,
         name = "Bianca Brock",
         userName = "bianca",
         picture = R.drawable.profil8
     ),
-    User(
+    UserModel(
         id = 9,
         name = "Lewis Lowe",
         userName = "lewis",
         picture = R.drawable.profil9
     ),
-    User(
+    UserModel(
         id = 10,
         name = "Asia Bush",
         userName = "asia",
@@ -191,28 +194,28 @@ val userList = listOf(
     )
 )
 
-val userRatingList = listOf(
-    UserRating(
+val userRatingModelLists = listOf(
+    UserRatingModel(
         id = 1,
-        user = userList[0],
+        userModel = userModelLists[0],
         rating = 3,
         date = LocalDate.of(2023, 6, 11)
     ),
-    UserRating(
+    UserRatingModel(
         id = 2,
-        user = userList[2],
+        userModel = userModelLists[2],
         rating = 5,
         date = LocalDate.of(2023, 6, 1)
     ),
-    UserRating(
+    UserRatingModel(
         id = 3,
-        user = userList[3],
+        userModel = userModelLists[3],
         rating = 3,
         date = LocalDate.of(2023, 6, 28)
     ),
-    UserRating(
+    UserRatingModel(
         id = 4,
-        user = userList[4],
+        userModel = userModelLists[4],
         rating = 4,
         date = LocalDate.of(2023, 7, 1)
     )

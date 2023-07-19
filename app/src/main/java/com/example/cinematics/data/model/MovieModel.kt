@@ -1,4 +1,4 @@
-package com.example.cinematics.data
+package com.example.cinematics.data.model
 
 import androidx.annotation.DrawableRes
 

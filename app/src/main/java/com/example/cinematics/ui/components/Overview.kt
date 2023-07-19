@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
-val OVERVIEW_HEIGHT = 160.dp
+val OVERVIEW_HEIGHT = 100.dp
 
 /**
  * This composable display overview description of the movie it have two state :

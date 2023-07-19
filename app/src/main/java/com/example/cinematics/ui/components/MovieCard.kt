@@ -2,22 +2,16 @@ package com.example.cinematics.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
@@ -26,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.cinematics.R
-import com.example.cinematics.data.MovieModel
+import com.example.cinematics.data.model.MovieModel
 import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
@@ -63,9 +57,9 @@ fun MovieCad(movie: MovieModel,
                      modifier = Modifier.constrainAs(genre) {
                          top.linkTo(movieInfo.bottom, margin = 32.dp)
                      })
-            Rating(ratingStars = movie.stars,
-                   ratingValue = movie.ratingNote.toString(),
-                   modifier = Modifier.constrainAs(rating) {
+            AverageRating(ratingStars = movie.stars,
+                          ratingValue = movie.ratingNote.toString(),
+                          modifier = Modifier.constrainAs(rating) {
                        top.linkTo(genre.bottom, margin = 8.dp)
                    }
             )
@@ -116,9 +110,9 @@ fun MovieCadRoundedBorderCompact(movie: MovieModel,
                      modifier = Modifier.constrainAs(genre) {
                          top.linkTo(movieInfo.bottom, margin = 24.dp)
                      })
-            Rating(ratingStars = movie.stars,
-                   ratingValue = movie.ratingNote.toString(),
-                   modifier = Modifier.constrainAs(rating) {
+            AverageRating(ratingStars = movie.stars,
+                          ratingValue = movie.ratingNote.toString(),
+                          modifier = Modifier.constrainAs(rating) {
                        top.linkTo(genre.bottom, margin = 8.dp)
                    }
             )

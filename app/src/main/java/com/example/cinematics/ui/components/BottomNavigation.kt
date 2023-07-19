@@ -14,10 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
+import com.example.cinematics.utils.CinematicsDestination
 
 /**
  * Custom bottom navigation composable that use [NavigationBar] from MUI3
- * @param bottomNavList : A list of [BottomNavItemVariant] object which is the navigation destination
+ * @param bottomNavList : A list of [BottomNavItemVariant] object which are the navigation destination
  * @param activeDestination: A [BottomNavItemVariant] item that is the current active destination
  *                           with [BottomNavItemVariant.Trending] as default value
  * @param modifier: A modifier with default value [Modifier]
@@ -64,23 +65,17 @@ sealed class BottomNavItemVariant(@StringRes val textId: Int,
     object Trending : BottomNavItemVariant(textId = R.string.txt_trending,
                                            iconContentDescription = R.string.content_descrip_trending,
                                            iconId = R.drawable.icon_trending_24,
-                                           route = BottomNavTab.TRENDING.route)
+                                           route = CinematicsDestination.TRENDING.route)
 
     object TopRated : BottomNavItemVariant(textId = R.string.txt_top_rated,
                                            iconContentDescription = R.string.content_descrip_top_rated,
                                            iconId = R.drawable.icon_top_rated_24,
-                                           route = BottomNavTab.TOP_RATED.route)
+                                           route = CinematicsDestination.TOP_RATED.route)
 
     object WatchList : BottomNavItemVariant(textId = R.string.txt_watch_list,
                                             iconContentDescription = R.string.content_descrip_watch_list,
                                             iconId = R.drawable.icon_watch_list_24,
-                                            route = BottomNavTab.WATCH_LIST.route)
-}
-
-enum class BottomNavTab(val route: String) {
-    TRENDING("trending"),
-    TOP_RATED("top-rated"),
-    WATCH_LIST("watch_list")
+                                            route = CinematicsDestination.WATCH_LIST.route)
 }
 
 val bottomNavItemList = listOf(BottomNavItemVariant.Trending,

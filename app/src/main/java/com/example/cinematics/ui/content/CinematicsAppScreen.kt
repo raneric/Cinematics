@@ -1,46 +1,61 @@
 package com.example.cinematics.ui.content
 
-import android.content.res.Configuration
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.cinematics.data.movieList
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.cinematics.ui.MainViewModel
 import com.example.cinematics.ui.components.BottomNavScreen
 import com.example.cinematics.ui.components.bottomNavItemList
-import com.example.cinematics.ui.ui.theme.CinematicsTheme
+import com.example.cinematics.utils.CinematicsDestination
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CinematicsAppScreen() {
+fun CinematicsAppScreen(viewModel: MainViewModel) {
+
+    val navController = rememberNavController()
+    var showBottomNav: Boolean by remember { mutableStateOf(true) }
+
+    val movieList = viewModel.movies.collectAsState(initial = emptyList())
+
     Scaffold(
-        bottomBar = { BottomNavScreen(bottomNavItemList) }
+        bottomBar = {
+            AnimatedVisibility(visible = showBottomNav) {
+                BottomNavScreen(bottomNavItemList)
+            }
+        }
     ) { paddingValue ->
-        ContentScreen(modifier = Modifier.padding(paddingValue))
+        NavHost(navController = navController,
+                startDestination = CinematicsDestination.TRENDING.route,
+                modifier = Modifier.padding(paddingValue)) {
+
+            composable(route = CinematicsDestination.TRENDING.route) {
+                showBottomNav = true
+                MovieListScreen(movieList = movieList.value) { movieId ->
+                    navController.navigate(route = "${CinematicsDestination.DETAILS_SCREEN.route}/$movieId")
+                }
+            }
+
+            composable(route = "${CinematicsDestination.DETAILS_SCREEN.route}/{$MOVIE_ID_ARGS}",
+                       arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
+                showBottomNav = false
+                val movie = viewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
+                DetailsScreen(movie = movie) {
+                    navController.navigateUp()
+                }
+            }
+        }
     }
 }
 
-@Composable
-fun ContentScreen(modifier: Modifier = Modifier) {
-    MovieListScreen(movieList = movieList, modifier = modifier)
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CinematicsAppPreview() {
-    CinematicsTheme {
-        CinematicsAppScreen()
-    }
-}
-
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES,
-         showBackground = true)
-@Composable
-fun CinematicsAppPreviewDark() {
-    CinematicsTheme {
-        CinematicsAppScreen()
-    }
-}
+const val MOVIE_ID_ARGS = "movieId"

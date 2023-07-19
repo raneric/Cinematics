@@ -16,17 +16,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.cinematics.data.User
-import com.example.cinematics.data.userList
+import com.example.cinematics.data.model.UserModel
+import com.example.cinematics.data.userModelLists
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
 @Composable
-fun Cast(users: List<User>,
+fun Cast(userModels: List<UserModel>,
          modifier: Modifier = Modifier) {
     LazyRow(modifier = modifier,
             contentPadding = PaddingValues(horizontal = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-        items(users) {
+        items(userModels) {
             CastItem(imageId = it.picture)
         }
     }
@@ -49,7 +49,7 @@ fun CastItem(@DrawableRes imageId: Int,
 @Composable
 fun CastItemPreview() {
     CinematicsTheme {
-        CastItem(userList[0].picture)
+        CastItem(userModelLists[0].picture)
     }
 }
 
@@ -57,6 +57,6 @@ fun CastItemPreview() {
 @Composable
 fun CastPreview() {
     CinematicsTheme {
-        Cast(userList)
+        Cast(userModelLists)
     }
 }

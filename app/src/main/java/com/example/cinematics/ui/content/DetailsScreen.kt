@@ -25,11 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.cinematics.R
-import com.example.cinematics.data.MovieModel
-import com.example.cinematics.data.User
+import com.example.cinematics.data.model.MovieModel
+import com.example.cinematics.data.model.UserModel
 import com.example.cinematics.data.movieList
-import com.example.cinematics.data.userList
-import com.example.cinematics.data.userRatingList
+import com.example.cinematics.data.userModelLists
+import com.example.cinematics.data.userRatingModelLists
 import com.example.cinematics.ui.components.AverageDetailRating
 import com.example.cinematics.ui.commonui.BackDrop
 import com.example.cinematics.ui.commonui.BackNavigationFab
@@ -49,14 +49,15 @@ import com.example.cinematics.ui.ui.theme.md_theme_light_tertiary
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(movie: MovieModel,
-                  modifier: Modifier = Modifier) {
+                  modifier: Modifier = Modifier,
+                  onNavigateBack: () -> Unit) {
     val scrollState = rememberScrollState()
     Box {
         BackDrop(imageId = movie.picture)
-        BackNavigationFab()
         DetailsLayout(moviePicture = { MovieDetailsImage(imageId = movie.picture) },
                       content = { DetailsContent(movie = movie) },
                       modifier = modifier.verticalScroll(scrollState))
+        BackNavigationFab(onNavigateBack = onNavigateBack)
     }
 }
 
@@ -128,7 +129,7 @@ fun DetailsContent(movie: MovieModel) {
                                 top.linkTo(anchor = genre.bottom, margin = SECTION_MARGIN)
                             })
 
-            CastSection(userList = userList,
+            CastSection(userModelList = userModelLists,
                         modifier = Modifier.constrainAs(cast) {
                             top.linkTo(overview.bottom)
                         })
@@ -141,7 +142,7 @@ fun DetailsContent(movie: MovieModel) {
                                                        margin = SECTION_MARGIN)
                                         })
 
-            UserRatings(ratingList = userRatingList, modifier = Modifier.constrainAs(userRatings) {
+            UserRatings(ratingList = userRatingModelLists, modifier = Modifier.constrainAs(userRatings) {
                 top.linkTo(anchor = rating.bottom, margin = 32.dp)
             })
 
@@ -194,11 +195,11 @@ fun OverviewSection(text: String,
 }
 
 @Composable
-fun CastSection(userList: List<User>,
+fun CastSection(userModelList: List<UserModel>,
                 modifier: Modifier = Modifier) {
     DetailsSection(title = stringResource(id = R.string.txt_cast_section),
                    modifier = modifier) {
-        Cast(users = userList)
+        Cast(userModels = userModelList)
     }
 }
 
@@ -232,7 +233,9 @@ fun RecommendationSection(movieList: List<MovieModel>,
 fun DetailsScreenPreview() {
     val movie = movieList[1]
     CinematicsTheme {
-        DetailsScreen(movie)
+        DetailsScreen(movie) {
+
+        }
     }
 }
 

@@ -21,8 +21,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
-import com.example.cinematics.data.UserRating
-import com.example.cinematics.data.userRatingList
+import com.example.cinematics.data.model.UserRatingModel
+import com.example.cinematics.data.userRatingModelLists
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 import com.example.cinematics.ui.ui.theme.ratingTypo
 import com.example.cinematics.ui.ui.theme.rating_negative
@@ -36,9 +36,9 @@ import com.example.cinematics.utils.formatDate
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun Rating(ratingStars: Int,
-           ratingValue: String,
-           modifier: Modifier = Modifier) {
+fun AverageRating(ratingStars: Int,
+                  ratingValue: String,
+                  modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier) {
@@ -49,6 +49,12 @@ fun Rating(ratingStars: Int,
     }
 }
 
+/**
+ * A composable that display a average rating as title in the movies list details screen
+ * @param ratingStars: Int value of the average stars for [StarRating] composable
+ * @param ratingValue: String of the double value for the average rating note
+ * @param modifier: A modifier with default value [Modifier]
+ */
 @Composable
 fun AverageDetailRating(ratingStars: Int,
                         ratingValue: Double,
@@ -64,30 +70,30 @@ fun AverageDetailRating(ratingStars: Int,
 
 /**
  * User rating list
- * @param ratingList : List of [UserRating] composable
+ * @param ratingList : List of [UserRatingModel] composable
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun UserRatings(ratingList: List<UserRating>,
+fun UserRatings(ratingList: List<UserRatingModel>,
                 modifier: Modifier = Modifier) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = modifier) {
         ratingList.forEach {
-            RatingRow(userRating = it)
+            RatingRow(userRatingModel = it)
         }
     }
 }
 
 /**
  * User rating row composable to display each user rating note
- * @param userRating: [UserRating] object to display
+ * @param userRatingModel: [UserRatingModel] object to display
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun RatingRow(userRating: UserRating,
+fun RatingRow(userRatingModel: UserRatingModel,
               modifier: Modifier = Modifier) {
     Row(horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically) {
-        Image(painter = painterResource(id = userRating.user.picture),
+        Image(painter = painterResource(id = userRatingModel.userModel.picture),
               contentDescription = "user rating image",
               alignment = Alignment.Center,
               contentScale = ContentScale.Crop,
@@ -95,8 +101,8 @@ fun RatingRow(userRating: UserRating,
                       .size(width = 45.dp, height = 45.dp)
                       .clip(CircleShape))
         Column {
-            Text(text = "${userRating.user.name} - ${userRating.date.formatDate}")
-            StarRating(ratingStars = userRating.rating)
+            Text(text = "${userRatingModel.userModel.name} - ${userRatingModel.date.formatDate}")
+            StarRating(ratingStars = userRatingModel.rating)
         }
     }
 }
@@ -127,7 +133,7 @@ fun StarRating(@IntRange(from = 0, to = 5) ratingStars: Int) {
 @Composable
 fun RatingPreview() {
     CinematicsTheme {
-        Rating(3, "4.4")
+        AverageRating(3, "4.4")
     }
 }
 
@@ -143,7 +149,7 @@ fun StarRatingPreview() {
 @Composable
 fun RatingRowPreview() {
     CinematicsTheme {
-        RatingRow(userRating = userRatingList[0])
+        RatingRow(userRatingModel = userRatingModelLists[0])
     }
 }
 
@@ -151,6 +157,6 @@ fun RatingRowPreview() {
 @Composable
 fun UserRatingsPreview() {
     CinematicsTheme {
-        UserRatings(userRatingList)
+        UserRatings(userRatingModelLists)
     }
 }
