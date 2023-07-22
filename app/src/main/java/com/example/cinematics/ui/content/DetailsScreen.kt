@@ -1,5 +1,6 @@
 package com.example.cinematics.ui.content
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,7 +62,6 @@ fun DetailsScreen(movie: MovieModel,
     }
 }
 
-
 /**
  * This composable is a custom layout that place partially the [MovieDetailsImage] outside the content
  *
@@ -101,8 +101,9 @@ fun DetailsLayout(
  * @param movie : [MovieModel] object to display
  */
 @Composable
-fun DetailsContent(movie: MovieModel) {
-    Surface(modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
+fun DetailsContent(movie: MovieModel,
+                   modifier: Modifier = Modifier) {
+    Surface(modifier = modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
         ConstraintLayout(modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.low_dp))
         ) {
@@ -142,9 +143,10 @@ fun DetailsContent(movie: MovieModel) {
                                                        margin = SECTION_MARGIN)
                                         })
 
-            UserRatings(ratingList = userRatingModelLists, modifier = Modifier.constrainAs(userRatings) {
-                top.linkTo(anchor = rating.bottom, margin = 32.dp)
-            })
+            UserRatings(ratingList = userRatingModelLists,
+                        modifier = Modifier.constrainAs(userRatings) {
+                            top.linkTo(anchor = rating.bottom, margin = 32.dp)
+                        })
 
             RecommendationSection(movieList = movieList,
                                   modifier = Modifier.constrainAs(recommendation) {
