@@ -25,8 +25,9 @@ import com.example.cinematics.utils.CinematicsDestination
  */
 @Composable
 fun BottomNavScreen(bottomNavList: List<BottomNavItemVariant>,
-                    activeDestination: BottomNavItemVariant = BottomNavItemVariant.Trending,
-                    modifier: Modifier = Modifier) {
+                    activeDestination: BottomNavItemVariant,
+                    modifier: Modifier = Modifier,
+                    onItemClicked: (String) -> Unit) {
 
     NavigationBar(tonalElevation = 5.dp) {
         bottomNavList.forEach { item ->
@@ -36,7 +37,7 @@ fun BottomNavScreen(bottomNavList: List<BottomNavItemVariant>,
                                        contentDescription = stringResource(id = item.iconContentDescription))
                               },
                               label = { Text(text = stringResource(id = item.textId)) },
-                              onClick = { /*TODO*/ })
+                              onClick = { onItemClicked(item.route) })
         }
     }
 }
@@ -45,7 +46,9 @@ fun BottomNavScreen(bottomNavList: List<BottomNavItemVariant>,
 @Composable
 fun BottomNavScreenPreview() {
     CinematicsTheme {
-        BottomNavScreen(bottomNavItemList)
+        BottomNavScreen(bottomNavItemList, BottomNavItemVariant.Trending) {
+
+        }
     }
 
 }

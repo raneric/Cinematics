@@ -1,6 +1,5 @@
 package com.example.cinematics.ui.content
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,14 +10,12 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -44,19 +41,24 @@ import com.example.cinematics.ui.components.MovieInfoDetails
 import com.example.cinematics.ui.components.Overview
 import com.example.cinematics.ui.components.UserRatings
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
-import com.example.cinematics.ui.ui.theme.addToWatchButtonColor
 import com.example.cinematics.ui.ui.theme.md_theme_light_tertiary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(movie: MovieModel,
+                  isInWatchList: Boolean,
+                  addOrRemoveWatchList: () -> Unit,
                   modifier: Modifier = Modifier,
                   onNavigateBack: () -> Unit) {
     val scrollState = rememberScrollState()
     Box {
         BackDrop(imageId = movie.picture)
         DetailsLayout(moviePicture = { MovieDetailsImage(imageId = movie.picture) },
-                      content = { DetailsContent(movie = movie) },
+                      content = {
+                          DetailsContent(movie = movie,
+                                         addOrRemoveWatchList = addOrRemoveWatchList,
+                                         isInWatchList = isInWatchList)
+                      },
                       modifier = modifier.verticalScroll(scrollState))
         BackNavigationFab(onNavigateBack = onNavigateBack)
     }
@@ -102,6 +104,8 @@ fun DetailsLayout(
  */
 @Composable
 fun DetailsContent(movie: MovieModel,
+                   isInWatchList: Boolean,
+                   addOrRemoveWatchList: () -> Unit,
                    modifier: Modifier = Modifier) {
     Surface(modifier = modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
         ConstraintLayout(modifier = Modifier
@@ -154,19 +158,15 @@ fun DetailsContent(movie: MovieModel,
                                                  margin = SECTION_MARGIN)
                                   })
 
-            CustomButton(color = ButtonDefaults.buttonColors(containerColor = addToWatchButtonColor,
-                                                             contentColor = Color.White),
-                         iconId = R.drawable.icon_watch_list_24,
-                         stringId = R.string.txt_add_to_watch_btn,
+            CustomButton(inWatchList = isInWatchList,
                          modifier = Modifier
                                  .constrainAs(button) {
                                      top.linkTo(anchor = recommendation.bottom,
                                                 margin = SECTION_MARGIN)
                                      bottom.linkTo(anchor = parent.bottom, margin = 8.dp)
                                  }) {
-
+                addOrRemoveWatchList()
             }
-
         }
     }
 }
@@ -181,7 +181,7 @@ fun MovieInfoSection(movie: MovieModel,
              style = MaterialTheme.typography.titleLarge)
         MovieInfoDetails(
             year = movie.year,
-            duration = movie.duration,
+            duration = movie.displayedDuration,
             author = movie.author,
             textColor = MaterialTheme.colorScheme.onSurfaceVariant)
     }
@@ -235,7 +235,7 @@ fun RecommendationSection(movieList: List<MovieModel>,
 fun DetailsScreenPreview() {
     val movie = movieList[1]
     CinematicsTheme {
-        DetailsScreen(movie) {
+        DetailsScreen(movie = movie, addOrRemoveWatchList = {}, isInWatchList = false) {
 
         }
     }

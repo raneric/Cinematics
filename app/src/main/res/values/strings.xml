@@ -14,6 +14,7 @@
     <string name="content_descrip_back_fab">Back button</string>
 
     <string name="txt_add_to_watch_btn">Add to watchlist</string>
+    <string name="txt_remove_to_watch_btn">Remove to watchlist</string>
 
     <string name="content_descrip_watch_list">watchlist movies</string>
     <string name="txt_watch_list">Watchlist</string>

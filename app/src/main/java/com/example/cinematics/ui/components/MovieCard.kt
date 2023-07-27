@@ -46,7 +46,7 @@ fun MovieCad(movie: MovieModel,
                 }
             )
             MovieInfo(year = movie.year,
-                      duration = movie.duration,
+                      duration = movie.displayedDuration,
                       author = movie.author,
                       compact = false,
                       modifier = Modifier.constrainAs(movieInfo) {
@@ -99,7 +99,7 @@ fun MovieCadRoundedBorderCompact(movie: MovieModel,
                 }
             )
             MovieInfo(year = movie.year,
-                      duration = movie.duration,
+                      duration = movie.displayedDuration,
                       author = movie.author,
                       compact = true,
                       modifier = Modifier.constrainAs(movieInfo) {

@@ -12,22 +12,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavDestination
 import androidx.navigation.compose.rememberNavController
 import com.example.cinematics.ui.MainViewModel
+import com.example.cinematics.ui.components.BottomNavItemVariant
 import com.example.cinematics.ui.components.BottomNavScreen
 import com.example.cinematics.ui.components.bottomNavItemList
+import com.example.cinematics.utils.CinematicsDestination
 
 @Composable
 fun CinematicsAppScreen(viewModel: MainViewModel) {
 
     val navController = rememberNavController()
     var showBottomNav: Boolean by remember { mutableStateOf(true) }
+    var activeDestination: BottomNavItemVariant by remember { mutableStateOf(BottomNavItemVariant.Trending) }
+
+    navController.addOnDestinationChangedListener { _, navDestination, _ ->
+        activeDestination = navDestination.activeBottomNavItem()
+    }
 
     Scaffold(
         bottomBar = {
             AnimatedVisibility(visible = showBottomNav,
                                enter = slideInVertically(initialOffsetY = { -40 })) {
-                BottomNavScreen(bottomNavItemList)
+                BottomNavScreen(bottomNavList = bottomNavItemList,
+                                activeDestination = activeDestination) {
+                    navController.navigate(route = it)
+                }
             }
         }
     ) { paddingValue ->
@@ -39,6 +50,10 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
     }
 }
 
-private fun String.isDetailsScreenRoute(): Boolean {
-    return this.matches("details\\/\\{movieId\\}".toRegex())
+private fun NavDestination.activeBottomNavItem(): BottomNavItemVariant {
+    return when (this.route) {
+        CinematicsDestination.TOP_RATED.route -> BottomNavItemVariant.TopRated
+        CinematicsDestination.WATCH_LIST.route -> BottomNavItemVariant.WatchList
+        else -> BottomNavItemVariant.Trending
+    }
 }
