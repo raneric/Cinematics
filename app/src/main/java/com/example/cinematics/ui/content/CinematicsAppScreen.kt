@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
@@ -23,7 +24,7 @@ import com.example.cinematics.utils.CinematicsDestination
 fun CinematicsAppScreen(viewModel: MainViewModel) {
 
     val navController = rememberNavController()
-    var showBottomNav: Boolean by remember { mutableStateOf(true) }
+    var showBottomNav: Boolean by rememberSaveable { mutableStateOf(true) }
     var activeDestination: BottomNavItemVariant by remember { mutableStateOf(BottomNavItemVariant.Trending) }
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->

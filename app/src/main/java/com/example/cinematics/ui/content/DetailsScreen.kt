@@ -100,7 +100,10 @@ fun DetailsLayout(
 
 /**
  * This composable hold all screen section using constraint layout
+ * @param isInWatchList : Boolean flag if movie is watched or not
+ * @param addOrRemoveWatchList : button listener lambda
  * @param movie : [MovieModel] object to display
+ * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
 fun DetailsContent(movie: MovieModel,
@@ -205,6 +208,12 @@ fun CastSection(userModelList: List<UserModel>,
     }
 }
 
+/**
+ * This composable is a reusable composable that display each section in the movie details screen
+ * @param title : String for the section title to display
+ * @param modifier: A modifier with default value [Modifier]
+ * @param content : composable argument that will be displayed in the section
+ */
 @Composable
 fun DetailsSection(title: String,
                    modifier: Modifier = Modifier,
