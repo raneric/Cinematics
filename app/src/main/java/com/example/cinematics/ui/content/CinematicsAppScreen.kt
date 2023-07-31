@@ -17,7 +17,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cinematics.ui.MainViewModel
 import com.example.cinematics.ui.components.BottomNavItemVariant
 import com.example.cinematics.ui.components.BottomNavScreen
-import com.example.cinematics.ui.components.bottomNavItemList
 import com.example.cinematics.utils.CinematicsDestination
 
 @Composable
@@ -35,8 +34,7 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
         bottomBar = {
             AnimatedVisibility(visible = showBottomNav,
                                enter = slideInVertically(initialOffsetY = { -40 })) {
-                BottomNavScreen(bottomNavList = bottomNavItemList,
-                                activeDestination = activeDestination) {
+                BottomNavScreen(activeDestination = activeDestination) {
                     navController.navigate(route = it)
                 }
             }

@@ -9,30 +9,30 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class FakeMovieRepository @Inject constructor() {
+class FakeMovieRepository @Inject constructor() : MovieRepository {
 
-    fun getTrending() = flowOf(movieList)
+    override fun getTrending() = flowOf(movieList)
 
-    fun getTopRated(): Flow<List<MovieModel>> {
+    override fun getTopRated(): Flow<List<MovieModel>> {
         val sortedList = movieList.sortedByDescending { it.ratingNote }
         return flowOf(sortedList)
     }
 
-    fun getWatchList(): Flow<List<MovieModel>> = flowOf(watchList)
+    override fun getWatchList(): Flow<List<MovieModel>> = flowOf(watchList)
 
-    fun addToWatchList(movie: MovieModel) {
+    override fun addToWatchList(movie: MovieModel) {
         watchList.add(movie)
     }
 
-    fun removeToWatchList(movie: MovieModel) {
+    override fun removeToWatchList(movie: MovieModel) {
         watchList.remove(movie)
     }
 
-    fun findInWatchList(movie: MovieModel): Boolean {
+    override fun findInWatchList(movie: MovieModel): Boolean {
         return watchList.contains(movie)
     }
 
-    fun getMovie(id: Int): MovieModel {
+    override fun getMovie(id: Int): MovieModel {
         return movieList.first { it.id == id }
     }
 }

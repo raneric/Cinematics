@@ -24,13 +24,12 @@ import com.example.cinematics.utils.CinematicsDestination
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun BottomNavScreen(bottomNavList: List<BottomNavItemVariant>,
-                    activeDestination: BottomNavItemVariant,
+fun BottomNavScreen(activeDestination: BottomNavItemVariant,
                     modifier: Modifier = Modifier,
                     onItemClicked: (String) -> Unit) {
 
     NavigationBar(tonalElevation = 5.dp) {
-        bottomNavList.forEach { item ->
+        bottomNavItemList.forEach { item ->
             NavigationBarItem(selected = item == activeDestination,
                               icon = {
                                   Icon(painter = painterResource(id = item.iconId),
@@ -46,7 +45,7 @@ fun BottomNavScreen(bottomNavList: List<BottomNavItemVariant>,
 @Composable
 fun BottomNavScreenPreview() {
     CinematicsTheme {
-        BottomNavScreen(bottomNavItemList, BottomNavItemVariant.Trending) {
+        BottomNavScreen(BottomNavItemVariant.Trending) {
 
         }
     }
@@ -81,6 +80,6 @@ sealed class BottomNavItemVariant(@StringRes val textId: Int,
                                             route = CinematicsDestination.WATCH_LIST.route)
 }
 
-val bottomNavItemList = listOf(BottomNavItemVariant.Trending,
-                               BottomNavItemVariant.TopRated,
-                               BottomNavItemVariant.WatchList)
+private val bottomNavItemList = listOf(BottomNavItemVariant.Trending,
+                                       BottomNavItemVariant.TopRated,
+                                       BottomNavItemVariant.WatchList)

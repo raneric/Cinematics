@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,13 +39,14 @@ import com.example.cinematics.utils.formatDate
 @Composable
 fun AverageRating(ratingStars: Int,
                   ratingValue: String,
+                  textColor: Color = MaterialTheme.colorScheme.onPrimary,
                   modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier) {
         Text(text = ratingValue,
              style = ratingTypo,
-             color = MaterialTheme.colorScheme.onPrimary)
+             color = textColor)
         StarRating(ratingStars)
     }
 }

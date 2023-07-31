@@ -81,19 +81,19 @@ fun DetailsLayout(
                              content),
            modifier = modifier) { (moviePictureMeasurable, contentMeasurable), constraint ->
 
-        val moviePicturePlaceble = moviePictureMeasurable.first()
+        val moviePicturePlaceable = moviePictureMeasurable.first()
                 .measure(constraint)
-        val contentPlaceble = contentMeasurable.first()
+        val contentPlaceable = contentMeasurable.first()
                 .measure(constraint)
 
-        val contentY = contentPlaceble.height / 5
-        val pictureYMargin = contentY - moviePicturePlaceble.height / 5
-        val pictureXMargin = moviePicturePlaceble.width / 10
-        val totalHeight = contentY + contentPlaceble.height
+        val contentY = contentPlaceable.height / 5
+        val pictureYMargin = contentY - moviePicturePlaceable.height / 5
+        val pictureXMargin = moviePicturePlaceable.width / 10
+        val totalHeight = contentY + contentPlaceable.height
 
-        layout(width = contentPlaceble.width, height = totalHeight) {
-            contentPlaceble.place(x = 0, y = contentY)
-            moviePicturePlaceble.place(x = pictureXMargin, y = pictureYMargin)
+        layout(width = contentPlaceable.width, height = totalHeight) {
+            contentPlaceable.place(x = 0, y = contentY)
+            moviePicturePlaceable.place(x = pictureXMargin, y = pictureYMargin)
         }
     }
 }
