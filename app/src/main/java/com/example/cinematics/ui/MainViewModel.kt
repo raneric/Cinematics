@@ -6,8 +6,11 @@ import com.example.cinematics.data.model.MovieModel
 import com.example.cinematics.data.repository.FakeMovieRepository
 import com.example.cinematics.data.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
@@ -25,11 +28,25 @@ class MainViewModel @Inject constructor(private val repository: MovieRepository)
     val watchList: List<MovieModel>
         get() = _watchList
 
-    fun addToWatchList(movie: MovieModel) = repository.addToWatchList(movie)
+    private var testBool: Boolean = false
 
-    fun removeToWatchList(movie: MovieModel) = repository.removeToWatchList(movie)
+    private var _isInWatchList: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isInWatchList
+        get() = _isInWatchList
 
-    fun isInWatchList(movie: MovieModel) = repository.findInWatchList(movie)
+    fun addToWatchList(movie: MovieModel) {
+        repository.addToWatchList(movie)
+        _isInWatchList.value = true
+    }
 
-    fun getMovie(id: Int): MovieModel = repository.getMovie(id)
+    fun removeToWatchList(movie: MovieModel) {
+        repository.removeToWatchList(movie)
+        _isInWatchList.value = false
+    }
+
+    fun getMovie(id: Int): MovieModel {
+        val movie = repository.getMovie(id)
+        _isInWatchList.value = repository.findInWatchList(movie)
+        return movie
+    }
 }

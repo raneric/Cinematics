@@ -88,7 +88,7 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
         HorizontalPager(pageCount = movieList.size,
                         state = pageSate,
                         pageSpacing = 0.dp) {
-            VerticalMovieCard(movie = movieList[it], modifier = Modifier.clickable {
+            VerticalMovieCard(movie = movieList[it], modifier = modifier.clickable {
                 onItemClicked(movieList[it].id)
             })
         }

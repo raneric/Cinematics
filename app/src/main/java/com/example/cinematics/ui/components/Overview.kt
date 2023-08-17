@@ -62,7 +62,7 @@ fun Overview(text: String,
                     .animateContentSize(
                         animationSpec = spring(
                             dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessLow
+                            stiffness = Spring.StiffnessMedium
                         )
                     ))
         OverviewHider(overviewSate = overviewSate,

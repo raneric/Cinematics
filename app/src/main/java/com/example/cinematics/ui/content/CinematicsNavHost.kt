@@ -1,7 +1,12 @@
 package com.example.cinematics.ui.content
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
@@ -11,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.cinematics.ui.MainViewModel
 import com.example.cinematics.utils.CinematicsDestination
+import kotlinx.coroutines.delay
 
 @Composable
 fun CinematicsNavHost(navController: NavHostController,
@@ -53,7 +59,14 @@ fun CinematicsNavHost(navController: NavHostController,
                    arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
             onDetailScreenListener(true)
             val movie = viewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
-            val movieIsInWatchList = viewModel.isInWatchList(movie)
+            var movieIsInWatchList by remember { mutableStateOf(false) }
+
+            LaunchedEffect(Unit) {
+                viewModel.isInWatchList
+                        .collect {
+                            movieIsInWatchList = it
+                        }
+            }
             DetailsScreen(
                 movie = movie,
                 addOrRemoveWatchList = {
