@@ -131,7 +131,7 @@ val movieList = listOf(
         author = "Cathy Yan",
         overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."))
 
-var watchList = emptyList<MovieModel>().toMutableList()
+var watchList = mutableListOf<MovieModel>()
 
 val userModelLists = listOf(
     UserModel(

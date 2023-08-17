@@ -12,8 +12,7 @@ interface MovieRepository {
 
     fun getTopRated(): Flow<List<MovieModel>>
 
-    fun getWatchList(): Flow<List<MovieModel>>
-
+    fun getWatchList(): List<MovieModel>
     fun addToWatchList(movie: MovieModel)
 
     fun removeToWatchList(movie: MovieModel)

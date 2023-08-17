@@ -19,9 +19,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.cinematics.R
 import com.example.cinematics.data.model.MovieModel
 import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
@@ -30,7 +32,7 @@ import com.example.cinematics.ui.ui.theme.md_theme_light_tertiary
 @Composable
 fun VerticalMovieCard(movie: MovieModel,
                       modifier: Modifier = Modifier) {
-    Surface(shape = MaterialTheme.shapes.extraLarge,
+    Surface(shape = MaterialTheme.shapes.large,
             modifier = modifier
                     .width(280.dp)
                     .height(580.dp)) {
@@ -39,10 +41,9 @@ fun VerticalMovieCard(movie: MovieModel,
                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp
                )) {
             Image(painter = painterResource(id = movie.picture),
-                  contentDescription = "",
+                  contentDescription = stringResource(id = R.string.content_descrip_movie_image),
                   modifier = Modifier
-                          .size(width = 238.dp, height = 343.dp)
-                          .clip(MaterialTheme.shapes.large))
+                          .clip(MaterialTheme.shapes.medium))
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.titleLarge,

@@ -18,7 +18,7 @@ class FakeMovieRepository @Inject constructor() : MovieRepository {
         return flowOf(sortedList)
     }
 
-    override fun getWatchList(): Flow<List<MovieModel>> = flowOf(watchList)
+    override fun getWatchList(): List<MovieModel> = watchList
 
     override fun addToWatchList(movie: MovieModel) {
         watchList.add(movie)

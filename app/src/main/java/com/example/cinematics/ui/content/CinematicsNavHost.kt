@@ -3,6 +3,7 @@ package com.example.cinematics.ui.content
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -12,13 +13,13 @@ import com.example.cinematics.ui.MainViewModel
 import com.example.cinematics.utils.CinematicsDestination
 
 @Composable
-fun CinematicsNavGraph(navController: NavHostController,
-                       viewModel: MainViewModel,
-                       modifier: Modifier = Modifier,
-                       onDetailScreenListener: (Boolean) -> Unit) {
+fun CinematicsNavHost(navController: NavHostController,
+                      viewModel: MainViewModel,
+                      modifier: Modifier = Modifier,
+                      onDetailScreenListener: (Boolean) -> Unit) {
     val trendingMovies = viewModel.trendingMovies.collectAsState(initial = emptyList())
     val topRatedMovies = viewModel.topRatedMovies.collectAsState(initial = emptyList())
-    val watchList = viewModel.watchList.collectAsState(initial = emptyList())
+    val watchList = viewModel.watchList
 
     NavHost(navController = navController,
             startDestination = CinematicsDestination.TRENDING.route,
@@ -42,7 +43,7 @@ fun CinematicsNavGraph(navController: NavHostController,
 
         composable(route = CinematicsDestination.WATCH_LIST.route) {
             onDetailScreenListener(false)
-            VerticalMovieListScreen(movieList = watchList.value) { movieId ->
+            VerticalMovieListScreen(movieList = watchList) { movieId ->
                 navController.navigate(route = CinematicsDestination.DETAILS_SCREEN.route.addIdArgs(
                     movieId))
             }
@@ -52,17 +53,17 @@ fun CinematicsNavGraph(navController: NavHostController,
                    arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
             onDetailScreenListener(true)
             val movie = viewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
-            val movieIstInWatchList = viewModel.isInWatchList(movie)
+            val movieIsInWatchList = viewModel.isInWatchList(movie)
             DetailsScreen(
                 movie = movie,
                 addOrRemoveWatchList = {
-                    if (movieIstInWatchList) {
+                    if (movieIsInWatchList) {
                         viewModel.removeToWatchList(movie)
                     } else {
                         viewModel.addToWatchList(movie)
                     }
                 },
-                isInWatchList = movieIstInWatchList) {
+                isInWatchList = movieIsInWatchList) {
                 navController.navigateUp()
             }
         }
