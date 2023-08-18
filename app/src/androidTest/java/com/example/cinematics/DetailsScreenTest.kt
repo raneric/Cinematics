@@ -20,6 +20,7 @@ class DetailsScreenTest {
         rule.setContent {
             DetailsContent(movie = movieList[0],
                            isInWatchList = false,
+                           onRecommendationItemClicked = {},
                            addOrRemoveWatchList = { /*TODO*/ })
         }
         rule.onNodeWithText(addToWatchListButtonText)
@@ -32,6 +33,7 @@ class DetailsScreenTest {
         rule.setContent {
             DetailsContent(movie = movieList[0],
                            isInWatchList = true,
+                           onRecommendationItemClicked = {},
                            addOrRemoveWatchList = { /*TODO*/ })
         }
         rule.onNodeWithText(removeToWatchListButtonText)

@@ -37,7 +37,8 @@ fun CinematicsNavHost(navController: NavHostController,
 
         composable(route = CinematicsDestination.TOP_RATED.route) {
             isCurrentScreenDetailScreen(false)
-            TopRatedScreenDestination(topRatedMovies = topRatedMovies.value, navController = navController)
+            TopRatedScreenDestination(topRatedMovies = topRatedMovies.value,
+                                      navController = navController)
         }
 
         composable(route = CinematicsDestination.WATCH_LIST.route) {
@@ -65,6 +66,9 @@ fun CinematicsNavHost(navController: NavHostController,
                     } else {
                         viewModel.addToWatchList(movie)
                     }
+                },
+                onRecommendationItemClicked = {
+                    navigateToDetailsScreen(movieId = it, navController = navController)
                 },
                 isInWatchList = movieIsInWatchList) {
                 navController.navigateUp()

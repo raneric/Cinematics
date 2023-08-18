@@ -1,5 +1,6 @@
 package com.example.cinematics.ui.content
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,6 +49,7 @@ import com.example.cinematics.ui.ui.theme.md_theme_light_tertiary
 fun DetailsScreen(movie: MovieModel,
                   isInWatchList: Boolean,
                   addOrRemoveToWatchList: () -> Unit,
+                  onRecommendationItemClicked: (Int) -> Unit,
                   modifier: Modifier = Modifier,
                   onNavigateBack: () -> Unit) {
     val scrollState = rememberScrollState()
@@ -57,6 +59,7 @@ fun DetailsScreen(movie: MovieModel,
                       content = {
                           DetailsContent(movie = movie,
                                          addOrRemoveWatchList = addOrRemoveToWatchList,
+                                         onRecommendationItemClicked = onRecommendationItemClicked,
                                          isInWatchList = isInWatchList)
                       },
                       modifier = modifier.verticalScroll(scrollState))
@@ -109,6 +112,7 @@ fun DetailsLayout(
 fun DetailsContent(movie: MovieModel,
                    isInWatchList: Boolean,
                    addOrRemoveWatchList: () -> Unit,
+                   onRecommendationItemClicked: (Int) -> Unit,
                    modifier: Modifier = Modifier) {
     Surface(modifier = modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
         ConstraintLayout(modifier = Modifier
@@ -156,6 +160,7 @@ fun DetailsContent(movie: MovieModel,
                         })
 
             RecommendationSection(movieList = movieList,
+                                  onRecommendationItemClicked = onRecommendationItemClicked,
                                   modifier = Modifier.constrainAs(recommendation) {
                                       top.linkTo(anchor = userRatings.bottom,
                                                  margin = SECTION_MARGIN)
@@ -228,12 +233,16 @@ fun DetailsSection(title: String,
 
 @Composable
 fun RecommendationSection(movieList: List<MovieModel>,
+                          onRecommendationItemClicked: (Int) -> Unit,
                           modifier: Modifier = Modifier) {
     DetailsSection(title = stringResource(id = R.string.txt_recomendation_section),
                    modifier = modifier) {
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(movieList) {
-                MovieCadRoundedBorderCompact(movie = it)
+                MovieCadRoundedBorderCompact(movie = it,
+                                             modifier = Modifier.clickable {
+                                                 onRecommendationItemClicked(it.id)
+                                             })
             }
         }
     }
@@ -244,7 +253,10 @@ fun RecommendationSection(movieList: List<MovieModel>,
 fun DetailsScreenPreview() {
     val movie = movieList[1]
     CinematicsTheme {
-        DetailsScreen(movie = movie, addOrRemoveToWatchList = {}, isInWatchList = false) {
+        DetailsScreen(movie = movie,
+                      addOrRemoveToWatchList = {},
+                      onRecommendationItemClicked = {},
+                      isInWatchList = false) {
 
         }
     }
