@@ -47,7 +47,7 @@ import com.example.cinematics.ui.ui.theme.md_theme_light_tertiary
 @Composable
 fun DetailsScreen(movie: MovieModel,
                   isInWatchList: Boolean,
-                  addOrRemoveWatchList: () -> Unit,
+                  addOrRemoveToWatchList: () -> Unit,
                   modifier: Modifier = Modifier,
                   onNavigateBack: () -> Unit) {
     val scrollState = rememberScrollState()
@@ -56,7 +56,7 @@ fun DetailsScreen(movie: MovieModel,
         DetailsLayout(moviePicture = { MovieDetailsImage(imageId = movie.picture) },
                       content = {
                           DetailsContent(movie = movie,
-                                         addOrRemoveWatchList = addOrRemoveWatchList,
+                                         addOrRemoveWatchList = addOrRemoveToWatchList,
                                          isInWatchList = isInWatchList)
                       },
                       modifier = modifier.verticalScroll(scrollState))
@@ -244,7 +244,7 @@ fun RecommendationSection(movieList: List<MovieModel>,
 fun DetailsScreenPreview() {
     val movie = movieList[1]
     CinematicsTheme {
-        DetailsScreen(movie = movie, addOrRemoveWatchList = {}, isInWatchList = false) {
+        DetailsScreen(movie = movie, addOrRemoveToWatchList = {}, isInWatchList = false) {
 
         }
     }

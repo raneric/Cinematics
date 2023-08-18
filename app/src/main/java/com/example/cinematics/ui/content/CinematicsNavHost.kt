@@ -8,21 +8,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.cinematics.data.model.MovieModel
 import com.example.cinematics.ui.MainViewModel
 import com.example.cinematics.utils.CinematicsDestination
-import kotlinx.coroutines.delay
 
 @Composable
 fun CinematicsNavHost(navController: NavHostController,
                       viewModel: MainViewModel,
                       modifier: Modifier = Modifier,
-                      onDetailScreenListener: (Boolean) -> Unit) {
+                      isCurrentScreenDetailScreen: (Boolean) -> Unit) {
     val trendingMovies = viewModel.trendingMovies.collectAsState(initial = emptyList())
     val topRatedMovies = viewModel.topRatedMovies.collectAsState(initial = emptyList())
     val watchList = viewModel.watchList
@@ -32,32 +31,23 @@ fun CinematicsNavHost(navController: NavHostController,
             modifier = modifier) {
 
         composable(route = CinematicsDestination.TRENDING.route) {
-            onDetailScreenListener(false)
-            HorizontalMovieListScreen(movieList = trendingMovies.value) { movieId ->
-                navController.navigate(route = CinematicsDestination.DETAILS_SCREEN.route.addIdArgs(
-                    movieId))
-            }
+            isCurrentScreenDetailScreen(false)
+            TrendingScreenDestination(trendingMovies.value, navController)
         }
 
         composable(route = CinematicsDestination.TOP_RATED.route) {
-            onDetailScreenListener(false)
-            VerticalMovieListScreen(movieList = topRatedMovies.value) { movieId ->
-                navController.navigate(route = CinematicsDestination.DETAILS_SCREEN.route.addIdArgs(
-                    movieId))
-            }
+            isCurrentScreenDetailScreen(false)
+            TopRatedScreenDestination(topRatedMovies = topRatedMovies.value, navController = navController)
         }
 
         composable(route = CinematicsDestination.WATCH_LIST.route) {
-            onDetailScreenListener(false)
-            VerticalMovieListScreen(movieList = watchList) { movieId ->
-                navController.navigate(route = CinematicsDestination.DETAILS_SCREEN.route.addIdArgs(
-                    movieId))
-            }
+            isCurrentScreenDetailScreen(false)
+            WatchListScreenDestination(watchList = watchList, navController = navController)
         }
 
         composable(route = CinematicsDestination.DETAILS_SCREEN.route,
                    arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
-            onDetailScreenListener(true)
+            isCurrentScreenDetailScreen(true)
             val movie = viewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
             var movieIsInWatchList by remember { mutableStateOf(false) }
 
@@ -69,7 +59,7 @@ fun CinematicsNavHost(navController: NavHostController,
             }
             DetailsScreen(
                 movie = movie,
-                addOrRemoveWatchList = {
+                addOrRemoveToWatchList = {
                     if (movieIsInWatchList) {
                         viewModel.removeToWatchList(movie)
                     } else {
@@ -83,6 +73,36 @@ fun CinematicsNavHost(navController: NavHostController,
     }
 }
 
+
+@Composable
+fun TrendingScreenDestination(trendingMovies: List<MovieModel>,
+                              navController: NavHostController) {
+    VerticalMovieListScreen(movieList = trendingMovies) { movieId ->
+        navigateToDetailsScreen(movieId = movieId, navController = navController)
+    }
+}
+
+@Composable
+fun TopRatedScreenDestination(topRatedMovies: List<MovieModel>,
+                              navController: NavHostController) {
+    VerticalMovieListScreen(movieList = topRatedMovies) { movieId ->
+        navigateToDetailsScreen(movieId = movieId, navController = navController)
+    }
+}
+
+@Composable
+fun WatchListScreenDestination(watchList: List<MovieModel>,
+                               navController: NavHostController) {
+    VerticalMovieListScreen(movieList = watchList) { movieId ->
+        navigateToDetailsScreen(movieId = movieId, navController = navController)
+    }
+}
+
+private fun navigateToDetailsScreen(movieId: Int,
+                                    navController: NavHostController) {
+    navController.navigate(route = CinematicsDestination.DETAILS_SCREEN.route.addIdArgs(
+        movieId))
+}
 
 private fun String.addIdArgs(id: Int): String {
     return this.replace("{movieId}", id.toString())

@@ -27,6 +27,7 @@ import com.example.cinematics.R
 import com.example.cinematics.data.model.MovieModel
 import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.commonui.BackDrop
+import com.example.cinematics.ui.components.EmptyListScreen
 import com.example.cinematics.ui.components.MovieCad
 import com.example.cinematics.ui.components.VerticalMovieCard
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
@@ -45,16 +46,7 @@ fun VerticalMovieListScreen(movieList: List<MovieModel>,
                             onItemClicked: (Int) -> Unit) {
 
     if (movieList.isEmpty()) {
-        Column(modifier = modifier.fillMaxSize(),
-               verticalArrangement = Arrangement.Center,
-               horizontalAlignment = Alignment.CenterHorizontally) {
-            Image(painter = painterResource(id = R.drawable.baseline_image_not_supported_24),
-                  contentDescription = "empty list")
-            Text(
-                text = "No Item found",
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onSurface)
-        }
+        EmptyListScreen()
     } else {
         LazyColumn(modifier = modifier) {
             items(movieList) {

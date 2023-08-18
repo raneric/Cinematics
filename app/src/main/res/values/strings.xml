@@ -5,6 +5,8 @@
     <string name="content_descrip_trending">trending movies</string>
     <string name="txt_trending">Trending</string>
 
+    <string name="txt_no_item_found">No Item found</string>
+
     <string name="content_descrip_top_rated">top rated movies</string>
     <string name="content_descrip_movie_image">Picture of the movies</string>
     <string name="txt_top_rated">Top Rated</string>
