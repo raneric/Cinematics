@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.rememberNavController
 import com.example.cinematics.ui.MainViewModel
+import com.example.cinematics.ui.commonui.MovieDisplaySwitchFab
 import com.example.cinematics.ui.components.BottomNavItemVariant
 import com.example.cinematics.ui.components.BottomNavScreen
 import com.example.cinematics.utils.CinematicsDestination
@@ -22,7 +23,7 @@ import com.example.cinematics.utils.CinematicsDestination
 fun CinematicsAppScreen(viewModel: MainViewModel) {
 
     val navController = rememberNavController()
-    var showBottomNav: Boolean by rememberSaveable { mutableStateOf(true) }
+    var isInListView: Boolean by rememberSaveable { mutableStateOf(true) }
     var activeDestination: BottomNavItemVariant by remember { mutableStateOf(BottomNavItemVariant.Trending) }
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
@@ -31,18 +32,25 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
 
     Scaffold(
         bottomBar = {
-            AnimatedVisibility(visible = showBottomNav,
+            AnimatedVisibility(visible = isInListView,
                                enter = slideInVertically(initialOffsetY = { -40 })) {
                 BottomNavScreen(activeDestination = activeDestination) {
                     navController.navigate(route = it)
+                }
+            }
+        },
+        floatingActionButton = {
+            if (isInListView) {
+                MovieDisplaySwitchFab {
+
                 }
             }
         }
     ) { paddingValue ->
         CinematicsNavHost(navController = navController,
                           viewModel = viewModel,
-                          modifier = Modifier.padding(paddingValue)) {
-            showBottomNav = !it
+                          modifier = Modifier.padding(paddingValue)) { isNotDetailScreen ->
+            isInListView = isNotDetailScreen
         }
     }
 }

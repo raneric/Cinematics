@@ -1,37 +1,15 @@
 <resources>
     <string name="app_name">Cinematics</string>
+
     <string name="title_activity_main">Cinematics</string>
-
-    <string name="content_descrip_trending">trending movies</string>
     <string name="txt_trending">Trending</string>
-
     <string name="txt_no_item_found">No Item found</string>
-
     <string name="content_descrip_top_rated">top rated movies</string>
-    <string name="content_descrip_movie_image">Picture of the movies</string>
     <string name="txt_top_rated">Top Rated</string>
-
-    <string name="content_descrip_star_rating">Star number rating</string>
-
-    <string name="content_descrip_back_fab">Back button</string>
-
-    <string name="txt_add_to_watch_btn">Add to watchlist</string>
-    <string name="txt_remove_to_watch_btn">Remove to watchlist</string>
-
-    <string name="content_descrip_watch_list">watchlist movies</string>
-    <string name="txt_watch_list">Watchlist</string>
-
-    <string name="content_descrip_read_more">Button read more on overview</string>
-
-    <string name="label_movie_year">Year: %1$s</string>
-    <string name="label_movie_duration">Duration: %1$s</string>
-    <string name="label_movie_author">Author: %1$s</string>
-
     <string name="txt_overview_section">Overview</string>
     <string name="txt_cast_section">Cast</string>
     <string name="txt_rating_section">Ratings - %1$.1f</string>
     <string name="txt_recomendation_section">You may also like</string>
-
     <string name="txt_overview_preview_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper.
         Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat.
@@ -39,5 +17,25 @@
         Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero.
         Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est.
         Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero</string>
+    <string name="txt_add_to_watch_btn">Add to watchlist</string>
+    <string name="txt_remove_to_watch_btn">Remove to watchlist</string>
+    <string name="txt_watch_list">Watchlist</string>
+
+    <string name="content_descrip_read_more">Button read more on overview</string>
+    <string name="content_descrip_watch_list">watchlist movies</string>
+    <string name="content_descrip_back_fab">Back button</string>
+    <string name="content_descrip_star_rating">Star number rating</string>
+    <string name="content_descrip_trending">trending movies</string>
+    <string name="content_descrip_movie_image">Picture of the movies</string>
+    <string name="content_descript_fab_view_switch">Button to switch view</string>
+
+    <string name="label_movie_year">Year: %1$s</string>
+    <string name="label_movie_duration">Duration: %1$s</string>
+    <string name="label_movie_author">Author: %1$s</string>
+
+    <string name="test_tag_card">card_test_tag</string>
+    <string name="test_tag_overview">overview_test_tag</string>
+    <string name="test_tag_button">button_test_tag</string>
+    <string name="test_tag_detail_content">details_content_test_tag</string>
 
 </resources>

@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,7 +63,9 @@ fun DetailsScreen(movie: MovieModel,
                                          onRecommendationItemClicked = onRecommendationItemClicked,
                                          isInWatchList = isInWatchList)
                       },
-                      modifier = modifier.verticalScroll(scrollState))
+                      modifier = modifier
+                              .testTag(stringResource(id = R.string.test_tag_detail_content))
+                              .verticalScroll(scrollState))
         BackNavigationFab(onNavigateBack = onNavigateBack)
     }
 }
@@ -114,6 +117,7 @@ fun DetailsContent(movie: MovieModel,
                    addOrRemoveWatchList: () -> Unit,
                    onRecommendationItemClicked: (Int) -> Unit,
                    modifier: Modifier = Modifier) {
+
     Surface(modifier = modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
         ConstraintLayout(modifier = Modifier
                 .padding(horizontal = dimensionResource(id = R.dimen.low_dp))
@@ -168,6 +172,7 @@ fun DetailsContent(movie: MovieModel,
 
             CustomButton(inWatchList = isInWatchList,
                          modifier = Modifier
+                                 .testTag(stringResource(id = R.string.test_tag_button))
                                  .constrainAs(button) {
                                      top.linkTo(anchor = recommendation.bottom,
                                                 margin = SECTION_MARGIN)

@@ -19,7 +19,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -50,9 +52,11 @@ fun VerticalMovieListScreen(movieList: List<MovieModel>,
     } else {
         LazyColumn(modifier = modifier) {
             items(movieList) {
-                MovieCad(movie = it, modifier = Modifier.clickable {
-                    onItemClicked(it.id)
-                })
+                MovieCad(movie = it, modifier = Modifier
+                        .testTag(stringResource(id = R.string.test_tag_card))
+                        .clickable {
+                            onItemClicked(it.id)
+                        })
             }
         }
     }
@@ -75,14 +79,17 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
 
     val pageSate = rememberPagerState()
 
-    Box(contentAlignment = Alignment.Center) {
+    Box(contentAlignment = Alignment.Center, modifier = modifier) {
         BackDrop(imageId = movieList[pageSate.currentPage].picture)
         HorizontalPager(pageCount = movieList.size,
                         state = pageSate,
                         pageSpacing = 0.dp) {
-            VerticalMovieCard(movie = movieList[it], modifier = modifier.clickable {
-                onItemClicked(movieList[it].id)
-            })
+            VerticalMovieCard(movie = movieList[it],
+                              modifier = Modifier
+                                      .testTag(stringResource(id = R.string.test_tag_card))
+                                      .clickable {
+                                          onItemClicked(movieList[it].id)
+                                      })
         }
     }
 }

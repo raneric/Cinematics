@@ -7,10 +7,7 @@ import com.example.cinematics.ui.content.VerticalMovieListScreen
 import org.junit.Rule
 import org.junit.Test
 
-class TrendingListTest {
-
-    @get:Rule
-    val rule = createAndroidComposeRule<ComponentActivity>()
+class TrendingListTest : BaseTest() {
 
     @Test
     fun test_empty_movies_list_screen() {

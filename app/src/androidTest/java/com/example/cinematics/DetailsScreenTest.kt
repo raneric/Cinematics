@@ -1,18 +1,12 @@
 package com.example.cinematics
 
-import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
+
 import androidx.compose.ui.test.onNodeWithText
 import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.content.DetailsContent
-import org.junit.Rule
 import org.junit.Test
 
-class DetailsScreenTest {
-
-    @get:Rule
-    val rule = createAndroidComposeRule<ComponentActivity>()
+class DetailsScreenTest : BaseTest() {
 
     @Test
     fun details_screen_with_movie_not_in_watch_list() {
@@ -39,5 +33,4 @@ class DetailsScreenTest {
         rule.onNodeWithText(removeToWatchListButtonText)
                 .assertExists()
     }
-
 }

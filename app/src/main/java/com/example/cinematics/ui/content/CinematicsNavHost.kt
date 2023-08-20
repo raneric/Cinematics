@@ -21,7 +21,7 @@ import com.example.cinematics.utils.CinematicsDestination
 fun CinematicsNavHost(navController: NavHostController,
                       viewModel: MainViewModel,
                       modifier: Modifier = Modifier,
-                      isCurrentScreenDetailScreen: (Boolean) -> Unit) {
+                      isNotDetailScreen: (Boolean) -> Unit) {
     val trendingMovies = viewModel.trendingMovies.collectAsState(initial = emptyList())
     val topRatedMovies = viewModel.topRatedMovies.collectAsState(initial = emptyList())
     val watchList = viewModel.watchList
@@ -31,24 +31,24 @@ fun CinematicsNavHost(navController: NavHostController,
             modifier = modifier) {
 
         composable(route = CinematicsDestination.TRENDING.route) {
-            isCurrentScreenDetailScreen(false)
+            isNotDetailScreen(true)
             TrendingScreenDestination(trendingMovies.value, navController)
         }
 
         composable(route = CinematicsDestination.TOP_RATED.route) {
-            isCurrentScreenDetailScreen(false)
+            isNotDetailScreen(true)
             TopRatedScreenDestination(topRatedMovies = topRatedMovies.value,
                                       navController = navController)
         }
 
         composable(route = CinematicsDestination.WATCH_LIST.route) {
-            isCurrentScreenDetailScreen(false)
+            isNotDetailScreen(true)
             WatchListScreenDestination(watchList = watchList, navController = navController)
         }
 
         composable(route = CinematicsDestination.DETAILS_SCREEN.route,
                    arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
-            isCurrentScreenDetailScreen(true)
+            isNotDetailScreen(false)
             val movie = viewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
             var movieIsInWatchList by remember { mutableStateOf(false) }
 
