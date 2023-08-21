@@ -1,5 +1,16 @@
 package com.example.cinematics.ui.content
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.expandIn
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.shrinkOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -8,6 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,11 +29,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.cinematics.data.model.MovieModel
 import com.example.cinematics.ui.MainViewModel
-import com.example.cinematics.utils.CinematicsDestination
+import com.example.cinematics.utils.Destination
+import com.example.cinematics.utils.UiState
 
 @Composable
 fun CinematicsNavHost(navController: NavHostController,
                       viewModel: MainViewModel,
+                      uiState: UiState,
                       modifier: Modifier = Modifier,
                       isNotDetailScreen: (Boolean) -> Unit) {
     val trendingMovies = viewModel.trendingMovies.collectAsState(initial = emptyList())
@@ -27,26 +43,40 @@ fun CinematicsNavHost(navController: NavHostController,
     val watchList = viewModel.watchList
 
     NavHost(navController = navController,
-            startDestination = CinematicsDestination.TRENDING.route,
+            startDestination = Destination.TrendingScreen.route,
             modifier = modifier) {
 
-        composable(route = CinematicsDestination.TRENDING.route) {
+        composable(route = Destination.TrendingScreen.route) {
             isNotDetailScreen(true)
-            TrendingScreenDestination(trendingMovies.value, navController)
+            MovieListScreen(uiState = uiState,
+                            movieList = trendingMovies.value,
+                            navController = navController,
+                            modifier = Modifier.semantics {
+                                contentDescription = Destination.TrendingScreen.testTag
+                            })
         }
 
-        composable(route = CinematicsDestination.TOP_RATED.route) {
+        composable(route = Destination.TopRatedScreen.route) {
             isNotDetailScreen(true)
-            TopRatedScreenDestination(topRatedMovies = topRatedMovies.value,
-                                      navController = navController)
+            MovieListScreen(uiState = uiState,
+                            movieList = topRatedMovies.value,
+                            navController = navController,
+                            modifier = Modifier.semantics {
+                                contentDescription = Destination.TopRatedScreen.testTag
+                            })
         }
 
-        composable(route = CinematicsDestination.WATCH_LIST.route) {
+        composable(route = Destination.WatchListScreen.route) {
             isNotDetailScreen(true)
-            WatchListScreenDestination(watchList = watchList, navController = navController)
+            MovieListScreen(uiState = uiState,
+                            movieList = watchList,
+                            navController = navController,
+                            modifier = Modifier.semantics {
+                                contentDescription = Destination.WatchListScreen.testTag
+                            })
         }
 
-        composable(route = CinematicsDestination.DETAILS_SCREEN.route,
+        composable(route = Destination.DetailScreen.route,
                    arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
             isNotDetailScreen(false)
             val movie = viewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
@@ -70,6 +100,9 @@ fun CinematicsNavHost(navController: NavHostController,
                 onRecommendationItemClicked = {
                     navigateToDetailsScreen(movieId = it, navController = navController)
                 },
+                modifier = Modifier.semantics {
+                    contentDescription = Destination.DetailScreen.testTag
+                },
                 isInWatchList = movieIsInWatchList) {
                 navController.navigateUp()
             }
@@ -77,34 +110,33 @@ fun CinematicsNavHost(navController: NavHostController,
     }
 }
 
-
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun TrendingScreenDestination(trendingMovies: List<MovieModel>,
-                              navController: NavHostController) {
-    VerticalMovieListScreen(movieList = trendingMovies) { movieId ->
-        navigateToDetailsScreen(movieId = movieId, navController = navController)
+fun MovieListScreen(uiState: UiState,
+                    movieList: List<MovieModel>,
+                    navController: NavHostController,
+                    modifier: Modifier = Modifier) {
+    AnimatedVisibility(visible = uiState is UiState.ListView,
+                       enter = scaleIn(),
+                       exit = fadeOut()) {
+        VerticalMovieListScreen(movieList = movieList,
+                                modifier = modifier.testTag(uiState.testTag)) { movieId ->
+            navigateToDetailsScreen(movieId = movieId, navController = navController)
+        }
     }
-}
-
-@Composable
-fun TopRatedScreenDestination(topRatedMovies: List<MovieModel>,
-                              navController: NavHostController) {
-    VerticalMovieListScreen(movieList = topRatedMovies) { movieId ->
-        navigateToDetailsScreen(movieId = movieId, navController = navController)
-    }
-}
-
-@Composable
-fun WatchListScreenDestination(watchList: List<MovieModel>,
-                               navController: NavHostController) {
-    VerticalMovieListScreen(movieList = watchList) { movieId ->
-        navigateToDetailsScreen(movieId = movieId, navController = navController)
+    AnimatedVisibility(visible = uiState is UiState.CarouselView,
+                       enter = scaleIn(),
+                       exit = fadeOut()) {
+        HorizontalMovieListScreen(movieList = movieList,
+                                  modifier = modifier.testTag(uiState.testTag)) { movieId ->
+            navigateToDetailsScreen(movieId = movieId, navController = navController)
+        }
     }
 }
 
 private fun navigateToDetailsScreen(movieId: Int,
                                     navController: NavHostController) {
-    navController.navigate(route = CinematicsDestination.DETAILS_SCREEN.route.addIdArgs(
+    navController.navigate(route = Destination.DetailScreen.route.addIdArgs(
         movieId))
 }
 

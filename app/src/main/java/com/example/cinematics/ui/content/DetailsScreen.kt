@@ -64,7 +64,6 @@ fun DetailsScreen(movie: MovieModel,
                                          isInWatchList = isInWatchList)
                       },
                       modifier = modifier
-                              .testTag(stringResource(id = R.string.test_tag_detail_content))
                               .verticalScroll(scrollState))
         BackNavigationFab(onNavigateBack = onNavigateBack)
     }
@@ -105,9 +104,9 @@ fun DetailsLayout(
 }
 
 /**
- * This composable hold all screen section using constraint layout
+ * This composable hold all screen details section using constraint layout
  * @param isInWatchList : Boolean flag if movie is watched or not
- * @param addOrRemoveWatchList : button listener lambda
+ * @param addOrRemoveWatchList : add or remove button listener that lift state
  * @param movie : [MovieModel] object to display
  * @param modifier: A modifier with default value [Modifier]
  */

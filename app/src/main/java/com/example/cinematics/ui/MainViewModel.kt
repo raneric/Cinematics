@@ -1,17 +1,15 @@
 package com.example.cinematics.ui
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.cinematics.data.model.MovieModel
-import com.example.cinematics.data.repository.FakeMovieRepository
 import com.example.cinematics.data.repository.MovieRepository
+import com.example.cinematics.utils.UiData
+import com.example.cinematics.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.combine
+
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,11 +26,18 @@ class MainViewModel @Inject constructor(private val repository: MovieRepository)
     val watchList: List<MovieModel>
         get() = _watchList
 
-    private var testBool: Boolean = false
-
     private var _isInWatchList: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isInWatchList
         get() = _isInWatchList
+
+    private var _uiListState: MutableStateFlow<UiState> = MutableStateFlow(UiState.ListView)
+    val uiListState
+        get() = _uiListState
+
+
+    fun switchListView() {
+        _uiListState.value = if (_uiListState.value is UiState.ListView) UiState.CarouselView else UiState.ListView
+    }
 
     fun addToWatchList(movie: MovieModel) {
         repository.addToWatchList(movie)

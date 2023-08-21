@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cinematics.R
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
-import com.example.cinematics.utils.CinematicsDestination
+import com.example.cinematics.utils.Destination
 
 /**
  * Custom bottom navigation composable that use [NavigationBar] from MUI3
@@ -67,17 +67,17 @@ sealed class BottomNavItemVariant(@StringRes val textId: Int,
     object Trending : BottomNavItemVariant(textId = R.string.txt_trending,
                                            iconContentDescription = R.string.content_descrip_trending,
                                            iconId = R.drawable.icon_trending_24,
-                                           route = CinematicsDestination.TRENDING.route)
+                                           route = Destination.DetailScreen.route)
 
     object TopRated : BottomNavItemVariant(textId = R.string.txt_top_rated,
                                            iconContentDescription = R.string.content_descrip_top_rated,
                                            iconId = R.drawable.icon_top_rated_24,
-                                           route = CinematicsDestination.TOP_RATED.route)
+                                           route = Destination.TopRatedScreen.route)
 
     object WatchList : BottomNavItemVariant(textId = R.string.txt_watch_list,
                                             iconContentDescription = R.string.content_descrip_watch_list,
                                             iconId = R.drawable.icon_watch_list_24,
-                                            route = CinematicsDestination.WATCH_LIST.route)
+                                            route = Destination.WatchListScreen.route)
 }
 
 private val bottomNavItemList = listOf(BottomNavItemVariant.Trending,

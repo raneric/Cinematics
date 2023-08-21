@@ -28,6 +28,9 @@
     <string name="content_descrip_trending">trending movies</string>
     <string name="content_descrip_movie_image">Picture of the movies</string>
     <string name="content_descript_fab_view_switch">Button to switch view</string>
+    <string name="content_descrip_trending_screen">trending movies screen</string>
+    <string name="content_descrip_top_rated_screen">Top rated movies screen</string>
+    <string name="content_descrip_watchlist_screen">Watchlist movies screen</string>
 
     <string name="label_movie_year">Year: %1$s</string>
     <string name="label_movie_duration">Duration: %1$s</string>

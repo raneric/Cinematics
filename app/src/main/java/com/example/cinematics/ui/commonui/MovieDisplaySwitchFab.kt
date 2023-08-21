@@ -1,5 +1,7 @@
 package com.example.cinematics.ui.commonui
 
+import androidx.annotation.DrawableRes
+import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -18,9 +20,9 @@ import com.example.cinematics.R
 import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
 @Composable
-fun MovieDisplaySwitchFab(modifier: Modifier = Modifier,
+fun MovieDisplaySwitchFab(@DrawableRes fabIcon: Int,
+                          modifier: Modifier = Modifier,
                           onViewSwitched: () -> Unit) {
-    val fabIcon by remember { mutableStateOf(R.drawable.view_carousel_32) }
     FloatingActionButton(onClick = onViewSwitched) {
         Icon(painter = painterResource(id = fabIcon),
              tint = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -33,7 +35,7 @@ fun MovieDisplaySwitchFab(modifier: Modifier = Modifier,
 @Composable
 fun MovieDisplaySwitchFabPreview() {
     CinematicsTheme {
-        MovieDisplaySwitchFab {
+        MovieDisplaySwitchFab(fabIcon = R.drawable.view_list_32) {
 
         }
     }
