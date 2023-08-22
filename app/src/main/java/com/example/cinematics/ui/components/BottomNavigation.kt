@@ -17,7 +17,8 @@ import com.example.cinematics.ui.ui.theme.CinematicsTheme
 import com.example.cinematics.utils.Destination
 
 /**
- * Custom bottom navigation composable that use [NavigationBar] from MUI3
+ * Custom bottom navigation composable that use [NavigationBar] from MUI3. It iterate through the
+ * [bottomNavItemList] to create an [NavigationBarItem] inside the [NavigationBar] composable
  * @param bottomNavList : A list of [BottomNavItemVariant] object which are the navigation destination
  * @param activeDestination: A [BottomNavItemVariant] item that is the current active destination
  *                           with [BottomNavItemVariant.Trending] as default value
@@ -25,19 +26,19 @@ import com.example.cinematics.utils.Destination
  */
 @Composable
 fun BottomNavScreen(activeDestination: BottomNavItemVariant,
-                    modifier: Modifier = Modifier,
                     onItemClicked: (String) -> Unit) {
 
     NavigationBar(tonalElevation = 5.dp) {
-        bottomNavItemList.forEach { item ->
-            NavigationBarItem(selected = item == activeDestination,
-                              icon = {
-                                  Icon(painter = painterResource(id = item.iconId),
-                                       contentDescription = stringResource(id = item.iconContentDescription))
-                              },
-                              label = { Text(text = stringResource(id = item.textId)) },
-                              onClick = { onItemClicked(item.route) })
-        }
+        bottomNavItemList.take(5)
+                .forEach { item ->
+                    NavigationBarItem(selected = item == activeDestination,
+                                      icon = {
+                                          Icon(painter = painterResource(id = item.iconId),
+                                               contentDescription = stringResource(id = item.iconContentDescription))
+                                      },
+                                      label = { Text(text = stringResource(id = item.textId)) },
+                                      onClick = { onItemClicked(item.route) })
+                }
     }
 }
 
@@ -67,7 +68,7 @@ sealed class BottomNavItemVariant(@StringRes val textId: Int,
     object Trending : BottomNavItemVariant(textId = R.string.txt_trending,
                                            iconContentDescription = R.string.content_descrip_trending,
                                            iconId = R.drawable.icon_trending_24,
-                                           route = Destination.DetailScreen.route)
+                                           route = Destination.TrendingScreen.route)
 
     object TopRated : BottomNavItemVariant(textId = R.string.txt_top_rated,
                                            iconContentDescription = R.string.content_descrip_top_rated,

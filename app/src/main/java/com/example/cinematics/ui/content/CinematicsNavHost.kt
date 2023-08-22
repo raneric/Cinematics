@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -38,8 +39,9 @@ fun CinematicsNavHost(navController: NavHostController,
                       uiState: UiState,
                       modifier: Modifier = Modifier,
                       isNotDetailScreen: (Boolean) -> Unit) {
-    val trendingMovies = viewModel.trendingMovies.collectAsState(initial = emptyList())
-    val topRatedMovies = viewModel.topRatedMovies.collectAsState(initial = emptyList())
+
+    val trendingMovies = viewModel.trendingMovies.collectAsStateWithLifecycle(initialValue = emptyList())
+    val topRatedMovies = viewModel.topRatedMovies.collectAsStateWithLifecycle(initialValue = emptyList())
     val watchList = viewModel.watchList
 
     NavHost(navController = navController,

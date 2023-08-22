@@ -78,18 +78,21 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
                               onItemClicked: (Int) -> Unit) {
 
     val pageSate = rememberPagerState()
-
-    Box(contentAlignment = Alignment.Center, modifier = modifier) {
-        BackDrop(imageId = movieList[pageSate.currentPage].picture)
-        HorizontalPager(pageCount = movieList.size,
-                        state = pageSate,
-                        pageSpacing = 0.dp) {
-            VerticalMovieCard(movie = movieList[it],
-                              modifier = Modifier
-                                      .testTag(stringResource(id = R.string.test_tag_card))
-                                      .clickable {
-                                          onItemClicked(movieList[it].id)
-                                      })
+    if (movieList.isEmpty()) {
+        EmptyListScreen()
+    } else {
+        Box(contentAlignment = Alignment.Center, modifier = modifier) {
+            BackDrop(imageId = movieList[pageSate.currentPage].picture)
+            HorizontalPager(pageCount = movieList.size,
+                            state = pageSate,
+                            pageSpacing = 0.dp) {
+                VerticalMovieCard(movie = movieList[it],
+                                  modifier = Modifier
+                                          .testTag(stringResource(id = R.string.test_tag_card))
+                                          .clickable {
+                                              onItemClicked(movieList[it].id)
+                                          })
+            }
         }
     }
 }

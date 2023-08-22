@@ -1,9 +1,7 @@
 package com.example.cinematics.ui.content
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -22,6 +20,9 @@ import com.example.cinematics.ui.components.BottomNavItemVariant
 import com.example.cinematics.ui.components.BottomNavScreen
 import com.example.cinematics.utils.Destination
 import com.example.cinematics.utils.UiState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun CinematicsAppScreen(viewModel: MainViewModel) {
@@ -29,7 +30,7 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
     val navController = rememberNavController()
     var isNotDetailScreen: Boolean by rememberSaveable { mutableStateOf(true) }
     var activeDestination: BottomNavItemVariant by remember { mutableStateOf(BottomNavItemVariant.Trending) }
-    val uiState = viewModel.uiListState.collectAsStateWithLifecycle()
+    val uiState = viewModel.uiListState.collectAsStateWithLifecycle(initialValue = UiState.ListView)
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
         activeDestination = navDestination.activeBottomNavItem()
     }
@@ -45,7 +46,10 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
         },
         floatingActionButton = {
             MovieDisplaySwitchFab(uiState.value.fabIcon) {
-                viewModel.switchListView()
+                val nextUiState = if (uiState.value is UiState.ListView) UiState.CarouselView else UiState.ListView
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.switchListViewMode(nextUiState)
+                }
             }
         }
     ) { paddingValue ->

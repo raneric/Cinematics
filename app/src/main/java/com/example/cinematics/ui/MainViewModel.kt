@@ -1,19 +1,25 @@
 package com.example.cinematics.ui
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.cinematics.data.model.MovieModel
 import com.example.cinematics.data.repository.MovieRepository
-import com.example.cinematics.utils.UiData
+import com.example.cinematics.data.repository.UiStatePreferencesRepository
 import com.example.cinematics.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+
 
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: MovieRepository) : ViewModel() {
+class MainViewModel @Inject constructor(private val repository: MovieRepository,
+                                        private val uiStateRepository: UiStatePreferencesRepository) :
+        ViewModel() {
+
     private var _trendingMovies: Flow<List<MovieModel>> = repository.getTrending()
     val trendingMovies: Flow<List<MovieModel>>
         get() = _trendingMovies
@@ -30,13 +36,14 @@ class MainViewModel @Inject constructor(private val repository: MovieRepository)
     val isInWatchList
         get() = _isInWatchList
 
-    private var _uiListState: MutableStateFlow<UiState> = MutableStateFlow(UiState.ListView)
-    val uiListState
-        get() = _uiListState
+    val uiListState: Flow<UiState> = uiStateRepository.uiStateFlow.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = UiState.ListView
+    )
 
-
-    fun switchListView() {
-        _uiListState.value = if (_uiListState.value is UiState.ListView) UiState.CarouselView else UiState.ListView
+    suspend fun switchListViewMode(uiState: UiState) {
+        uiStateRepository.updateUiState(uiState)
     }
 
     fun addToWatchList(movie: MovieModel) {
