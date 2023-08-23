@@ -28,9 +28,13 @@ import kotlinx.coroutines.launch
 fun CinematicsAppScreen(viewModel: MainViewModel) {
 
     val navController = rememberNavController()
+
     var isNotDetailScreen: Boolean by rememberSaveable { mutableStateOf(true) }
+
     var activeDestination: BottomNavItemVariant by remember { mutableStateOf(BottomNavItemVariant.Trending) }
-    val uiState = viewModel.uiListState.collectAsStateWithLifecycle(initialValue = UiState.ListView)
+
+    val uiListState = viewModel.uiListState.collectAsStateWithLifecycle(initialValue = UiState.ListView)
+
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
         activeDestination = navDestination.activeBottomNavItem()
     }
@@ -45,8 +49,8 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
             }
         },
         floatingActionButton = {
-            MovieDisplaySwitchFab(uiState.value.fabIcon) {
-                val nextUiState = if (uiState.value is UiState.ListView) UiState.CarouselView else UiState.ListView
+            MovieDisplaySwitchFab(uiListState.value.fabIcon) {
+                val nextUiState = if (uiListState.value is UiState.ListView) UiState.CarouselView else UiState.ListView
                 CoroutineScope(Dispatchers.IO).launch {
                     viewModel.switchListViewMode(nextUiState)
                 }
@@ -55,7 +59,7 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
     ) { paddingValue ->
         CinematicsNavHost(navController = navController,
                           viewModel = viewModel,
-                          uiState = uiState.value,
+                          uiState = uiListState.value,
                           modifier = Modifier.padding(paddingValue)) {
             isNotDetailScreen = it
         }

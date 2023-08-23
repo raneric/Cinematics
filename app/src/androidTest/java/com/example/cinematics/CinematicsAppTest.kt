@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.example.cinematics.data.TestMovieRepository
+import com.example.cinematics.data.repository.UiStatePreferencesRepository
 import com.example.cinematics.ui.MainViewModel
 import com.example.cinematics.ui.content.CinematicsAppScreen
 import com.example.cinematics.utils.Destination
@@ -19,10 +20,13 @@ class CinematicsAppTest : BaseTest() {
 
     private lateinit var viewModel: MainViewModel
 
+    private lateinit var uiStatePrefRepo: UiStatePreferencesRepository
+
     @Before
     fun setup() {
         val movieRepository = TestMovieRepository()
-        viewModel = MainViewModel(movieRepository)
+        uiStatePrefRepo = UiStatePreferencesRepository(testDataStore)
+        viewModel = MainViewModel(movieRepository, uiStatePrefRepo)
         rule.setContent {
             CinematicsAppScreen(viewModel = viewModel)
         }

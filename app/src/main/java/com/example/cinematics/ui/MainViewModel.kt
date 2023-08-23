@@ -16,9 +16,9 @@ import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: MovieRepository,
-                                        private val uiStateRepository: UiStatePreferencesRepository) :
-        ViewModel() {
+class MainViewModel @Inject constructor(
+        private val repository: MovieRepository,
+        private val uiStateRepository: UiStatePreferencesRepository) : ViewModel() {
 
     private var _trendingMovies: Flow<List<MovieModel>> = repository.getTrending()
     val trendingMovies: Flow<List<MovieModel>>
@@ -36,11 +36,7 @@ class MainViewModel @Inject constructor(private val repository: MovieRepository,
     val isInWatchList
         get() = _isInWatchList
 
-    val uiListState: Flow<UiState> = uiStateRepository.uiStateFlow.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = UiState.ListView
-    )
+    val uiListState: Flow<UiState> = uiStateRepository.uiStateFlow
 
     suspend fun switchListViewMode(uiState: UiState) {
         uiStateRepository.updateUiState(uiState)

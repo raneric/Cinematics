@@ -12,8 +12,7 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-class UiStatePreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
-
+class UiStatePreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>){
 
     val uiStateFlow = dataStore.data.catch { exception ->
         if (exception is IOException) {

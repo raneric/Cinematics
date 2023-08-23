@@ -4,6 +4,7 @@ buildscript {
         nav_version = "2.6.0"
         mui3_version = "1.1.1"
         hilt_version = "2.44"
+        coroutines_version = "1.7.3"
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
