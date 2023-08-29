@@ -49,10 +49,12 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
             }
         },
         floatingActionButton = {
-            MovieDisplaySwitchFab(uiListState.value.fabIcon) {
-                val nextUiState = if (uiListState.value is UiState.ListView) UiState.CarouselView else UiState.ListView
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.switchListViewMode(nextUiState)
+            if (isNotDetailScreen) {
+                MovieDisplaySwitchFab(uiListState.value.fabIcon) {
+                    val nextUiState = if (uiListState.value is UiState.ListView) UiState.CarouselView else UiState.ListView
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.switchListViewMode(nextUiState)
+                    }
                 }
             }
         }

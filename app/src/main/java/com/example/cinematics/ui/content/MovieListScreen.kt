@@ -84,8 +84,7 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
             BackDrop(imageId = movieList[pageSate.currentPage].picture)
             HorizontalPager(pageCount = movieList.size,
-                            state = pageSate,
-                            pageSpacing = 0.dp) {
+                            state = pageSate) {
                 VerticalMovieCard(movie = movieList[it],
                                   modifier = Modifier
                                           .testTag(stringResource(id = R.string.test_tag_card))

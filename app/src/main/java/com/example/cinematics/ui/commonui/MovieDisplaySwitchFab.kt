@@ -21,7 +21,7 @@ import com.example.cinematics.ui.ui.theme.CinematicsTheme
 
 @Composable
 fun MovieDisplaySwitchFab(@DrawableRes fabIcon: Int,
-                          modifier: Modifier = Modifier,
+                          modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_fab_view_switch)),
                           onViewSwitched: () -> Unit) {
     FloatingActionButton(onClick = onViewSwitched) {
         Icon(painter = painterResource(id = fabIcon),

@@ -1,9 +1,16 @@
 package com.example.cinematics
 
 
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import com.example.cinematics.data.movieList
 import com.example.cinematics.ui.content.DetailsContent
+import com.example.cinematics.utils.Destination
 import org.junit.Test
 
 class DetailsScreenTest : BaseTest() {
