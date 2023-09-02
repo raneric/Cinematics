@@ -35,7 +35,7 @@ fun VerticalMovieCard(movie: MovieModel,
     Surface(shape = MaterialTheme.shapes.large,
             modifier = modifier
                     .width(280.dp)
-                    .height(580.dp)) {
+                    .height(600.dp)) {
         Column(horizontalAlignment = Alignment.CenterHorizontally,
                verticalArrangement = Arrangement.spacedBy(16.dp),
                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp
@@ -46,7 +46,7 @@ fun VerticalMovieCard(movie: MovieModel,
                           .clip(MaterialTheme.shapes.medium))
             Text(
                 text = movie.title,
-                style = MaterialTheme.typography.titleLarge,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center
             )
