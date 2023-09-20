@@ -1,7 +1,6 @@
 package com.example.cinematics
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -35,21 +34,23 @@ class CinematicsAppTest : BaseTest() {
 
     @Test
     fun test_fab_view_switch_with_default_carousel() {
-        rule.onNodeWithTag(testTag = R.drawable.view_carousel_32.toString(), useUnmergedTree = true)
+        val fabSwitchViewTestTag = rule.activity.getString(R.string.test_tag_fab_view_switch)
+        rule.onNodeWithTag(testTag = fabSwitchViewTestTag, useUnmergedTree = true)
                 .assertIsDisplayed()
     }
 
     @Test
     fun test_click_fab_view_switch_carousel_list_and_list_carousel() {
+        val fabSwitchViewTestTag = rule.activity.getString(R.string.test_tag_fab_view_switch)
 
-        rule.onNodeWithTag(testTag = R.drawable.view_carousel_32.toString(), useUnmergedTree = true)
+        rule.onNodeWithTag(testTag = fabSwitchViewTestTag)
                 .performClick()
         rule.onNodeWithTag(testTag = R.drawable.view_list_32.toString(), useUnmergedTree = true)
                 .assertIsDisplayed()
         rule.onNodeWithTag(testTag = UiState.CarouselView.testTag)
                 .assertIsDisplayed()
 
-        rule.onNodeWithTag(testTag = R.drawable.view_list_32.toString(), useUnmergedTree = true)
+        rule.onNodeWithTag(testTag = fabSwitchViewTestTag)
                 .performClick()
         rule.onNodeWithTag(testTag = R.drawable.view_carousel_32.toString(), useUnmergedTree = true)
                 .assertIsDisplayed()
