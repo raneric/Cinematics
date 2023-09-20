@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.cinematics'
+    namespace 'com.sgg.cinematics'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.cinematics"
+        applicationId "com.sgg.cinematics"
         minSdk 26
         targetSdk 33
         versionCode 1
