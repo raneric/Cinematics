@@ -2,7 +2,7 @@ package com.sgg.cinematics
 
 import androidx.compose.ui.test.onNodeWithText
 import com.sgg.cinematics.data.movieList
-import com.sgg.cinematics.ui.content.DetailsContent
+import com.sgg.cinematics.ui.screen.DetailsContent
 import org.junit.Test
 
 class DetailsScreenTest : BaseTest() {

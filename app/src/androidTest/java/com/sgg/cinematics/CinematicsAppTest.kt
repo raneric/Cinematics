@@ -10,7 +10,7 @@ import androidx.compose.ui.test.performScrollTo
 import com.sgg.cinematics.data.TestMovieRepository
 import com.sgg.cinematics.data.repository.UiStatePreferencesRepository
 import com.sgg.cinematics.ui.MainViewModel
-import com.sgg.cinematics.ui.content.CinematicsAppScreen
+import com.sgg.cinematics.ui.screen.CinematicsAppScreen
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.UiState
 import org.junit.Before

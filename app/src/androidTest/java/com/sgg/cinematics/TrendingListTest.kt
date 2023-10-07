@@ -1,7 +1,7 @@
 package com.sgg.cinematics
 
 import androidx.compose.ui.test.onNodeWithText
-import com.sgg.cinematics.ui.content.VerticalMovieListScreen
+import com.sgg.cinematics.ui.screen.VerticalMovieListScreen
 import org.junit.Test
 
 class TrendingListTest : BaseTest() {

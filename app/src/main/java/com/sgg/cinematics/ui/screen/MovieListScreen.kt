@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.content
+package com.sgg.cinematics.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
