@@ -81,8 +81,14 @@ sealed class BottomNavItemVariant(@StringRes val textId: Int,
                                             iconContentDescription = R.string.content_descrip_watch_list,
                                             iconId = R.drawable.icon_watch_list_24,
                                             route = Destination.WatchListScreen.route)
+
+    object UserProfile : BottomNavItemVariant(textId = R.string.txt_user_profile,
+                                              iconContentDescription = R.string.content_descrip_user_profile,
+                                              iconId = R.drawable.icon_profile_24,
+                                              route = Destination.UserProfileScreen.route)
 }
 
 private val bottomNavItemList = listOf(BottomNavItemVariant.Trending,
                                        BottomNavItemVariant.TopRated,
-                                       BottomNavItemVariant.WatchList)
+                                       BottomNavItemVariant.WatchList,
+                                       BottomNavItemVariant.UserProfile)

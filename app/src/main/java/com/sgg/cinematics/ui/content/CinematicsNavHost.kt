@@ -101,6 +101,10 @@ fun CinematicsNavHost(navController: NavHostController,
                 navController.navigateUp()
             }
         }
+
+        composable(route = Destination.UserProfileScreen.route) {
+            UserProfileScreen()
+        }
     }
 }
 

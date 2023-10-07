@@ -7,4 +7,5 @@ sealed class Destination(val route: String,
     object TopRatedScreen : Destination(route = "top_rated", testTag = "top_rated_screen")
     object WatchListScreen : Destination(route = "watch_list", testTag = "watch_list_screen")
     object DetailScreen : Destination(route = "details/{movieId}", testTag = "details_screen")
+    object UserProfileScreen : Destination(route = "user_profile", testTag = "user_profile_screen")
 }

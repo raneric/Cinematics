@@ -10,6 +10,7 @@
     <string name="txt_cast_section">Cast</string>
     <string name="txt_rating_section">Ratings - %1$.1f</string>
     <string name="txt_recomendation_section">You may also like</string>
+    <string name="txt_user_profile">Profile</string>
     <string name="txt_overview_preview_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper.
         Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat.
@@ -31,6 +32,7 @@
     <string name="content_descrip_trending_screen">trending movies screen</string>
     <string name="content_descrip_top_rated_screen">Top rated movies screen</string>
     <string name="content_descrip_watchlist_screen">Watchlist movies screen</string>
+    <string name="content_descrip_user_profile">User profile</string>
 
     <string name="label_movie_year">Year: %1$s</string>
     <string name="label_movie_duration">Duration: %1$s</string>
