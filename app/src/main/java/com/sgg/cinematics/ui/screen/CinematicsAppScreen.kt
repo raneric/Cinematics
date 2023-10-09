@@ -12,12 +12,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.rememberNavController
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
-import com.sgg.cinematics.ui.components.BottomNavItemVariant
+import com.sgg.cinematics.ui.components.NavItemVariant
 import com.sgg.cinematics.ui.components.BottomNavScreen
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.UiState
@@ -32,12 +31,13 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
 
     var isNotDetailScreen: Boolean by rememberSaveable { mutableStateOf(true) }
 
-    var activeDestination: BottomNavItemVariant by remember { mutableStateOf(BottomNavItemVariant.Trending) }
+    var activeDestination: NavItemVariant by remember { mutableStateOf(NavItemVariant.Trending) }
 
     val uiListState = viewModel.uiListState.collectAsStateWithLifecycle(initialValue = UiState.ListView)
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
         activeDestination = navDestination.activeBottomNavItem()
+        isNotDetailScreen = navDestination.route != Destination.DetailScreen.route
     }
 
     Scaffold(
@@ -63,17 +63,22 @@ fun CinematicsAppScreen(viewModel: MainViewModel) {
         CinematicsNavHost(navController = navController,
                           viewModel = viewModel,
                           uiState = uiListState.value,
-                          modifier = Modifier.padding(paddingValue)) {
-            isNotDetailScreen = it
-        }
+                          modifier = Modifier.padding(paddingValue))
     }
 }
 
-private fun NavDestination.activeBottomNavItem(): BottomNavItemVariant {
+@Composable
+fun CinematicsAppCompact(
+        modifier: Modifier = Modifier
+) {
+
+}
+
+private fun NavDestination.activeBottomNavItem(): NavItemVariant {
     return when (this.route) {
-        Destination.TopRatedScreen.route -> BottomNavItemVariant.TopRated
-        Destination.WatchListScreen.route -> BottomNavItemVariant.WatchList
-        Destination.UserProfileScreen.route -> BottomNavItemVariant.UserProfile
-        else -> BottomNavItemVariant.Trending
+        Destination.TopRatedScreen.route -> NavItemVariant.TopRated
+        Destination.WatchListScreen.route -> NavItemVariant.WatchList
+        Destination.UserProfileScreen.route -> NavItemVariant.UserProfile
+        else -> NavItemVariant.Trending
     }
 }

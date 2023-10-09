@@ -29,8 +29,7 @@ import com.sgg.cinematics.utils.UiState
 fun CinematicsNavHost(navController: NavHostController,
                       viewModel: MainViewModel,
                       uiState: UiState,
-                      modifier: Modifier = Modifier,
-                      isNotDetailScreen: (Boolean) -> Unit) {
+                      modifier: Modifier = Modifier) {
 
     val trendingMovies = viewModel.trendingMovies.collectAsStateWithLifecycle(initialValue = emptyList())
     val topRatedMovies = viewModel.topRatedMovies.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -41,7 +40,6 @@ fun CinematicsNavHost(navController: NavHostController,
             modifier = modifier) {
 
         composable(route = Destination.TrendingScreen.route) {
-            isNotDetailScreen(true)
             MovieListScreen(uiState = uiState,
                             movieList = trendingMovies.value,
                             navController = navController,
@@ -51,7 +49,6 @@ fun CinematicsNavHost(navController: NavHostController,
         }
 
         composable(route = Destination.TopRatedScreen.route) {
-            isNotDetailScreen(true)
             MovieListScreen(uiState = uiState,
                             movieList = topRatedMovies.value,
                             navController = navController,
@@ -61,7 +58,6 @@ fun CinematicsNavHost(navController: NavHostController,
         }
 
         composable(route = Destination.WatchListScreen.route) {
-            isNotDetailScreen(true)
             MovieListScreen(uiState = uiState,
                             movieList = watchList,
                             navController = navController,
@@ -72,7 +68,6 @@ fun CinematicsNavHost(navController: NavHostController,
 
         composable(route = Destination.DetailScreen.route,
                    arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
-            isNotDetailScreen(false)
             val movie = viewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
             var movieIsInWatchList by remember { mutableStateOf(false) }
 
