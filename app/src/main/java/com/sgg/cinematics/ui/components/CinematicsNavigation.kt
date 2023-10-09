@@ -5,6 +5,8 @@ import androidx.annotation.StringRes
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,9 +19,15 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.utils.Destination
 
+
+private val navItemList = listOf(BottomNavItemVariant.Trending,
+                                 BottomNavItemVariant.TopRated,
+                                 BottomNavItemVariant.WatchList,
+                                 BottomNavItemVariant.UserProfile)
+
 /**
  * Custom bottom navigation composable that use [NavigationBar] from MUI3. It iterate through the
- * [bottomNavItemList] to create an [NavigationBarItem] inside the [NavigationBar] composable
+ * [navItemList] to create an [NavigationBarItem] inside the [NavigationBar] composable
  * @param bottomNavList : A list of [BottomNavItemVariant] object which are the navigation destination
  * @param activeDestination: A [BottomNavItemVariant] item that is the current active destination
  *                           with [BottomNavItemVariant.Trending] as default value
@@ -31,28 +39,37 @@ fun BottomNavScreen(activeDestination: BottomNavItemVariant,
                     onItemClicked: (String) -> Unit) {
 
     NavigationBar(tonalElevation = 5.dp) {
-        bottomNavItemList.take(5)
-                .forEach { item ->
-                    NavigationBarItem(selected = item == activeDestination,
+        navItemList.take(5)
+                .forEach { navItem ->
+                    NavigationBarItem(selected = navItem == activeDestination,
                                       icon = {
-                                          Icon(painter = painterResource(id = item.iconId),
-                                               contentDescription = stringResource(id = item.iconContentDescription))
+                                          Icon(painter = painterResource(id = navItem.iconId),
+                                               contentDescription = stringResource(id = navItem.iconContentDescription))
                                       },
-                                      label = { Text(text = stringResource(id = item.textId)) },
-                                      onClick = { onItemClicked(item.route) })
+                                      label = { Text(text = stringResource(id = navItem.textId)) },
+                                      onClick = { onItemClicked(navItem.route) })
                 }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun BottomNavScreenPreview() {
-    CinematicsTheme {
-        BottomNavScreen(BottomNavItemVariant.Trending) {
-
+fun CinematicsNavigationRail(
+        activeDestination: BottomNavItemVariant,
+        modifier: Modifier = Modifier,
+        onItemClicked: (String) -> Unit
+) {
+    NavigationRail{
+        navItemList.forEach { navItem ->
+            NavigationRailItem(
+                selected = navItem == activeDestination,
+                onClick = { onItemClicked(navItem.route) },
+                icon = {
+                    Icon(painter = painterResource(id = navItem.iconId),
+                         contentDescription = stringResource(id = navItem.iconContentDescription))
+                }
+            )
         }
     }
-
 }
 
 /**
@@ -88,7 +105,23 @@ sealed class BottomNavItemVariant(@StringRes val textId: Int,
                                               route = Destination.UserProfileScreen.route)
 }
 
-private val bottomNavItemList = listOf(BottomNavItemVariant.Trending,
-                                       BottomNavItemVariant.TopRated,
-                                       BottomNavItemVariant.WatchList,
-                                       BottomNavItemVariant.UserProfile)
+
+@Preview(showBackground = true)
+@Composable
+fun BottomNavScreenPreview() {
+    CinematicsTheme {
+        BottomNavScreen(BottomNavItemVariant.Trending) {
+
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CinematicsNavigationRailPreview() {
+    CinematicsTheme {
+        CinematicsNavigationRail(
+            activeDestination = navItemList[0],
+            onItemClicked = { })
+    }
+}

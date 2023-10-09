@@ -12,6 +12,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.compose.rememberNavController
 import com.sgg.cinematics.ui.MainViewModel
@@ -72,6 +73,7 @@ private fun NavDestination.activeBottomNavItem(): BottomNavItemVariant {
     return when (this.route) {
         Destination.TopRatedScreen.route -> BottomNavItemVariant.TopRated
         Destination.WatchListScreen.route -> BottomNavItemVariant.WatchList
+        Destination.UserProfileScreen.route -> BottomNavItemVariant.UserProfile
         else -> BottomNavItemVariant.Trending
     }
 }
