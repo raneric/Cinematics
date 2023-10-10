@@ -12,7 +12,7 @@ import com.sgg.cinematics.data.repository.UiStatePreferencesRepository
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.screen.CinematicsAppScreen
 import com.sgg.cinematics.utils.Destination
-import com.sgg.cinematics.utils.UiState
+import com.sgg.cinematics.utils.MovieListUiMode
 import org.junit.Before
 import org.junit.Test
 
@@ -47,14 +47,14 @@ class CinematicsAppTest : BaseTest() {
                 .performClick()
         rule.onNodeWithTag(testTag = R.drawable.view_list_32.toString(), useUnmergedTree = true)
                 .assertIsDisplayed()
-        rule.onNodeWithTag(testTag = UiState.CarouselView.testTag)
+        rule.onNodeWithTag(testTag = MovieListUiMode.CarouselView.testTag)
                 .assertIsDisplayed()
 
         rule.onNodeWithTag(testTag = fabSwitchViewTestTag)
                 .performClick()
         rule.onNodeWithTag(testTag = R.drawable.view_carousel_32.toString(), useUnmergedTree = true)
                 .assertIsDisplayed()
-        rule.onNodeWithTag(testTag = UiState.ListView.testTag)
+        rule.onNodeWithTag(testTag = MovieListUiMode.ListView.testTag)
                 .assertIsDisplayed()
     }
 

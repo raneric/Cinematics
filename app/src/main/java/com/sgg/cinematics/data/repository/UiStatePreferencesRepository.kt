@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import com.sgg.cinematics.data.repository.PreferencesKeys.IS_LIST_VIEW
-import com.sgg.cinematics.utils.UiState
+import com.sgg.cinematics.utils.MovieListUiMode
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class UiStatePreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>){
 
-    val uiStateFlow = dataStore.data.catch { exception ->
+    val movieListUiModeFlow = dataStore.data.catch { exception ->
         if (exception is IOException) {
             emit(emptyPreferences())
         } else {
@@ -23,13 +23,13 @@ class UiStatePreferencesRepository @Inject constructor(private val dataStore: Da
     }
             .map { pref ->
                 val isList = pref[IS_LIST_VIEW] ?: true
-                if (isList) UiState.ListView else UiState.CarouselView
+                if (isList) MovieListUiMode.ListView else MovieListUiMode.CarouselView
             }
 
 
-    suspend fun updateUiState(uiState: UiState) {
+    suspend fun updateUiState(movieListUiMode: MovieListUiMode) {
         dataStore.edit { currentPref ->
-            currentPref[IS_LIST_VIEW] = uiState is UiState.ListView
+            currentPref[IS_LIST_VIEW] = movieListUiMode is MovieListUiMode.ListView
         }
     }
 

@@ -2,6 +2,7 @@ package com.sgg.cinematics.ui.components
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -58,7 +59,7 @@ fun CinematicsNavigationRail(
         modifier: Modifier = Modifier,
         onItemClicked: (String) -> Unit
 ) {
-    NavigationRail{
+    NavigationRail(modifier = modifier.padding(vertical = 50.dp)) {
         navItemList.forEach { navItem ->
             NavigationRailItem(
                 selected = navItem == activeDestination,

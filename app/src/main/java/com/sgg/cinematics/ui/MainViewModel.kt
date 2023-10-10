@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.data.repository.UiStatePreferencesRepository
-import com.sgg.cinematics.utils.UiState
+import com.sgg.cinematics.utils.MovieListUiMode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,10 +33,10 @@ class MainViewModel @Inject constructor(
     val isInWatchList
         get() = _isInWatchList
 
-    val uiListState: Flow<UiState> = uiStateRepository.uiStateFlow
+    val uiListState: Flow<MovieListUiMode> = uiStateRepository.movieListUiModeFlow
 
-    suspend fun switchListViewMode(uiState: UiState) {
-        uiStateRepository.updateUiState(uiState)
+    suspend fun switchListViewMode(movieListUiMode: MovieListUiMode) {
+        uiStateRepository.updateUiState(movieListUiMode)
     }
 
     fun addToWatchList(movie: MovieModel) {
