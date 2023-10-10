@@ -1,5 +1,9 @@
 package com.sgg.cinematics.ui.screen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -10,6 +14,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,6 +22,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.movieList
@@ -25,6 +31,55 @@ import com.sgg.cinematics.ui.components.EmptyListScreen
 import com.sgg.cinematics.ui.components.MovieCad
 import com.sgg.cinematics.ui.components.VerticalMovieCard
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
+import com.sgg.cinematics.utils.MovieListUiMode
+import com.sgg.cinematics.utils.navigateToDetailsScreen
+
+/**
+ * Main movie list composable that display movie list depending on [MovieListUiMode] and [WindowWidthSizeClass]
+ *
+ *
+ * @param movieListUiMode : display mode [MovieListUiMode.ListView] or [MovieListUiMode.CarouselView]
+ * @param movieList : List of the movie to display
+ * @param navController
+ * @param windowsWidthSizeClass
+ * @param modifier
+ */
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun MovieListScreen(movieListUiMode: MovieListUiMode,
+                    movieList: List<MovieModel>,
+                    navController: NavHostController,
+                    windowsWidthSizeClass: WindowWidthSizeClass,
+                    modifier: Modifier = Modifier) {
+
+    if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
+        AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.ListView,
+                           enter = scaleIn(),
+                           exit = fadeOut()) {
+            VerticalMovieListScreen(movieList = movieList,
+                                    modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
+                navigateToDetailsScreen(movieId = movieId, navController = navController)
+            }
+        }
+        AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.CarouselView,
+                           enter = scaleIn(),
+                           exit = fadeOut()) {
+            HorizontalMovieListScreen(movieList = movieList,
+                                      modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
+                navigateToDetailsScreen(movieId = movieId, navController = navController)
+            }
+        }
+    } else {
+        AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.CarouselView,
+                           enter = scaleIn(),
+                           exit = fadeOut()) {
+            GridMovieListScreen(movieList = movieList) { movieId ->
+                navigateToDetailsScreen(movieId = movieId, navController = navController)
+            }
+        }
+    }
+}
+
 
 /**
  * This composable use [LazyColumn] to display movie list vertically with [MovieCad] composable

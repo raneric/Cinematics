@@ -1,9 +1,5 @@
 package com.sgg.cinematics.ui.screen
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,7 +8,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -21,10 +16,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
+import com.sgg.cinematics.utils.navigateToDetailsScreen
 
 // TODO: Refactoring for this composable function
 @Composable
@@ -107,52 +102,6 @@ fun CinematicsNavHost(navController: NavHostController,
             UserProfileScreen()
         }
     }
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun MovieListScreen(movieListUiMode: MovieListUiMode,
-                    movieList: List<MovieModel>,
-                    navController: NavHostController,
-                    windowsWidthSizeClass: WindowWidthSizeClass,
-                    modifier: Modifier = Modifier) {
-
-    if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
-        AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.ListView,
-                           enter = scaleIn(),
-                           exit = fadeOut()) {
-            VerticalMovieListScreen(movieList = movieList,
-                                    modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
-                navigateToDetailsScreen(movieId = movieId, navController = navController)
-            }
-        }
-        AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.CarouselView,
-                           enter = scaleIn(),
-                           exit = fadeOut()) {
-            HorizontalMovieListScreen(movieList = movieList,
-                                      modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
-                navigateToDetailsScreen(movieId = movieId, navController = navController)
-            }
-        }
-    } else {
-        AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.CarouselView,
-                           enter = scaleIn(),
-                           exit = fadeOut()) {
-            GridMovieListScreen(movieList = movieList) { movieId ->
-                navigateToDetailsScreen(movieId = movieId, navController = navController)
-            }
-        }
-    }
-}
-
-private fun navigateToDetailsScreen(movieId: Int,
-                                    navController: NavHostController) {
-    navController.navigate(route = Destination.DetailScreen.route.addIdArgs(
-        movieId))
-}
-
-private fun String.addIdArgs(id: Int): String {
-    return this.replace("{movieId}", id.toString())
 }
 
 const val MOVIE_ID_ARGS = "movieId"
