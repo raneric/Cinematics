@@ -1,5 +1,7 @@
 package com.sgg.cinematics
 
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -22,13 +24,16 @@ class CinematicsAppTest : BaseTest() {
 
     private lateinit var uiStatePrefRepo: UiStatePreferencesRepository
 
+    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Before
     fun setup() {
         val movieRepository = TestMovieRepository()
         uiStatePrefRepo = UiStatePreferencesRepository(testDataStore)
         viewModel = MainViewModel(movieRepository, uiStatePrefRepo)
         rule.setContent {
-            CinematicsAppScreen(viewModel = viewModel)
+            val windowWIdth = calculateWindowSizeClass(activity = rule.activity)
+            CinematicsAppScreen(viewModel = viewModel,
+                                windowsWidthSizeClass = windowWIdth.widthSizeClass)
         }
     }
 
