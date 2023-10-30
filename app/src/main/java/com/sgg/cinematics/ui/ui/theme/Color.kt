@@ -64,9 +64,14 @@ val md_theme_dark_surfaceTint = Color(0xFFBBC3FF)
 val md_theme_dark_outlineVariant = Color(0xFF46464F)
 val md_theme_dark_scrim = Color(0xFF000000)
 
+///////////////////////////////////////////////////////////////////////////
+// Custom color no MUI
+///////////////////////////////////////////////////////////////////////////
+
 val seed = Color(0xFF4F64E0)
 val rating_positive = Color(0xFF89E045)
 val rating_negative = Color(0xFF8F8F8F)
 val add_to_watch_button_color = Color(0xFFF34444)
 val watched_btn_color = Color(0xFF6C9A57)
-val profil_background_color = Color(0XFFEFEEEE)
+val profile_background_color = Color(0XFFEFEEEE)
+val user_profile_txt_color = Color((0xFF666666))

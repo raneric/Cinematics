@@ -34,7 +34,13 @@ fun CinematicsAppScreen(viewModel: MainViewModel,
 
     val navController = rememberNavController()
 
-    var isNotDetailScreen: Boolean by rememberSaveable { mutableStateOf(true) }
+    var isBottomNavVisible: Boolean by rememberSaveable {
+        mutableStateOf(true)
+    }
+
+    var isFabViewSwitchVisible: Boolean by rememberSaveable {
+        mutableStateOf(true)
+    }
 
     var activeDestination: NavItemVariant by remember { mutableStateOf(NavItemVariant.Trending) }
 
@@ -42,18 +48,18 @@ fun CinematicsAppScreen(viewModel: MainViewModel,
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
         activeDestination = navDestination.activeNavItem()
-        isNotDetailScreen = navDestination.route != Destination.DetailScreen.route
+        isBottomNavVisible = navDestination.route != Destination.DetailScreen.route
+        isFabViewSwitchVisible = navDestination.route != Destination.DetailScreen.route && navDestination.route != Destination.UserProfileScreen.route
     }
 
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
-        CinematicsAppCompact(
-            isNotDetailScreen = isNotDetailScreen,
-            activeDestination = activeDestination,
-            navController = navController,
-            uiListMode = uiListMode.value,
-            windowsWidthSizeClass = windowsWidthSizeClass,
-            viewModel = viewModel
-        )
+        CinematicsAppCompact(isBottomNavVisible = isBottomNavVisible,
+                             isFabViewSwitchVisible = isFabViewSwitchVisible,
+                             activeDestination = activeDestination,
+                             navController = navController,
+                             uiListMode = uiListMode.value,
+                             windowsWidthSizeClass = windowsWidthSizeClass,
+                             viewModel = viewModel)
     } else {
         CinematicsAppMedium(navController = navController,
                             activeDestination = activeDestination,
@@ -66,7 +72,7 @@ fun CinematicsAppScreen(viewModel: MainViewModel,
 /**
  * A composable that display  app in a [Scaffold] when [WindowWidthSizeClass] is Compact
  *
- * @param isNotDetailScreen : a flag for bottomNav and fab button visibility - Hidden in details screen
+ * @param isBottomNavVisible : a flag for bottomNav and fab button visibility - Hidden in details screen
  * @param activeDestination : [NavItemVariant] that is the active Destination
  * @param navController : [NavHostController]
  * @param uiListMode : display list mode [MovieListUiMode] List or Carousel
@@ -74,35 +80,31 @@ fun CinematicsAppScreen(viewModel: MainViewModel,
  * @param modifier
  */
 @Composable
-fun CinematicsAppCompact(
-        isNotDetailScreen: Boolean,
-        activeDestination: NavItemVariant,
-        navController: NavHostController,
-        uiListMode: MovieListUiMode,
-        viewModel: MainViewModel,
-        windowsWidthSizeClass: WindowWidthSizeClass,
-        modifier: Modifier = Modifier
-) {
-    Scaffold(
-        bottomBar = {
-            AnimatedVisibility(visible = isNotDetailScreen,
-                               enter = slideInVertically(initialOffsetY = { -40 })) {
-                BottomNavScreen(activeDestination = activeDestination) {
-                    navController.navigate(route = it)
-                }
+fun CinematicsAppCompact(isBottomNavVisible: Boolean,
+                         isFabViewSwitchVisible: Boolean,
+                         activeDestination: NavItemVariant,
+                         navController: NavHostController,
+                         uiListMode: MovieListUiMode,
+                         viewModel: MainViewModel,
+                         windowsWidthSizeClass: WindowWidthSizeClass,
+                         modifier: Modifier = Modifier) {
+    Scaffold(bottomBar = {
+        AnimatedVisibility(visible = isBottomNavVisible,
+                           enter = slideInVertically(initialOffsetY = { -40 })) {
+            BottomNavScreen(activeDestination = activeDestination) {
+                navController.navigate(route = it)
             }
-        },
-        floatingActionButton = {
-            if (isNotDetailScreen) {
-                MovieDisplaySwitchFab(uiListMode.fabIcon) {
-                    val nextMovieListUiMode = if (uiListMode is MovieListUiMode.ListView) MovieListUiMode.CarouselView else MovieListUiMode.ListView
-                    CoroutineScope(Dispatchers.IO).launch {
-                        viewModel.switchListViewMode(nextMovieListUiMode)
-                    }
+        }
+    }, floatingActionButton = {
+        if (isFabViewSwitchVisible) {
+            MovieDisplaySwitchFab(uiListMode.fabIcon) {
+                val nextMovieListUiMode = if (uiListMode is MovieListUiMode.ListView) MovieListUiMode.CarouselView else MovieListUiMode.ListView
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.switchListViewMode(nextMovieListUiMode)
                 }
             }
         }
-    ) { paddingValue ->
+    }) { paddingValue ->
         CinematicsNavHost(navController = navController,
                           viewModel = viewModel,
                           movieListUiMode = uiListMode,
@@ -129,8 +131,7 @@ fun CinematicsAppMedium(navController: NavHostController,
                         windowsWidthSizeClass: WindowWidthSizeClass,
                         modifier: Modifier = Modifier) {
     Row {
-        CinematicsNavigationRail(
-            activeDestination = activeDestination) {
+        CinematicsNavigationRail(activeDestination = activeDestination) {
             navController.navigate(it)
         }
         CinematicsNavHost(navController = navController,

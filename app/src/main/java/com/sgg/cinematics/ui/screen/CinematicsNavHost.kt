@@ -16,6 +16,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
@@ -99,7 +100,7 @@ fun CinematicsNavHost(navController: NavHostController,
         }
 
         composable(route = Destination.UserProfileScreen.route) {
-            UserProfileScreen()
+            UserProfileScreen(user = userModelLists[0])
         }
     }
 }

@@ -75,3 +75,30 @@ val userRatingText = TextStyle(
     lineHeight = 24.sp,
     letterSpacing = 0.5.sp
 )
+
+val userProfileTitle = TextStyle(
+    fontFamily = FontFamily(Font(R.font.roboto_medium)),
+    fontWeight = FontWeight.Normal,
+    color = user_profile_txt_color,
+    fontSize = 16.sp,
+    lineHeight = 24.sp,
+    letterSpacing = 0.5.sp
+)
+
+val userProfileContent = TextStyle(
+    fontFamily = FontFamily(Font(R.font.roboto_medium)),
+    fontWeight = FontWeight.Normal,
+    color = user_profile_txt_color,
+    fontSize = 14.sp,
+    lineHeight = 24.sp,
+    letterSpacing = 0.5.sp
+)
+
+val userBioText = TextStyle(
+    fontFamily = FontFamily(Font(R.font.roboto_medium)),
+    fontWeight = FontWeight.Normal,
+    color = user_profile_txt_color,
+    fontSize = 12.sp,
+    lineHeight = 12.sp,
+    letterSpacing = 0.5.sp
+)
