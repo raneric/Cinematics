@@ -1,22 +1,21 @@
 package com.sgg.cinematics.ui.screen
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.core.Animatable
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -27,10 +26,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
@@ -56,15 +58,34 @@ fun UserProfileScreen(user: UserModel,
                       modifier: Modifier = Modifier) {
     val fabSize = with(LocalDensity.current) { 64.dp.toPx() }
     val scrollState = rememberScrollState()
+    val interactionSource = remember { MutableInteractionSource() }
+
+    val fabScale = remember {
+        Animatable(1f)
+    }
+
+    LaunchedEffect(interactionSource) {
+        interactionSource.interactions.collect {
+            when (it) {
+                is PressInteraction.Press -> fabScale.animateTo(targetValue = 0.8f)
+                is PressInteraction.Release -> fabScale.animateTo(targetValue = 1f)
+            }
+        }
+    }
+
     UserProfileLayout(modifier = modifier
             .padding(16.dp)
             .background(MaterialTheme.colorScheme.surface)
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .windowInsetsPadding(WindowInsets.systemBars)
             .verticalScroll(scrollState), pictureSection = {
         ProfilePictureSection(user = user, fabSize = fabSize)
     }, fab = {
         FloatingActionButton(onClick = {},
+                             modifier = Modifier
+                                     .graphicsLayer {
+                                         scaleY = fabScale.value
+                                         scaleY = fabScale.value
+                                     },
+                             interactionSource = interactionSource,
                              elevation = FloatingActionButtonDefaults.elevation(12.dp),
                              containerColor = watched_btn_color,
                              contentColor = MaterialTheme.colorScheme.onPrimary,
