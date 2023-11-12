@@ -1,9 +1,12 @@
 package com.sgg.cinematics.ui.screen
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -99,11 +102,12 @@ fun VerticalMovieListScreen(movieList: List<MovieModel>,
     } else {
         LazyColumn(modifier = modifier) {
             items(movieList) {
-                MovieCad(movie = it, modifier = Modifier
-                        .testTag(stringResource(id = R.string.test_tag_card))
-                        .clickable {
-                            onItemClicked(it.id)
-                        })
+                MovieCad(movie = it,
+                         modifier = Modifier
+                                 .testTag(stringResource(id = R.string.test_tag_card))
+                                 .clickable {
+                                     onItemClicked(it.id)
+                                 })
             }
         }
     }
@@ -118,7 +122,7 @@ fun VerticalMovieListScreen(movieList: List<MovieModel>,
  * @param onItemClicked : lambda function that will trigger the movie clicked by user and open
  * the detail screen
  */
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun HorizontalMovieListScreen(movieList: List<MovieModel>,
                               modifier: Modifier = Modifier,
@@ -129,9 +133,14 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
         EmptyListScreen()
     } else {
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
-            BackDrop(imageId = movieList[pageSate.currentPage].picture)
-            HorizontalPager(pageCount = movieList.size,
-                            state = pageSate) {
+            AnimatedContent(targetState = pageSate.currentPage,
+                            label = stringResource(id = R.string.label_backdrop_animation),
+                            transitionSpec = {
+                                fadeIn() + scaleIn() with fadeOut()
+                            }) {
+                BackDrop(imageId = movieList[it].picture)
+            }
+            HorizontalPager(pageCount = movieList.size, state = pageSate) {
                 VerticalMovieCard(movie = movieList[it],
                                   modifier = Modifier
                                           .testTag(stringResource(id = R.string.test_tag_card))
@@ -144,10 +153,9 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
 }
 
 @Composable
-fun GridMovieListScreen(
-        movieList: List<MovieModel>,
-        modifier: Modifier = Modifier,
-        onItemClicked: (Int) -> Unit) {
+fun GridMovieListScreen(movieList: List<MovieModel>,
+                        modifier: Modifier = Modifier,
+                        onItemClicked: (Int) -> Unit) {
     LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 400.dp)) {
         items(movieList) {
             MovieCad(movie = it,
@@ -193,8 +201,6 @@ fun HorizontalMovieListScreenPreview() {
 @Composable
 fun GridMovieListScreenPreview() {
     CinematicsTheme {
-        GridMovieListScreen(
-            movieList = movieList,
-            onItemClicked = {})
+        GridMovieListScreen(movieList = movieList, onItemClicked = {})
     }
 }
