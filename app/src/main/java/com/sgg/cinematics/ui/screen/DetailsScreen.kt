@@ -30,11 +30,11 @@ import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.movieList
 import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.data.userRatingModelLists
-import com.sgg.cinematics.ui.components.AverageDetailRating
 import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
-import com.sgg.cinematics.ui.components.Cast
 import com.sgg.cinematics.ui.commonui.CustomButton
+import com.sgg.cinematics.ui.components.AverageDetailRating
+import com.sgg.cinematics.ui.components.Cast
 import com.sgg.cinematics.ui.components.DETAILS_IMAGE_HEIGHT
 import com.sgg.cinematics.ui.components.GenreRow
 import com.sgg.cinematics.ui.components.MovieCadRoundedBorderCompact
@@ -55,8 +55,8 @@ fun DetailsScreen(movie: MovieModel,
                   onNavigateBack: () -> Unit) {
     val scrollState = rememberScrollState()
     Box {
-        BackDrop(imageId = movie.picture)
-        DetailsLayout(moviePicture = { MovieDetailsImage(imageId = movie.picture) },
+        BackDrop(imageUrl = movie.picture)
+        DetailsLayout(moviePicture = { MovieDetailsImage(imageUrl = movie.picture) },
                       content = {
                           DetailsContent(movie = movie,
                                          addOrRemoveWatchList = addOrRemoveToWatchList,

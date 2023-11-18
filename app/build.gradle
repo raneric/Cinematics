@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace 'com.sgg.cinematics'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.sgg.cinematics"
@@ -60,6 +60,8 @@ dependencies {
 
     implementation "androidx.compose.material3:material3:$mui3_version"
 
+    implementation "io.coil-kt:coil-compose:2.5.0"
+
     //Firebase dependency
     implementation platform('com.google.firebase:firebase-bom:32.6.0')
     implementation 'com.google.firebase:firebase-storage'
@@ -67,6 +69,9 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics"
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-auth'
+
+    //kotlin reflection
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.9.20"
 
     // Android Studio Preview support
     implementation 'androidx.compose.ui:ui-tooling-preview'

@@ -1,6 +1,6 @@
 package com.sgg.cinematics.data.model
 
-import androidx.annotation.DrawableRes
+import kotlin.reflect.full.declaredMemberProperties
 
 data class MovieModel(
         val id: Int,
@@ -10,7 +10,7 @@ data class MovieModel(
         val genres: List<String>,
         val ratingNote: Double,
         val stars: Int,
-        @DrawableRes val picture: Int,
+        val picture: String,
         val author: String,
         var overview: String = "N/A",
         var watched: Boolean = false,
@@ -19,6 +19,14 @@ data class MovieModel(
         get() {
             return duration.toDisplayedDuration()
         }
+
+    fun convertToMap(): Map<String, Any?> {
+        val result = emptyMap<String, Any?>().toMutableMap()
+        for (property in this::class.declaredMemberProperties) {
+            result[property.name] = property.getter.call(this)
+        }
+        return result
+    }
 }
 
 private fun Double.toDisplayedDuration(): String {

@@ -128,7 +128,8 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
                               modifier: Modifier = Modifier,
                               onItemClicked: (Int) -> Unit) {
 
-    val pageSate = rememberPagerState()
+    val pageSate = rememberPagerState(pageCount = { movieList.size })
+
     if (movieList.isEmpty()) {
         EmptyListScreen()
     } else {
@@ -138,9 +139,9 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
                             transitionSpec = {
                                 fadeIn() + scaleIn() with fadeOut()
                             }) {
-                BackDrop(imageId = movieList[it].picture)
+                BackDrop(imageUrl = movieList[it].picture)
             }
-            HorizontalPager(pageCount = movieList.size, state = pageSate) {
+            HorizontalPager(state = pageSate) {
                 VerticalMovieCard(movie = movieList[it],
                                   modifier = Modifier
                                           .testTag(stringResource(id = R.string.test_tag_card))

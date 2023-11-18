@@ -1,7 +1,5 @@
 package com.sgg.cinematics.ui.components
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -15,10 +13,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import coil.compose.AsyncImage
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.movieList
@@ -60,8 +58,8 @@ fun MovieCad(movie: MovieModel,
             AverageRating(ratingStars = movie.stars,
                           ratingValue = movie.ratingNote.toString(),
                           modifier = Modifier.constrainAs(rating) {
-                       top.linkTo(genre.bottom, margin = 8.dp)
-                   }
+                              top.linkTo(genre.bottom, margin = 8.dp)
+                          }
             )
         }
     }
@@ -113,8 +111,8 @@ fun MovieCadRoundedBorderCompact(movie: MovieModel,
             AverageRating(ratingStars = movie.stars,
                           ratingValue = movie.ratingNote.toString(),
                           modifier = Modifier.constrainAs(rating) {
-                       top.linkTo(genre.bottom, margin = 8.dp)
-                   }
+                              top.linkTo(genre.bottom, margin = 8.dp)
+                          }
             )
         }
     }
@@ -122,18 +120,18 @@ fun MovieCadRoundedBorderCompact(movie: MovieModel,
 
 /**
  * The card background photo with [GradientForeground] as gradient shade
- * @param picture : Drawable resources integer which is the ID of the picture resource to show
+ * @param pictureUrl : Drawable resources integer which is the ID of the picture resource to show
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun Poster(@DrawableRes picture: Int,
+fun Poster(pictureUrl: String,
            modifier: Modifier = Modifier) {
     Box(modifier = modifier
             .height(263.dp)) {
-        Image(painter = painterResource(id = picture),
-              alignment = Alignment.Center,
-              contentScale = ContentScale.Crop,
-              contentDescription = "", modifier = Modifier.matchParentSize())
+        AsyncImage(model = pictureUrl,
+                   alignment = Alignment.Center,
+                   contentScale = ContentScale.Crop,
+                   contentDescription = "", modifier = Modifier.matchParentSize())
         GradientForeground(color = Color.Black, modifier = Modifier.height(263.dp))
     }
 }

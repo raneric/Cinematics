@@ -1,6 +1,5 @@
 package com.sgg.cinematics.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -13,11 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.movieList
@@ -35,10 +34,10 @@ fun VerticalMovieCard(movie: MovieModel,
                verticalArrangement = Arrangement.spacedBy(16.dp),
                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp
                )) {
-            Image(painter = painterResource(id = movie.picture),
-                  contentDescription = stringResource(id = R.string.content_descrip_movie_image),
-                  modifier = Modifier
-                          .clip(MaterialTheme.shapes.medium))
+            AsyncImage(model = movie.picture,
+                       contentDescription = stringResource(id = R.string.content_descrip_movie_image),
+                       modifier = Modifier
+                               .clip(MaterialTheme.shapes.medium))
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.titleMedium,
