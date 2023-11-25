@@ -6,16 +6,18 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
-import androidx.compose.animation.with
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -137,11 +139,14 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
             AnimatedContent(targetState = pageSate.currentPage,
                             label = stringResource(id = R.string.label_backdrop_animation),
                             transitionSpec = {
-                                fadeIn() + scaleIn() with fadeOut()
+                                (fadeIn() + scaleIn()).togetherWith(fadeOut())
                             }) {
                 BackDrop(imageUrl = movieList[it].picture)
             }
-            HorizontalPager(state = pageSate) {
+            HorizontalPager(state = pageSate,
+                            contentPadding = PaddingValues(horizontal = 100.dp),
+                            pageSize = PageSize.Fixed(300.dp),
+                            pageSpacing = 8.dp) {
                 VerticalMovieCard(movie = movieList[it],
                                   modifier = Modifier
                                           .testTag(stringResource(id = R.string.test_tag_card))
