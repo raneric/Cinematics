@@ -18,10 +18,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.sgg.cinematics.data.userModelLists
-import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.screen.details.DetailsScreen
 import com.sgg.cinematics.ui.screen.details.DetailsViewModel
 import com.sgg.cinematics.ui.screen.movieList.MovieListScreen
+import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
 import com.sgg.cinematics.ui.screen.userProfile.UserProfileScreen
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
@@ -30,12 +30,10 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 // TODO: Refactoring for this composable function
 @Composable
 fun CinematicsNavHost(navController: NavHostController,
-                      movieListViewModel: MainViewModel,
+                      movieListViewModel: MovieListViewModel,
                       movieListUiMode: MovieListUiMode,
                       windowsWidthSizeClass: WindowWidthSizeClass,
                       modifier: Modifier = Modifier) {
-
-    val detailsViewModel = hiltViewModel<DetailsViewModel>()
 
     val trendingMovies = movieListViewModel.trendingMovies.collectAsStateWithLifecycle(initialValue = emptyList())
     val topRatedMovies = movieListViewModel.topRatedMovies.collectAsStateWithLifecycle(initialValue = emptyList())
@@ -77,13 +75,16 @@ fun CinematicsNavHost(navController: NavHostController,
 
         composable(route = Destination.DetailScreen.route,
                    arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
-            val movie = detailsViewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
+
+            val detailsViewModel = hiltViewModel<DetailsViewModel>()
+            // FIXME: Use null safe
+            val movie = detailsViewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)!!
             var movieIsInWatchList by remember { mutableStateOf(false) }
 
             LaunchedEffect(Unit) {
                 detailsViewModel.isInWatchList
-                        .collect {
-                            movieIsInWatchList = it
+                        .collect { isInWatchList ->
+                            movieIsInWatchList = isInWatchList
                         }
             }
             DetailsScreen(
@@ -95,8 +96,8 @@ fun CinematicsNavHost(navController: NavHostController,
                         detailsViewModel.addToWatchList(movie)
                     }
                 },
-                onRecommendationItemClicked = {
-                    navigateToDetailsScreen(movieId = it, navController = navController)
+                onRecommendationItemClicked = { movieId ->
+                    navigateToDetailsScreen(movieId = movieId, navController = navController)
                 },
                 modifier = Modifier.semantics {
                     contentDescription = Destination.DetailScreen.testTag

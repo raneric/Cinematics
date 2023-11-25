@@ -1,21 +1,21 @@
-package com.sgg.cinematics.data.repository
+package com.sgg.cinematics.data.repository.impl
 
+import com.sgg.cinematics.data.datasource.MovieDataSource
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.movieList
+import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.data.watchList
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class FakeMovieRepository @Inject constructor() : MovieRepository {
-
-    override fun getTrending() = flowOf(movieList)
+class MovieRepositoryImpl @Inject constructor(private val dataSource: MovieDataSource) :
+        MovieRepository {
+    override fun getTrending(): Flow<List<MovieModel>> {
+        return dataSource.getAllMovies()
+    }
 
     override fun getTopRated(): Flow<List<MovieModel>> {
-        val sortedList = movieList.sortedByDescending { it.ratingNote }
-        return flowOf(sortedList)
+        return dataSource.getTopRatedMovies()
     }
 
     override fun getWatchList(): List<MovieModel> = watchList
@@ -32,7 +32,7 @@ class FakeMovieRepository @Inject constructor() : MovieRepository {
         return watchList.contains(movie)
     }
 
-    override fun getMovie(id: Int): MovieModel {
-        return movieList.first { it.id == id }
+    override suspend fun getMovie(id: Int): MovieModel {
+        return movieList.first { it.id == id } // dataSource.getMovie(id)
     }
 }

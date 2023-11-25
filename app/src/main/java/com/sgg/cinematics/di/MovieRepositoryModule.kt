@@ -1,7 +1,7 @@
 package com.sgg.cinematics.di
 
-import com.sgg.cinematics.data.repository.FakeMovieRepository
 import com.sgg.cinematics.data.repository.MovieRepository
+import com.sgg.cinematics.data.repository.impl.MovieRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,6 +12,6 @@ import dagger.hilt.components.SingletonComponent
 abstract class MovieRepositoryModule {
 
     @Binds
-    abstract fun provideRepository(fakeMovieRepository: FakeMovieRepository): MovieRepository
+    abstract fun provideRepository(movieRepository: MovieRepositoryImpl): MovieRepository
 
 }

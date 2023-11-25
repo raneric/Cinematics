@@ -18,7 +18,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
 import com.sgg.cinematics.ui.components.BottomNavScreen
 import com.sgg.cinematics.ui.components.CinematicsNavigationRail
@@ -130,7 +129,7 @@ fun CinematicsAppCompact(isBottomNavVisible: Boolean,
 fun CinematicsAppMedium(navController: NavHostController,
                         activeDestination: NavItemVariant,
                         uiListMode: MovieListUiMode,
-                        viewModel: MainViewModel,
+                        viewModel: MovieListViewModel,
                         windowsWidthSizeClass: WindowWidthSizeClass,
                         modifier: Modifier = Modifier) {
     Row {

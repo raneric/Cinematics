@@ -16,5 +16,5 @@ interface MovieRepository {
 
     fun findInWatchList(movie: MovieModel): Boolean
 
-    fun getMovie(id: Int): MovieModel
+    suspend fun getMovie(id: Int): MovieModel
 }

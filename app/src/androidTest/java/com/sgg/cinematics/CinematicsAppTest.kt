@@ -10,7 +10,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.sgg.cinematics.data.TestMovieRepository
-import com.sgg.cinematics.data.repository.UiStatePreferencesRepository
+import com.sgg.cinematics.data.repository.impl.UiStatePreferencesRepositoryImpl
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.screen.CinematicsAppScreen
 import com.sgg.cinematics.utils.Destination
@@ -22,18 +22,17 @@ class CinematicsAppTest : BaseTest() {
 
     private lateinit var viewModel: MainViewModel
 
-    private lateinit var uiStatePrefRepo: UiStatePreferencesRepository
+    private lateinit var uiStatePrefRepo: UiStatePreferencesRepositoryImpl
 
     @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     @Before
     fun setup() {
         val movieRepository = TestMovieRepository()
-        uiStatePrefRepo = UiStatePreferencesRepository(testDataStore)
-        viewModel = MainViewModel(movieRepository, uiStatePrefRepo)
+        uiStatePrefRepo = UiStatePreferencesRepositoryImpl(testDataStore)
+        viewModel = MainViewModel(movieRepository)
         rule.setContent {
             val windowWIdth = calculateWindowSizeClass(activity = rule.activity)
-            CinematicsAppScreen(viewModel = viewModel,
-                                windowsWidthSizeClass = windowWIdth.widthSizeClass)
+            CinematicsAppScreen(windowsWidthSizeClass = windowWIdth.widthSizeClass)
         }
     }
 

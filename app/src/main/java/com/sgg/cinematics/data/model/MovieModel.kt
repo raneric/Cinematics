@@ -2,16 +2,17 @@ package com.sgg.cinematics.data.model
 
 import kotlin.reflect.full.declaredMemberProperties
 
+
 data class MovieModel(
-        val id: Int,
-        val title: String,
-        val year: Int,
-        val duration: Double,
-        val genres: List<String>,
-        val ratingNote: Double,
-        val stars: Int,
-        val picture: String,
-        val author: String,
+        val id: Int = 0,
+        val title: String = "",
+        val year: Int = 0,
+        val duration: Double = 0.0,
+        val genres: List<String> = emptyList(),
+        val ratingNote: Double = 0.0,
+        val stars: Int = 0,
+        val picture: String = "",
+        val author: String = "",
         var overview: String = "N/A",
         var watched: Boolean = false,
 ) {
