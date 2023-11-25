@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.screen
+package com.sgg.cinematics.ui.screen.details
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement

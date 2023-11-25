@@ -1,21 +1,16 @@
 package com.sgg.cinematics.ui
 
+
 import androidx.lifecycle.ViewModel
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
-import com.sgg.cinematics.data.repository.UiStatePreferencesRepository
-import com.sgg.cinematics.utils.MovieListUiMode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-
-
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(
-        private val repository: MovieRepository,
-        private val uiStateRepository: UiStatePreferencesRepository) : ViewModel() {
+open class MainViewModel @Inject constructor(
+        private val repository: MovieRepository) : ViewModel() {
 
     private var _trendingMovies: Flow<List<MovieModel>> = repository.getTrending()
     val trendingMovies: Flow<List<MovieModel>>
@@ -28,30 +23,4 @@ class MainViewModel @Inject constructor(
     private var _watchList: List<MovieModel> = repository.getWatchList()
     val watchList: List<MovieModel>
         get() = _watchList
-
-    private var _isInWatchList: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isInWatchList
-        get() = _isInWatchList
-
-    val uiListState: Flow<MovieListUiMode> = uiStateRepository.movieListUiModeFlow
-
-    suspend fun switchListViewMode(movieListUiMode: MovieListUiMode) {
-        uiStateRepository.updateUiState(movieListUiMode)
-    }
-
-    fun addToWatchList(movie: MovieModel) {
-        repository.addToWatchList(movie)
-        _isInWatchList.value = true
-    }
-
-    fun removeToWatchList(movie: MovieModel) {
-        repository.removeToWatchList(movie)
-        _isInWatchList.value = false
-    }
-
-    fun getMovie(id: Int): MovieModel {
-        val movie = repository.getMovie(id)
-        _isInWatchList.value = repository.findInWatchList(movie)
-        return movie
-    }
 }

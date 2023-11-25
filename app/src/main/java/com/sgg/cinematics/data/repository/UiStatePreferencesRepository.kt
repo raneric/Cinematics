@@ -11,8 +11,10 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class UiStatePreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>){
+@Singleton
+class UiStatePreferencesRepository @Inject constructor(private val dataStore: DataStore<Preferences>) {
 
     val movieListUiModeFlow = dataStore.data.catch { exception ->
         if (exception is IOException) {

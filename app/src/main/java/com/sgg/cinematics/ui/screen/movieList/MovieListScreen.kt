@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.screen
+package com.sgg.cinematics.ui.screen.movieList
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility

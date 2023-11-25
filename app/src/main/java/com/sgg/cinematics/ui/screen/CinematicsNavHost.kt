@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -18,6 +19,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.ui.MainViewModel
+import com.sgg.cinematics.ui.screen.details.DetailsScreen
+import com.sgg.cinematics.ui.screen.details.DetailsViewModel
+import com.sgg.cinematics.ui.screen.movieList.MovieListScreen
+import com.sgg.cinematics.ui.screen.userProfile.UserProfileScreen
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
 import com.sgg.cinematics.utils.navigateToDetailsScreen
@@ -25,14 +30,16 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 // TODO: Refactoring for this composable function
 @Composable
 fun CinematicsNavHost(navController: NavHostController,
-                      viewModel: MainViewModel,
+                      movieListViewModel: MainViewModel,
                       movieListUiMode: MovieListUiMode,
                       windowsWidthSizeClass: WindowWidthSizeClass,
                       modifier: Modifier = Modifier) {
 
-    val trendingMovies = viewModel.trendingMovies.collectAsStateWithLifecycle(initialValue = emptyList())
-    val topRatedMovies = viewModel.topRatedMovies.collectAsStateWithLifecycle(initialValue = emptyList())
-    val watchList = viewModel.watchList
+    val detailsViewModel = hiltViewModel<DetailsViewModel>()
+
+    val trendingMovies = movieListViewModel.trendingMovies.collectAsStateWithLifecycle(initialValue = emptyList())
+    val topRatedMovies = movieListViewModel.topRatedMovies.collectAsStateWithLifecycle(initialValue = emptyList())
+    val watchList = movieListViewModel.watchList
 
     NavHost(navController = navController,
             startDestination = Destination.TrendingScreen.route,
@@ -70,11 +77,11 @@ fun CinematicsNavHost(navController: NavHostController,
 
         composable(route = Destination.DetailScreen.route,
                    arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
-            val movie = viewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
+            val movie = detailsViewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)
             var movieIsInWatchList by remember { mutableStateOf(false) }
 
             LaunchedEffect(Unit) {
-                viewModel.isInWatchList
+                detailsViewModel.isInWatchList
                         .collect {
                             movieIsInWatchList = it
                         }
@@ -83,9 +90,9 @@ fun CinematicsNavHost(navController: NavHostController,
                 movie = movie,
                 addOrRemoveToWatchList = {
                     if (movieIsInWatchList) {
-                        viewModel.removeToWatchList(movie)
+                        detailsViewModel.removeToWatchList(movie)
                     } else {
-                        viewModel.addToWatchList(movie)
+                        detailsViewModel.addToWatchList(movie)
                     }
                 },
                 onRecommendationItemClicked = {

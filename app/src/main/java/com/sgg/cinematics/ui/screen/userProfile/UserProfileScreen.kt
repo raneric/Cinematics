@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.screen
+package com.sgg.cinematics.ui.screen.userProfile
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.Animatable

@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
@@ -22,6 +23,7 @@ import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
 import com.sgg.cinematics.ui.components.BottomNavScreen
 import com.sgg.cinematics.ui.components.CinematicsNavigationRail
 import com.sgg.cinematics.ui.components.NavItemVariant
+import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
 import kotlinx.coroutines.CoroutineScope
@@ -29,8 +31,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun CinematicsAppScreen(viewModel: MainViewModel,
-                        windowsWidthSizeClass: WindowWidthSizeClass) {
+fun CinematicsAppScreen(windowsWidthSizeClass: WindowWidthSizeClass) {
+
+    val movieListViewModel = hiltViewModel<MovieListViewModel>()
 
     val navController = rememberNavController()
 
@@ -44,7 +47,7 @@ fun CinematicsAppScreen(viewModel: MainViewModel,
 
     var activeDestination: NavItemVariant by remember { mutableStateOf(NavItemVariant.Trending) }
 
-    val uiListMode = viewModel.uiListState.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
+    val uiListMode = movieListViewModel.uiListState.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
         activeDestination = navDestination.activeNavItem()
@@ -59,12 +62,12 @@ fun CinematicsAppScreen(viewModel: MainViewModel,
                              navController = navController,
                              uiListMode = uiListMode.value,
                              windowsWidthSizeClass = windowsWidthSizeClass,
-                             viewModel = viewModel)
+                             viewModel = movieListViewModel)
     } else {
         CinematicsAppMedium(navController = navController,
                             activeDestination = activeDestination,
                             uiListMode = uiListMode.value,
-                            viewModel = viewModel,
+                            viewModel = movieListViewModel,
                             windowsWidthSizeClass = windowsWidthSizeClass)
     }
 }
@@ -85,14 +88,14 @@ fun CinematicsAppCompact(isBottomNavVisible: Boolean,
                          activeDestination: NavItemVariant,
                          navController: NavHostController,
                          uiListMode: MovieListUiMode,
-                         viewModel: MainViewModel,
+                         viewModel: MovieListViewModel,
                          windowsWidthSizeClass: WindowWidthSizeClass,
                          modifier: Modifier = Modifier) {
     Scaffold(bottomBar = {
         AnimatedVisibility(visible = isBottomNavVisible,
                            enter = slideInVertically(initialOffsetY = { -40 })) {
-            BottomNavScreen(activeDestination = activeDestination) {
-                navController.navigate(route = it)
+            BottomNavScreen(activeDestination = activeDestination) { destinationRoute ->
+                navController.navigate(route = destinationRoute)
             }
         }
     }, floatingActionButton = {
@@ -106,7 +109,7 @@ fun CinematicsAppCompact(isBottomNavVisible: Boolean,
         }
     }) { paddingValue ->
         CinematicsNavHost(navController = navController,
-                          viewModel = viewModel,
+                          movieListViewModel = viewModel,
                           movieListUiMode = uiListMode,
                           windowsWidthSizeClass = windowsWidthSizeClass,
                           modifier = Modifier.padding(paddingValue))
@@ -135,7 +138,7 @@ fun CinematicsAppMedium(navController: NavHostController,
             navController.navigate(it)
         }
         CinematicsNavHost(navController = navController,
-                          viewModel = viewModel,
+                          movieListViewModel = viewModel,
                           movieListUiMode = uiListMode,
                           windowsWidthSizeClass = windowsWidthSizeClass)
     }
