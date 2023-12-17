@@ -2,7 +2,6 @@ package com.sgg.cinematics.data.repository.impl
 
 import com.sgg.cinematics.data.datasource.MovieDataSource
 import com.sgg.cinematics.data.model.MovieModel
-import com.sgg.cinematics.data.movieList
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.data.watchList
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +31,7 @@ class MovieRepositoryImpl @Inject constructor(private val dataSource: MovieDataS
         return watchList.contains(movie)
     }
 
-    override suspend fun getMovie(id: Int): MovieModel {
-        return movieList.first { it.id == id } // dataSource.getMovie(id)
+    override suspend fun getMovie(id: Int): MovieModel? {
+        return dataSource.getMovie(id)
     }
 }

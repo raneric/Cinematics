@@ -25,11 +25,12 @@ class MovieDataSourceImpl @Inject constructor(private val firestore: FirebaseFir
                 .dataObjects()
     }
 
-    override suspend fun getMovie(id: String): MovieModel? {
+    override suspend fun getMovie(id: Int): MovieModel? {
         return firestore.collection(MOVIE_COLLECTION)
-                .document(id)
+                .whereEqualTo("id", id)
                 .get()
                 .await()
-                .toObject()
+                .first()
+                .toObject<MovieModel>()
     }
 }

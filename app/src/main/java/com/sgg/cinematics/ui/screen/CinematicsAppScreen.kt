@@ -44,14 +44,16 @@ fun CinematicsAppScreen(windowsWidthSizeClass: WindowWidthSizeClass) {
         mutableStateOf(true)
     }
 
-    var activeDestination: NavItemVariant by remember { mutableStateOf(NavItemVariant.Trending) }
+    var activeDestination: NavItemVariant by remember {
+        mutableStateOf(NavItemVariant.Trending)
+    }
 
     val uiListMode = movieListViewModel.uiListState.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
         activeDestination = navDestination.activeNavItem()
         isBottomNavVisible = navDestination.route != Destination.DetailScreen.route
-        isFabViewSwitchVisible = navDestination.route != Destination.DetailScreen.route && navDestination.route != Destination.UserProfileScreen.route
+        isFabViewSwitchVisible = navDestination.isIntListDestination()
     }
 
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
@@ -90,6 +92,7 @@ fun CinematicsAppCompact(isBottomNavVisible: Boolean,
                          viewModel: MovieListViewModel,
                          windowsWidthSizeClass: WindowWidthSizeClass,
                          modifier: Modifier = Modifier) {
+
     Scaffold(bottomBar = {
         AnimatedVisibility(visible = isBottomNavVisible,
                            enter = slideInVertically(initialOffsetY = { -40 })) {
@@ -155,3 +158,5 @@ private fun NavDestination.activeNavItem(): NavItemVariant {
         else -> NavItemVariant.Trending
     }
 }
+
+private fun NavDestination.isIntListDestination() = this.route != Destination.DetailScreen.route && this.route != Destination.UserProfileScreen.route

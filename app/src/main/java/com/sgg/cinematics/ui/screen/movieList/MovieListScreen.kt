@@ -27,16 +27,20 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.movieList
+import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.components.EmptyListScreen
 import com.sgg.cinematics.ui.components.MovieCad
 import com.sgg.cinematics.ui.components.VerticalMovieCard
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.utils.MovieListUiMode
+import com.sgg.cinematics.utils.UiState
 import com.sgg.cinematics.utils.navigateToDetailsScreen
 
 /**
@@ -52,11 +56,13 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieListScreen(movieListUiMode: MovieListUiMode,
+                    modifier: Modifier = Modifier,
                     movieList: List<MovieModel>,
                     navController: NavHostController,
                     windowsWidthSizeClass: WindowWidthSizeClass,
-                    modifier: Modifier = Modifier) {
-
+                    onItemClicked: (Int) -> Unit) {
+    val viewModel = hiltViewModel<MainViewModel>()
+    val uiState = viewModel.uiState.collectAsStateWithLifecycle(initialValue = UiState.Loading())
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
         AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.ListView,
                            enter = scaleIn(),
@@ -64,6 +70,7 @@ fun MovieListScreen(movieListUiMode: MovieListUiMode,
             VerticalMovieListScreen(movieList = movieList,
                                     modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
+                onItemClicked(movieId)
             }
         }
         AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.CarouselView,
@@ -72,6 +79,7 @@ fun MovieListScreen(movieListUiMode: MovieListUiMode,
             HorizontalMovieListScreen(movieList = movieList,
                                       modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
+                onItemClicked(movieId)
             }
         }
     } else {
@@ -80,6 +88,7 @@ fun MovieListScreen(movieListUiMode: MovieListUiMode,
                            exit = fadeOut()) {
             GridMovieListScreen(movieList = movieList) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
+                onItemClicked(movieId)
             }
         }
     }

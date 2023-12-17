@@ -6,6 +6,7 @@ import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.ui.MainViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,6 +15,9 @@ class DetailsViewModel @Inject constructor(private val repository: MovieReposito
         MainViewModel(repository) {
 
     private var _isInWatchList: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
+    private var _selectedMovie = MutableStateFlow<MovieModel?>(null)
+    val selectedMovie = _selectedMovie.asStateFlow()
 
     val isInWatchList
         get() = _isInWatchList
@@ -28,12 +32,12 @@ class DetailsViewModel @Inject constructor(private val repository: MovieReposito
         _isInWatchList.value = false
     }
 
-    fun getMovie(id: Int): MovieModel {
-        var movie: MovieModel? = null
+    fun updateSelectedMovie(id: Int) {
         viewModelScope.launch {
-            movie = repository.getMovie(id)
+            repository.getMovie(id)
+                    ?.let {
+                        _selectedMovie.value = it
+                    }
         }
-        // _isInWatchList.value = repository.findInWatchList(movie)
-        return movie!!
     }
 }

@@ -9,5 +9,5 @@ interface MovieDataSource {
 
     fun getTopRatedMovies(): Flow<List<MovieModel>>
 
-    suspend fun getMovie(id: String): MovieModel?
+    suspend fun getMovie(id: Int): MovieModel?
 }

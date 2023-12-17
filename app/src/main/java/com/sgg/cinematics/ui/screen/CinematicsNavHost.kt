@@ -38,6 +38,7 @@ fun CinematicsNavHost(navController: NavHostController,
     val trendingMovies = movieListViewModel.trendingMovies.collectAsStateWithLifecycle(initialValue = emptyList())
     val topRatedMovies = movieListViewModel.topRatedMovies.collectAsStateWithLifecycle(initialValue = emptyList())
     val watchList = movieListViewModel.watchList
+    val detailsViewModel = hiltViewModel<DetailsViewModel>()
 
     NavHost(navController = navController,
             startDestination = Destination.TrendingScreen.route,
@@ -50,7 +51,9 @@ fun CinematicsNavHost(navController: NavHostController,
                             windowsWidthSizeClass = windowsWidthSizeClass,
                             modifier = Modifier.semantics {
                                 contentDescription = Destination.TrendingScreen.testTag
-                            })
+                            }) { movieId ->
+                detailsViewModel.updateSelectedMovie(movieId)
+            }
         }
 
         composable(route = Destination.TopRatedScreen.route) {
@@ -60,7 +63,9 @@ fun CinematicsNavHost(navController: NavHostController,
                             windowsWidthSizeClass = windowsWidthSizeClass,
                             modifier = Modifier.semantics {
                                 contentDescription = Destination.TopRatedScreen.testTag
-                            })
+                            }) { movieId ->
+                detailsViewModel.updateSelectedMovie(movieId)
+            }
         }
 
         composable(route = Destination.WatchListScreen.route) {
@@ -70,39 +75,39 @@ fun CinematicsNavHost(navController: NavHostController,
                             windowsWidthSizeClass = windowsWidthSizeClass,
                             modifier = Modifier.semantics {
                                 contentDescription = Destination.WatchListScreen.testTag
-                            })
+                            }) { movieId ->
+                detailsViewModel.updateSelectedMovie(movieId)
+            }
         }
 
         composable(route = Destination.DetailScreen.route,
                    arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
 
-            val detailsViewModel = hiltViewModel<DetailsViewModel>()
             // FIXME: Use null safe
-            val movie = detailsViewModel.getMovie(backStackEntry.arguments?.getInt(MOVIE_ID_ARGS)!!)!!
+            val movie = detailsViewModel.selectedMovie.collectAsStateWithLifecycle()
             var movieIsInWatchList by remember { mutableStateOf(false) }
 
             LaunchedEffect(Unit) {
-                detailsViewModel.isInWatchList
-                        .collect { isInWatchList ->
-                            movieIsInWatchList = isInWatchList
-                        }
+                detailsViewModel.isInWatchList.collect { isInWatchList ->
+                    movieIsInWatchList = isInWatchList
+                }
             }
-            DetailsScreen(
-                movie = movie,
-                addOrRemoveToWatchList = {
-                    if (movieIsInWatchList) {
-                        detailsViewModel.removeToWatchList(movie)
-                    } else {
-                        detailsViewModel.addToWatchList(movie)
-                    }
-                },
-                onRecommendationItemClicked = { movieId ->
-                    navigateToDetailsScreen(movieId = movieId, navController = navController)
-                },
-                modifier = Modifier.semantics {
-                    contentDescription = Destination.DetailScreen.testTag
-                },
-                isInWatchList = movieIsInWatchList) {
+            DetailsScreen(movie = movie.value!!,
+                          addOrRemoveToWatchList = { // FIXME: Update this finction
+                              /* if (movieIsInWatchList) {
+                                   detailsViewModel.removeToWatchList(movie)
+                               } else {
+                                   detailsViewModel.addToWatchList(movie)
+                               }*/
+                          },
+                          onRecommendationItemClicked = { movieId ->
+                              navigateToDetailsScreen(movieId = movieId,
+                                                      navController = navController)
+                          },
+                          modifier = Modifier.semantics {
+                              contentDescription = Destination.DetailScreen.testTag
+                          },
+                          isInWatchList = movieIsInWatchList) {
                 navController.navigateUp()
             }
         }
