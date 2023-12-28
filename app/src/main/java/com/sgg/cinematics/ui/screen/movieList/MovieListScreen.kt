@@ -27,20 +27,16 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.movieList
-import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.components.EmptyListScreen
 import com.sgg.cinematics.ui.components.MovieCad
 import com.sgg.cinematics.ui.components.VerticalMovieCard
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.utils.MovieListUiMode
-import com.sgg.cinematics.utils.UiState
 import com.sgg.cinematics.utils.navigateToDetailsScreen
 
 /**
@@ -55,37 +51,42 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
  */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun MovieListScreen(movieListUiMode: MovieListUiMode,
-                    modifier: Modifier = Modifier,
-                    movieList: List<MovieModel>,
-                    navController: NavHostController,
-                    windowsWidthSizeClass: WindowWidthSizeClass,
-                    onItemClicked: (Int) -> Unit) {
-    val viewModel = hiltViewModel<MainViewModel>()
-    val uiState = viewModel.uiState.collectAsStateWithLifecycle(initialValue = UiState.Loading())
+fun MovieListScreen(
+        movieListUiMode: MovieListUiMode,
+        modifier: Modifier = Modifier,
+        movieList: List<MovieModel>,
+        navController: NavHostController,
+        windowsWidthSizeClass: WindowWidthSizeClass,
+        onItemClicked: (Int) -> Unit
+) {
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
-        AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.ListView,
-                           enter = scaleIn(),
-                           exit = fadeOut()) {
-            VerticalMovieListScreen(movieList = movieList,
-                                    modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
+        AnimatedVisibility(
+            visible = movieListUiMode is MovieListUiMode.ListView,
+            enter = scaleIn(),
+            exit = fadeOut()) {
+            VerticalMovieListScreen(
+                movieList = movieList,
+                modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
                 onItemClicked(movieId)
             }
         }
-        AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.CarouselView,
-                           enter = scaleIn(),
-                           exit = fadeOut()) {
-            HorizontalMovieListScreen(movieList = movieList,
-                                      modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
+        AnimatedVisibility(
+            visible = movieListUiMode is MovieListUiMode.CarouselView,
+            enter = scaleIn(),
+            exit = fadeOut()) {
+            HorizontalMovieListScreen(
+                movieList = movieList,
+                modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
                 onItemClicked(movieId)
             }
         }
     } else {
-        AnimatedVisibility(visible = movieListUiMode is MovieListUiMode.CarouselView,
-                           enter = scaleIn(),
-                           exit = fadeOut()) {
+        AnimatedVisibility(
+            visible = movieListUiMode is MovieListUiMode.CarouselView,
+            enter = scaleIn(),
+            exit = fadeOut()) {
             GridMovieListScreen(movieList = movieList) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
                 onItemClicked(movieId)
@@ -104,22 +105,19 @@ fun MovieListScreen(movieListUiMode: MovieListUiMode,
  * the detail screen
  */
 @Composable
-fun VerticalMovieListScreen(movieList: List<MovieModel>,
-                            modifier: Modifier = Modifier,
-                            onItemClicked: (Int) -> Unit) {
-
-    if (movieList.isEmpty()) {
-        EmptyListScreen()
-    } else {
-        LazyColumn(modifier = modifier) {
-            items(movieList) {
-                MovieCad(movie = it,
-                         modifier = Modifier
-                                 .testTag(stringResource(id = R.string.test_tag_card))
-                                 .clickable {
-                                     onItemClicked(it.id)
-                                 })
-            }
+fun VerticalMovieListScreen(
+        movieList: List<MovieModel>,
+        modifier: Modifier = Modifier,
+        onItemClicked: (Int) -> Unit
+) {
+    LazyColumn(modifier = modifier) {
+        items(movieList) {
+            MovieCad(movie = it,
+                     modifier = Modifier
+                             .testTag(stringResource(id = R.string.test_tag_card))
+                             .clickable {
+                                 onItemClicked(it.id)
+                             })
         }
     }
 }
@@ -135,9 +133,11 @@ fun VerticalMovieListScreen(movieList: List<MovieModel>,
  */
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
-fun HorizontalMovieListScreen(movieList: List<MovieModel>,
-                              modifier: Modifier = Modifier,
-                              onItemClicked: (Int) -> Unit) {
+fun HorizontalMovieListScreen(
+        movieList: List<MovieModel>,
+        modifier: Modifier = Modifier,
+        onItemClicked: (Int) -> Unit
+) {
 
     val pageSate = rememberPagerState(pageCount = { movieList.size })
 
@@ -152,10 +152,11 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
                             }) {
                 BackDrop(imageUrl = movieList[it].picture)
             }
-            HorizontalPager(state = pageSate,
-                            contentPadding = PaddingValues(horizontal = 100.dp),
-                            pageSize = PageSize.Fixed(300.dp),
-                            pageSpacing = 8.dp) {
+            HorizontalPager(
+                state = pageSate,
+                contentPadding = PaddingValues(horizontal = 100.dp),
+                pageSize = PageSize.Fixed(300.dp),
+                pageSpacing = 8.dp) {
                 VerticalMovieCard(movie = movieList[it],
                                   modifier = Modifier
                                           .testTag(stringResource(id = R.string.test_tag_card))
@@ -168,9 +169,11 @@ fun HorizontalMovieListScreen(movieList: List<MovieModel>,
 }
 
 @Composable
-fun GridMovieListScreen(movieList: List<MovieModel>,
-                        modifier: Modifier = Modifier,
-                        onItemClicked: (Int) -> Unit) {
+fun GridMovieListScreen(
+        movieList: List<MovieModel>,
+        modifier: Modifier = Modifier,
+        onItemClicked: (Int) -> Unit
+) {
     LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 400.dp)) {
         items(movieList) {
             MovieCad(movie = it,

@@ -47,25 +47,29 @@ import com.sgg.cinematics.ui.ui.theme.md_theme_light_tertiary
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailsScreen(movie: MovieModel,
-                  isInWatchList: Boolean,
-                  addOrRemoveToWatchList: () -> Unit,
-                  onRecommendationItemClicked: (Int) -> Unit,
-                  modifier: Modifier = Modifier,
-                  onNavigateBack: () -> Unit) {
+fun DetailsScreen(
+        movie: MovieModel,
+        isInWatchList: Boolean,
+        addOrRemoveToWatchList: () -> Unit,
+        onRecommendationItemClicked: (Int) -> Unit,
+        modifier: Modifier = Modifier,
+        onNavigateBack: () -> Unit
+) {
     val scrollState = rememberScrollState()
     Box {
         BackDrop(imageUrl = movie.picture)
-        DetailsLayout(moviePicture = { MovieDetailsImage(imageUrl = movie.picture) },
-                      content = {
-                          DetailsContent(movie = movie,
-                                         addOrRemoveWatchList = addOrRemoveToWatchList,
-                                         onRecommendationItemClicked = onRecommendationItemClicked,
-                                         isInWatchList = isInWatchList)
-                      },
-                      modifier = modifier
-                              .verticalScroll(scrollState))
         BackNavigationFab(onNavigateBack = onNavigateBack)
+        DetailsLayout(
+            moviePicture = { MovieDetailsImage(imageUrl = movie.picture) },
+            content = {
+                DetailsContent(
+                    movie = movie,
+                    addOrRemoveWatchList = addOrRemoveToWatchList,
+                    onRecommendationItemClicked = onRecommendationItemClicked,
+                    isInWatchList = isInWatchList)
+            },
+            modifier = modifier
+                    .verticalScroll(scrollState))
     }
 }
 
@@ -80,11 +84,14 @@ fun DetailsScreen(movie: MovieModel,
 fun DetailsLayout(
         moviePicture: @Composable () -> Unit,
         content: @Composable () -> Unit,
-        modifier: Modifier = Modifier) {
+        modifier: Modifier = Modifier
+) {
 
-    Layout(contents = listOf(moviePicture,
-                             content),
-           modifier = modifier) { (moviePictureMeasurable, contentMeasurable), constraint ->
+    Layout(
+        contents = listOf(
+            moviePicture,
+            content),
+        modifier = modifier) { (moviePictureMeasurable, contentMeasurable), constraint ->
 
         val moviePicturePlaceable = moviePictureMeasurable.first()
                 .measure(constraint)
@@ -111,15 +118,18 @@ fun DetailsLayout(
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun DetailsContent(movie: MovieModel,
-                   isInWatchList: Boolean,
-                   addOrRemoveWatchList: () -> Unit,
-                   onRecommendationItemClicked: (Int) -> Unit,
-                   modifier: Modifier = Modifier) {
+fun DetailsContent(
+        movie: MovieModel,
+        isInWatchList: Boolean,
+        addOrRemoveWatchList: () -> Unit,
+        onRecommendationItemClicked: (Int) -> Unit,
+        modifier: Modifier = Modifier
+) {
 
     Surface(modifier = modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
-        ConstraintLayout(modifier = Modifier
-                .padding(horizontal = dimensionResource(id = R.dimen.low_dp))
+        ConstraintLayout(
+            modifier = Modifier
+                    .padding(horizontal = dimensionResource(id = R.dimen.low_dp))
         ) {
             val (movieInfo, genre, overview, cast, rating, userRatings, recommendation, button) = createRefs()
 
@@ -153,8 +163,9 @@ fun DetailsContent(movie: MovieModel,
                                 ratingValue = movie.ratingNote,
                                 modifier = Modifier
                                         .constrainAs(rating) {
-                                            top.linkTo(anchor = cast.bottom,
-                                                       margin = SECTION_MARGIN)
+                                            top.linkTo(
+                                                anchor = cast.bottom,
+                                                margin = SECTION_MARGIN)
                                         })
 
             UserRatings(ratingList = userRatingModelLists,
@@ -165,16 +176,18 @@ fun DetailsContent(movie: MovieModel,
             RecommendationSection(movieList = movieList,
                                   onRecommendationItemClicked = onRecommendationItemClicked,
                                   modifier = Modifier.constrainAs(recommendation) {
-                                      top.linkTo(anchor = userRatings.bottom,
-                                                 margin = SECTION_MARGIN)
+                                      top.linkTo(
+                                          anchor = userRatings.bottom,
+                                          margin = SECTION_MARGIN)
                                   })
 
             CustomButton(inWatchList = isInWatchList,
                          modifier = Modifier
                                  .testTag(stringResource(id = R.string.test_tag_button))
                                  .constrainAs(button) {
-                                     top.linkTo(anchor = recommendation.bottom,
-                                                margin = SECTION_MARGIN)
+                                     top.linkTo(
+                                         anchor = recommendation.bottom,
+                                         margin = SECTION_MARGIN)
                                      bottom.linkTo(anchor = parent.bottom, margin = 8.dp)
                                  }) {
                 addOrRemoveWatchList()
@@ -184,13 +197,17 @@ fun DetailsContent(movie: MovieModel,
 }
 
 @Composable
-fun MovieInfoSection(movie: MovieModel,
-                     modifier: Modifier = Modifier) {
-    Column(verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.low_dp)),
-           modifier = modifier) {
-        Text(text = movie.title,
-             modifier = Modifier.widthIn(max = 200.dp),
-             style = MaterialTheme.typography.titleLarge)
+fun MovieInfoSection(
+        movie: MovieModel,
+        modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.low_dp)),
+        modifier = modifier) {
+        Text(
+            text = movie.title,
+            modifier = Modifier.widthIn(max = 200.dp),
+            style = MaterialTheme.typography.titleLarge)
         MovieInfoDetails(
             year = movie.year,
             duration = movie.displayedDuration,
@@ -200,19 +217,25 @@ fun MovieInfoSection(movie: MovieModel,
 }
 
 @Composable
-fun OverviewSection(text: String,
-                    modifier: Modifier = Modifier) {
-    DetailsSection(title = stringResource(id = R.string.txt_overview_section),
-                   modifier = modifier) {
+fun OverviewSection(
+        text: String,
+        modifier: Modifier = Modifier
+) {
+    DetailsSection(
+        title = stringResource(id = R.string.txt_overview_section),
+        modifier = modifier) {
         Overview(text = text)
     }
 }
 
 @Composable
-fun CastSection(userModelList: List<UserModel>,
-                modifier: Modifier = Modifier) {
-    DetailsSection(title = stringResource(id = R.string.txt_cast_section),
-                   modifier = modifier) {
+fun CastSection(
+        userModelList: List<UserModel>,
+        modifier: Modifier = Modifier
+) {
+    DetailsSection(
+        title = stringResource(id = R.string.txt_cast_section),
+        modifier = modifier) {
         Cast(userModels = userModelList)
     }
 }
@@ -224,23 +247,29 @@ fun CastSection(userModelList: List<UserModel>,
  * @param content : composable argument that will be displayed in the section
  */
 @Composable
-fun DetailsSection(title: String,
-                   modifier: Modifier = Modifier,
-                   content: @Composable () -> Unit) {
+fun DetailsSection(
+        title: String,
+        modifier: Modifier = Modifier,
+        content: @Composable () -> Unit
+) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text(text = title,
-             style = MaterialTheme.typography.titleMedium,
-             modifier = Modifier.widthIn(max = 200.dp))
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.widthIn(max = 200.dp))
         content()
     }
 }
 
 @Composable
-fun RecommendationSection(movieList: List<MovieModel>,
-                          onRecommendationItemClicked: (Int) -> Unit,
-                          modifier: Modifier = Modifier) {
-    DetailsSection(title = stringResource(id = R.string.txt_recomendation_section),
-                   modifier = modifier) {
+fun RecommendationSection(
+        movieList: List<MovieModel>,
+        onRecommendationItemClicked: (Int) -> Unit,
+        modifier: Modifier = Modifier
+) {
+    DetailsSection(
+        title = stringResource(id = R.string.txt_recomendation_section),
+        modifier = modifier) {
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(movieList) {
                 MovieCadRoundedBorderCompact(movie = it,
@@ -257,10 +286,11 @@ fun RecommendationSection(movieList: List<MovieModel>,
 fun DetailsScreenPreview() {
     val movie = movieList[1]
     CinematicsTheme {
-        DetailsScreen(movie = movie,
-                      addOrRemoveToWatchList = {},
-                      onRecommendationItemClicked = {},
-                      isInWatchList = false) {
+        DetailsScreen(
+            movie = movie,
+            addOrRemoveToWatchList = {},
+            onRecommendationItemClicked = {},
+            isInWatchList = false) {
 
         }
     }

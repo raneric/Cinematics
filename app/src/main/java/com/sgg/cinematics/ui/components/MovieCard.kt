@@ -21,6 +21,7 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.movieList
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
+import com.sgg.cinematics.ui.ui.theme.md_theme_light_onPrimary
 
 /**
  * A card composable that display movies information and using [Poster] as background
@@ -28,8 +29,10 @@ import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun MovieCad(movie: MovieModel,
-             modifier: Modifier = Modifier) {
+fun MovieCad(
+        movie: MovieModel,
+        modifier: Modifier = Modifier
+) {
 
     Box(modifier = modifier.height(263.dp)) {
         Poster(movie.picture)
@@ -38,7 +41,7 @@ fun MovieCad(movie: MovieModel,
             Text(
                 text = movie.title,
                 style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = md_theme_light_onPrimary,
                 modifier = Modifier.constrainAs(tittle) {
                     top.linkTo(anchor = parent.top, margin = 76.dp)
                 }
@@ -71,20 +74,26 @@ fun MovieCad(movie: MovieModel,
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun MovieCadRoundedBorder(movie: MovieModel,
-                          modifier: Modifier = Modifier) {
-    MovieCad(movie = movie,
-             modifier = modifier
-                     .clip(MaterialTheme.shapes.small)
+fun MovieCadRoundedBorder(
+        movie: MovieModel,
+        modifier: Modifier = Modifier
+) {
+    MovieCad(
+        movie = movie,
+        modifier = modifier
+                .clip(MaterialTheme.shapes.small)
     )
 }
 
 @Composable
-fun MovieCadRoundedBorderCompact(movie: MovieModel,
-                                 modifier: Modifier = Modifier) {
-    Box(modifier = modifier
-            .size(width = 348.dp, height = 210.dp)
-            .clip(MaterialTheme.shapes.small)) {
+fun MovieCadRoundedBorderCompact(
+        movie: MovieModel,
+        modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+                .size(width = 348.dp, height = 210.dp)
+                .clip(MaterialTheme.shapes.small)) {
         Poster(movie.picture)
         ConstraintLayout(modifier = Modifier.offset(x = 12.dp)) {
             val (tittle, movieInfo, genre, rating) = createRefs()
@@ -124,14 +133,18 @@ fun MovieCadRoundedBorderCompact(movie: MovieModel,
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun Poster(pictureUrl: String,
-           modifier: Modifier = Modifier) {
-    Box(modifier = modifier
-            .height(263.dp)) {
-        AsyncImage(model = pictureUrl,
-                   alignment = Alignment.Center,
-                   contentScale = ContentScale.Crop,
-                   contentDescription = "", modifier = Modifier.matchParentSize())
+fun Poster(
+        pictureUrl: String,
+        modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+                .height(263.dp)) {
+        AsyncImage(
+            model = pictureUrl,
+            alignment = Alignment.Center,
+            contentScale = ContentScale.Crop,
+            contentDescription = "", modifier = Modifier.matchParentSize())
         GradientForeground(color = Color.Black, modifier = Modifier.height(263.dp))
     }
 }

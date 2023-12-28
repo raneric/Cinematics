@@ -1,7 +1,10 @@
 package com.sgg.cinematics.utils
 
 import com.sgg.cinematics.data.model.MovieModel
+import kotlinx.coroutines.flow.Flow
 
-data class UiData(val trendingList: List<MovieModel>,
-                  val topRatedList: List<MovieModel>,
-                  val watchList: List<MovieModel>)
+sealed class UiData {
+    data class ListScreenData(val movieList: Flow<List<MovieModel>>) : UiData()
+
+    data class DetailScreenData(val movie: MovieModel) : UiData()
+}

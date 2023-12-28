@@ -48,28 +48,34 @@ fun CinematicsAppScreen(windowsWidthSizeClass: WindowWidthSizeClass) {
         mutableStateOf(NavItemVariant.Trending)
     }
 
-    val uiListMode = movieListViewModel.uiListState.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
+    val uiListMode = movieListViewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
         activeDestination = navDestination.activeNavItem()
         isBottomNavVisible = navDestination.route != Destination.DetailScreen.route
         isFabViewSwitchVisible = navDestination.isIntListDestination()
+
+        navDestination.route?.let { route ->
+            movieListViewModel.updateUiState(route)
+        }
     }
 
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
-        CinematicsAppCompact(isBottomNavVisible = isBottomNavVisible,
-                             isFabViewSwitchVisible = isFabViewSwitchVisible,
-                             activeDestination = activeDestination,
-                             navController = navController,
-                             uiListMode = uiListMode.value,
-                             windowsWidthSizeClass = windowsWidthSizeClass,
-                             viewModel = movieListViewModel)
+        CinematicsAppCompact(
+            isBottomNavVisible = isBottomNavVisible,
+            isFabViewSwitchVisible = isFabViewSwitchVisible,
+            activeDestination = activeDestination,
+            navController = navController,
+            uiListMode = uiListMode.value,
+            windowsWidthSizeClass = windowsWidthSizeClass,
+            viewModel = movieListViewModel)
     } else {
-        CinematicsAppMedium(navController = navController,
-                            activeDestination = activeDestination,
-                            uiListMode = uiListMode.value,
-                            viewModel = movieListViewModel,
-                            windowsWidthSizeClass = windowsWidthSizeClass)
+        CinematicsAppMedium(
+            navController = navController,
+            activeDestination = activeDestination,
+            uiListMode = uiListMode.value,
+            viewModel = movieListViewModel,
+            windowsWidthSizeClass = windowsWidthSizeClass)
     }
 }
 
@@ -84,14 +90,16 @@ fun CinematicsAppScreen(windowsWidthSizeClass: WindowWidthSizeClass) {
  * @param modifier
  */
 @Composable
-fun CinematicsAppCompact(isBottomNavVisible: Boolean,
-                         isFabViewSwitchVisible: Boolean,
-                         activeDestination: NavItemVariant,
-                         navController: NavHostController,
-                         uiListMode: MovieListUiMode,
-                         viewModel: MovieListViewModel,
-                         windowsWidthSizeClass: WindowWidthSizeClass,
-                         modifier: Modifier = Modifier) {
+fun CinematicsAppCompact(
+        isBottomNavVisible: Boolean,
+        isFabViewSwitchVisible: Boolean,
+        activeDestination: NavItemVariant,
+        navController: NavHostController,
+        uiListMode: MovieListUiMode,
+        viewModel: MovieListViewModel,
+        windowsWidthSizeClass: WindowWidthSizeClass,
+        modifier: Modifier = Modifier
+) {
 
     Scaffold(bottomBar = {
         AnimatedVisibility(visible = isBottomNavVisible,
@@ -110,11 +118,12 @@ fun CinematicsAppCompact(isBottomNavVisible: Boolean,
             }
         }
     }) { paddingValue ->
-        CinematicsNavHost(navController = navController,
-                          movieListViewModel = viewModel,
-                          movieListUiMode = uiListMode,
-                          windowsWidthSizeClass = windowsWidthSizeClass,
-                          modifier = Modifier.padding(paddingValue))
+        CinematicsNavHost(
+            navController = navController,
+            movieListViewModel = viewModel,
+            movieListUiMode = uiListMode,
+            windowsWidthSizeClass = windowsWidthSizeClass,
+            modifier = Modifier.padding(paddingValue))
     }
 }
 
@@ -129,20 +138,23 @@ fun CinematicsAppCompact(isBottomNavVisible: Boolean,
  * @param modifier
  */
 @Composable
-fun CinematicsAppMedium(navController: NavHostController,
-                        activeDestination: NavItemVariant,
-                        uiListMode: MovieListUiMode,
-                        viewModel: MovieListViewModel,
-                        windowsWidthSizeClass: WindowWidthSizeClass,
-                        modifier: Modifier = Modifier) {
+fun CinematicsAppMedium(
+        navController: NavHostController,
+        activeDestination: NavItemVariant,
+        uiListMode: MovieListUiMode,
+        viewModel: MovieListViewModel,
+        windowsWidthSizeClass: WindowWidthSizeClass,
+        modifier: Modifier = Modifier
+) {
     Row {
         CinematicsNavigationRail(activeDestination = activeDestination) {
             navController.navigate(it)
         }
-        CinematicsNavHost(navController = navController,
-                          movieListViewModel = viewModel,
-                          movieListUiMode = uiListMode,
-                          windowsWidthSizeClass = windowsWidthSizeClass)
+        CinematicsNavHost(
+            navController = navController,
+            movieListViewModel = viewModel,
+            movieListUiMode = uiListMode,
+            windowsWidthSizeClass = windowsWidthSizeClass)
     }
 }
 

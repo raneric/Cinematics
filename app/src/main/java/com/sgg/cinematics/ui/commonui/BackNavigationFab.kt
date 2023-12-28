@@ -15,18 +15,22 @@ import androidx.compose.ui.unit.dp
 import com.sgg.cinematics.R
 
 @Composable
-fun BackNavigationFab(modifier: Modifier = Modifier,
-                      onNavigateBack: () -> Unit) {
+fun BackNavigationFab(
+        modifier: Modifier = Modifier,
+        onNavigateBack: () -> Unit
+) {
     FloatingActionButton(
         onClick = onNavigateBack,
         elevation = FloatingActionButtonDefaults.elevation(12.dp),
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
         shape = CircleShape,
-        modifier = modifier.offset(x = dimensionResource(id = R.dimen.low_dp),
-                                   y = dimensionResource(
-                                       id = R.dimen.extra_high_dp))) {
-        Icon(painter = painterResource(id = R.drawable.arrow_back_24),
-             contentDescription = stringResource(id = R.string.content_descrip_back_fab))
+        modifier = modifier.offset(
+            x = dimensionResource(id = R.dimen.low_dp),
+            y = dimensionResource(
+                id = R.dimen.high_dp))) {
+        Icon(
+            painter = painterResource(id = R.drawable.arrow_back_24),
+            contentDescription = stringResource(id = R.string.content_descrip_back_fab))
     }
 }

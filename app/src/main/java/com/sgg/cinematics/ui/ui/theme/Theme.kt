@@ -77,7 +77,7 @@ private val DarkColorScheme = darkColorScheme(
 @Composable
 fun CinematicsTheme(
         darkTheme: Boolean = isSystemInDarkTheme(),
-        dynamicColor: Boolean = true,
+        dynamicColor: Boolean = false,
         content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -89,21 +89,6 @@ fun CinematicsTheme(
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
-    
-    /*val view = LocalView.current
-    if (!view.isInEditMode) {
-        // FIXME: Using an alternative to all deprecated 
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.Transparent.toArgb()
-            ViewCompat.setOnApplyWindowInsetsListener(view) { _, _ ->
-                WindowInsetsCompat.CONSUMED
-            }
-            WindowCompat.getInsetsController(window, view)?.isAppearanceLightStatusBars = darkTheme
-        }
-    }*/
 
     MaterialTheme(
         colorScheme = colorScheme,

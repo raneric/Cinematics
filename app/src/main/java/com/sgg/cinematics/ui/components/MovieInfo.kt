@@ -11,12 +11,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.sgg.cinematics.R
+import com.sgg.cinematics.ui.ui.theme.md_theme_light_onPrimary
 
 @Composable
 fun MovieInfo(year: Int,
               duration: String,
               author: String,
-              textColor: Color = MaterialTheme.colorScheme.onPrimary,
+              textColor: Color = md_theme_light_onPrimary,
               compact: Boolean = false,
               modifier: Modifier = Modifier) {
 

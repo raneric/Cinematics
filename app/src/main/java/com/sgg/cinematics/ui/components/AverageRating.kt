@@ -25,6 +25,7 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.UserRatingModel
 import com.sgg.cinematics.data.userRatingModelLists
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
+import com.sgg.cinematics.ui.ui.theme.md_theme_light_onPrimary
 import com.sgg.cinematics.ui.ui.theme.ratingTypo
 import com.sgg.cinematics.ui.ui.theme.rating_negative
 import com.sgg.cinematics.ui.ui.theme.rating_positive
@@ -39,7 +40,7 @@ import com.sgg.cinematics.utils.formatDate
 @Composable
 fun AverageRating(ratingStars: Int,
                   ratingValue: String,
-                  textColor: Color = MaterialTheme.colorScheme.onPrimary,
+                  textColor: Color = md_theme_light_onPrimary,
                   modifier: Modifier = Modifier) {
     Row(verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
