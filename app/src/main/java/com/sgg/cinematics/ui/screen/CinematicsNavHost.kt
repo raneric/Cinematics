@@ -41,7 +41,7 @@ fun CinematicsNavHost(
 ) {
 
     val detailsViewModel = hiltViewModel<DetailsViewModel>()
-    
+
     val listViewModel = hiltViewModel<MovieListViewModel>()
     val watchList = movieListViewModel.watchList
 
@@ -112,22 +112,24 @@ fun CinematicsNavHost(
                 }
             }
 
-            ScreenWrapper(uiState = detailsUiState.value, componentOnSuccess = {
-                val uiData = (detailsUiState.value as UiState.Success).uiData as UiData.DetailScreenData
-                DetailsScreen(
-                    movie = uiData.movie,
-                    addOrRemoveToWatchList = { TODO() },
-                    onRecommendationItemClicked = { movieId ->
-                        navigateToDetailsScreen(
-                            movieId = movieId, navController = navController)
-                    },
-                    modifier = Modifier.semantics {
-                        contentDescription = Destination.DetailScreen.testTag
-                    },
-                    isInWatchList = movieIsInWatchList) {
-                    navController.navigateUp()
-                }
-            }, componentOnError = {/*TODO*/ })
+            ScreenWrapper(
+                uiState = detailsUiState.value,
+                componentOnSuccess = {
+                    val uiData = (detailsUiState.value as UiState.Success).uiData as UiData.DetailScreenData
+                    DetailsScreen(
+                        movie = uiData.movie,
+                        addOrRemoveToWatchList = { TODO() },
+                        onRecommendationItemClicked = { movieId ->
+                            navigateToDetailsScreen(
+                                movieId = movieId, navController = navController)
+                        },
+                        modifier = Modifier.semantics {
+                            contentDescription = Destination.DetailScreen.testTag
+                        },
+                        isInWatchList = movieIsInWatchList) {
+                        navController.navigateUp()
+                    }
+                }, componentOnError = {/*TODO*/ })
         }
 
         composable(route = Destination.UserProfileScreen.route) {
@@ -151,10 +153,11 @@ fun CinematicsNavHost(
 @Composable
 fun ScreenWrapper(
         uiState: UiState,
+        modifier: Modifier = Modifier,
         componentOnSuccess: @Composable () -> Unit,
         componentOnError: @Composable () -> Unit,
-        modifier: Modifier = Modifier
-) {
+
+        ) {
     if (uiState is UiState.Loading) {
         LoadingScreen()
     }

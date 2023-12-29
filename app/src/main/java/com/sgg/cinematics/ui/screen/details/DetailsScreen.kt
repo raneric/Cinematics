@@ -58,7 +58,6 @@ fun DetailsScreen(
     val scrollState = rememberScrollState()
     Box {
         BackDrop(imageUrl = movie.picture)
-        BackNavigationFab(onNavigateBack = onNavigateBack)
         DetailsLayout(
             moviePicture = { MovieDetailsImage(imageUrl = movie.picture) },
             content = {
@@ -70,6 +69,7 @@ fun DetailsScreen(
             },
             modifier = modifier
                     .verticalScroll(scrollState))
+        BackNavigationFab(onNavigateBack = onNavigateBack)
     }
 }
 

@@ -13,3 +13,8 @@ data class UserModel(
         val bio: String? = null,
         @DrawableRes val picture: Int,
 )
+
+data class AuthUser(
+        val email: String,
+        val password: String
+)

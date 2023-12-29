@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Cinematics</string>
 
+    <string name="placeholder_password">Password</string>
+    <string name="placeholder_mail">e-mail</string>
+
     <string name="title_activity_main">Cinematics</string>
     <string name="txt_trending">Trending</string>
     <string name="txt_no_item_found">No Item found</string>
@@ -13,6 +16,10 @@
     <string name="txt_user_profile">Profile</string>
     <string name="txt_user_info_tittle">User Info</string>
     <string name="txt_bio_tittle">Bio</string>
+    <string name="txt_add_to_watch_btn">Add to watchlist</string>
+    <string name="txt_remove_to_watch_btn">Remove to watchlist</string>
+    <string name="txt_watch_list">Watchlist</string>
+    <string name="txt_login_btn">Login</string>
     <string name="txt_overview_preview_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper.
         Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat.
@@ -20,9 +27,6 @@
         Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero.
         Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est.
         Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero</string>
-    <string name="txt_add_to_watch_btn">Add to watchlist</string>
-    <string name="txt_remove_to_watch_btn">Remove to watchlist</string>
-    <string name="txt_watch_list">Watchlist</string>
 
     <string name="content_descrip_read_more">Button read more on overview</string>
     <string name="content_descrip_watch_list">watchlist movies</string>
@@ -35,6 +39,8 @@
     <string name="content_descrip_top_rated_screen">Top rated movies screen</string>
     <string name="content_descrip_watchlist_screen">Watchlist movies screen</string>
     <string name="content_descrip_user_profile">User profile</string>
+    <string name="content_descrip_password_icon">Password icon</string>
+    <string name="content_descrip_mail_icon">Mail icon</string>
 
     <string name="label_movie_year">Year: %1$s</string>
     <string name="label_movie_duration">Duration: %1$s</string>
