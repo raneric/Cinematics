@@ -21,9 +21,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
-import com.sgg.cinematics.ui.ui.theme.add_to_watch_button_color
 import com.sgg.cinematics.ui.ui.theme.customButtonTextStyle
-import com.sgg.cinematics.ui.ui.theme.watched_btn_color
+import com.sgg.cinematics.ui.ui.theme.custom_green_btn_color
+import com.sgg.cinematics.ui.ui.theme.custom_red_button_color
 
 @Composable
 fun CustomButton(
@@ -33,7 +33,7 @@ fun CustomButton(
 ) {
 
     val animatedColor by animateColorAsState(
-        if (inWatchList) watched_btn_color else add_to_watch_button_color,
+        if (inWatchList) custom_green_btn_color else custom_red_button_color,
         label = "custom_button_color",
         animationSpec = tween(
             durationMillis = 300,

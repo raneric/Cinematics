@@ -47,15 +47,17 @@ import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.ProfileBackgroundShape
 import com.sgg.cinematics.ui.ui.theme.ShapeCutPosition
+import com.sgg.cinematics.ui.ui.theme.custom_green_btn_color
 import com.sgg.cinematics.ui.ui.theme.profile_background_color
 import com.sgg.cinematics.ui.ui.theme.userBioText
 import com.sgg.cinematics.ui.ui.theme.userProfileContent
 import com.sgg.cinematics.ui.ui.theme.userProfileTitle
-import com.sgg.cinematics.ui.ui.theme.watched_btn_color
 
 @Composable
-fun UserProfileScreen(user: UserModel,
-                      modifier: Modifier = Modifier) {
+fun UserProfileScreen(
+        user: UserModel,
+        modifier: Modifier = Modifier
+) {
     val fabSize = with(LocalDensity.current) { 64.dp.toPx() }
     val scrollState = rememberScrollState()
     val interactionSource = remember { MutableInteractionSource() }
@@ -79,19 +81,21 @@ fun UserProfileScreen(user: UserModel,
             .verticalScroll(scrollState), pictureSection = {
         ProfilePictureSection(user = user, fabSize = fabSize)
     }, fab = {
-        FloatingActionButton(onClick = {},
-                             modifier = Modifier
-                                     .graphicsLayer {
-                                         scaleY = fabScale.value
-                                         scaleY = fabScale.value
-                                     },
-                             interactionSource = interactionSource,
-                             elevation = FloatingActionButtonDefaults.elevation(12.dp),
-                             containerColor = watched_btn_color,
-                             contentColor = MaterialTheme.colorScheme.onPrimary,
-                             shape = CircleShape) {
-            Icon(painter = painterResource(id = R.drawable.icon_edit_32),
-                 contentDescription = stringResource(id = R.string.content_descrip_back_fab))
+        FloatingActionButton(
+            onClick = {},
+            modifier = Modifier
+                    .graphicsLayer {
+                        scaleY = fabScale.value
+                        scaleY = fabScale.value
+                    },
+            interactionSource = interactionSource,
+            elevation = FloatingActionButtonDefaults.elevation(12.dp),
+            containerColor = custom_green_btn_color,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            shape = CircleShape) {
+            Icon(
+                painter = painterResource(id = R.drawable.icon_edit_32),
+                contentDescription = stringResource(id = R.string.content_descrip_back_fab))
         }
     }, userInfo = {
         UserInfoSection(user = user, fabSize = fabSize)
@@ -99,13 +103,16 @@ fun UserProfileScreen(user: UserModel,
 }
 
 @Composable
-fun UserProfileLayout(pictureSection: @Composable () -> Unit,
-                      fab: @Composable () -> Unit,
-                      userInfo: @Composable () -> Unit,
-                      modifier: Modifier = Modifier) {
+fun UserProfileLayout(
+        pictureSection: @Composable () -> Unit,
+        fab: @Composable () -> Unit,
+        userInfo: @Composable () -> Unit,
+        modifier: Modifier = Modifier
+) {
 
-    Layout(contents = listOf(pictureSection, fab, userInfo),
-           modifier = modifier) { (pictureSectionMeasurable, fabMeasurable, userInfoMeasurable), constraint ->
+    Layout(
+        contents = listOf(pictureSection, fab, userInfo),
+        modifier = modifier) { (pictureSectionMeasurable, fabMeasurable, userInfoMeasurable), constraint ->
 
         val sectionMargin = 24.dp.toPx()
 
@@ -135,17 +142,20 @@ fun UserProfileLayout(pictureSection: @Composable () -> Unit,
 }
 
 @Composable
-fun ProfilePictureSection(user: UserModel,
-                          fabSize: Float,
-                          modifier: Modifier = Modifier) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
-           verticalArrangement = Arrangement.SpaceAround,
-           modifier = Modifier
-                   .fillMaxWidth()
-                   .height(275.dp)
-                   .clip(MaterialTheme.shapes.medium)
-                   .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.BOTTOM_RIGHT))
-                   .background(profile_background_color)) {
+fun ProfilePictureSection(
+        user: UserModel,
+        fabSize: Float,
+        modifier: Modifier = Modifier
+) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier
+                .fillMaxWidth()
+                .height(275.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.BOTTOM_RIGHT))
+                .background(profile_background_color)) {
         Image(
             painter = painterResource(id = user.picture),
             contentDescription = "",
@@ -160,16 +170,19 @@ fun ProfilePictureSection(user: UserModel,
 }
 
 @Composable
-fun UserInfoSection(user: UserModel,
-                    fabSize: Float,
-                    modifier: Modifier = Modifier) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp),
-           modifier = modifier
-                   .fillMaxWidth()
-                   .clip(MaterialTheme.shapes.medium)
-                   .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.TOP_RIGHT))
-                   .background(profile_background_color)
-                   .padding(10.dp)) {
+fun UserInfoSection(
+        user: UserModel,
+        fabSize: Float,
+        modifier: Modifier = Modifier
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+                .fillMaxWidth()
+                .clip(MaterialTheme.shapes.medium)
+                .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.TOP_RIGHT))
+                .background(profile_background_color)
+                .padding(10.dp)) {
         Text(text = stringResource(id = R.string.txt_user_info_tittle), style = userProfileTitle)
         Divider(color = Color(0xFFD1D1D1))
         UserInfoItem(text = user.userName, R.drawable.icon_user_name)
@@ -186,32 +199,40 @@ fun UserInfoSection(user: UserModel,
 }
 
 @Composable
-fun Bio(text: String,
-        modifier: Modifier = Modifier) {
+fun Bio(
+        text: String,
+        modifier: Modifier = Modifier
+) {
     BioLayout(tittle = {
-        Text(text = stringResource(id = R.string.txt_bio_tittle),
-             style = userProfileTitle,
-             textAlign = TextAlign.Center,
-             modifier = Modifier
-                     .background(color = profile_background_color)
-                     .widthIn(min = 30.dp))
+        Text(
+            text = stringResource(id = R.string.txt_bio_tittle),
+            style = userProfileTitle,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                    .background(color = profile_background_color)
+                    .widthIn(min = 30.dp))
     }, textBio = {
-        Text(text = text,
-             style = userBioText,
-             modifier = Modifier
-                     .fillMaxWidth()
-                     .border(BorderStroke(1.dp, Color(0xFFE1E1E1)),
-                             shape = MaterialTheme.shapes.small)
-                     .padding(horizontal = 8.dp, vertical = 12.dp))
+        Text(
+            text = text,
+            style = userBioText,
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        BorderStroke(1.dp, Color(0xFFE1E1E1)),
+                        shape = MaterialTheme.shapes.small)
+                    .padding(horizontal = 8.dp, vertical = 12.dp))
     }, modifier = modifier)
 }
 
 @Composable
-fun BioLayout(tittle: @Composable () -> Unit,
-              textBio: @Composable () -> Unit,
-              modifier: Modifier = Modifier) {
-    Layout(contents = listOf(tittle, textBio),
-           modifier = modifier) { (titleMeasurable, textMeasurable), constraint ->
+fun BioLayout(
+        tittle: @Composable () -> Unit,
+        textBio: @Composable () -> Unit,
+        modifier: Modifier = Modifier
+) {
+    Layout(
+        contents = listOf(tittle, textBio),
+        modifier = modifier) { (titleMeasurable, textMeasurable), constraint ->
         val tittlePlaceable = titleMeasurable.first()
                 .measure(constraint)
         val textPlaceable = textMeasurable.first()
@@ -236,13 +257,16 @@ fun UserProfileScreenPreview() {
 }
 
 @Composable
-fun UserInfoItem(text: String,
-                 @DrawableRes icon: Int,
-                 modifier: Modifier = Modifier) {
+fun UserInfoItem(
+        text: String,
+        @DrawableRes icon: Int,
+        modifier: Modifier = Modifier
+) {
     Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = modifier) {
-        Image(painter = painterResource(id = icon),
-              contentDescription = "TODO",
-              modifier = Modifier.size(16.dp))
+        Image(
+            painter = painterResource(id = icon),
+            contentDescription = "TODO",
+            modifier = Modifier.size(16.dp))
         Text(text = text, style = userProfileContent)
     }
 }

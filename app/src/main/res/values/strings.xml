@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Cinematics</string>
 
-    <string name="placeholder_password">Password</string>
-    <string name="placeholder_mail">e-mail</string>
+    <string name="placeholder_password">Password...</string>
+    <string name="placeholder_mail">Email...</string>
 
     <string name="title_activity_main">Cinematics</string>
     <string name="txt_trending">Trending</string>
@@ -19,7 +19,8 @@
     <string name="txt_add_to_watch_btn">Add to watchlist</string>
     <string name="txt_remove_to_watch_btn">Remove to watchlist</string>
     <string name="txt_watch_list">Watchlist</string>
-    <string name="txt_login_btn">Login</string>
+    <string name="txt_login_btn">Login with email</string>
+    <string name="txt_login_with_google_btn">Login with google</string>
     <string name="txt_overview_preview_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper.
         Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat.

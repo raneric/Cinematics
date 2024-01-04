@@ -15,6 +15,7 @@ data class UserModel(
 )
 
 data class AuthUser(
+        val uid: String? = null,
         val email: String,
         val password: String
 )

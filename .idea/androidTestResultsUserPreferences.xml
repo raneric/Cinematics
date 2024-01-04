@@ -17,6 +17,20 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-810454882">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="WXGA_API_26" value="120" />
+                  <entry key="Xiaomi Redmi Note 9 Pro Max" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-777181129">
           <value>
             <AndroidTestResultsTableState>
@@ -38,6 +52,19 @@
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_5_API_26" value="120" />
                   <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-320595890">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="WXGA_API_26" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -66,6 +93,19 @@
                   <entry key="Pixel_5_API_26" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi Redmi Note 9 Pro Max" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-125966072">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="WXGA_API_26" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>
@@ -137,6 +177,19 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="653811484">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="WXGA_API_26" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="697161899">
           <value>
             <AndroidTestResultsTableState>
@@ -158,6 +211,19 @@
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_5_API_26" value="120" />
                   <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="1814504119">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Tests" value="360" />
+                  <entry key="WXGA_API_26" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

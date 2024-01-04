@@ -9,5 +9,5 @@ sealed interface UiData {
 
     data class DetailScreenData(val movie: MovieModel) : UiData
 
-    data class LoginUiState(val user: AuthUser?) : UiData
+    data class LoginUiState(var user: AuthUser?) : UiData
 }

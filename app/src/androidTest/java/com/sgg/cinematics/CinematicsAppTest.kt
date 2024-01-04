@@ -12,6 +12,7 @@ import androidx.compose.ui.test.performScrollTo
 import com.sgg.cinematics.data.TestMovieRepository
 import com.sgg.cinematics.data.repository.impl.UiStatePreferencesRepositoryImpl
 import com.sgg.cinematics.ui.MainViewModel
+import com.sgg.cinematics.ui.components.NavItemVariant
 import com.sgg.cinematics.ui.screen.CinematicsAppScreen
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
@@ -31,8 +32,8 @@ class CinematicsAppTest : BaseTest() {
         uiStatePrefRepo = UiStatePreferencesRepositoryImpl(testDataStore)
         viewModel = MainViewModel(movieRepository)
         rule.setContent {
-            val windowWIdth = calculateWindowSizeClass(activity = rule.activity)
-            CinematicsAppScreen(windowsWidthSizeClass = windowWIdth.widthSizeClass)
+            val windowWidth = calculateWindowSizeClass(activity = rule.activity)
+            CinematicsAppScreen(windowsWidthSizeClass = windowWidth.widthSizeClass)
         }
     }
 
@@ -92,6 +93,13 @@ class CinematicsAppTest : BaseTest() {
                 .assertDoesNotExist()
         rule.onNodeWithTag(testTag = fabViewSwitchTestTag, useUnmergedTree = true)
                 .assertDoesNotExist()
+    }
+
+    @Test
+    fun test_display_login_in_profile_screen_when_no_user_connected() {
+        val content = rule.activity.getString(NavItemVariant.UserProfile.iconContentDescription)
+        rule.onNodeWithContentDescription(content)
+                .performClick()
     }
 
     private fun navigateToDetailsScreen() {

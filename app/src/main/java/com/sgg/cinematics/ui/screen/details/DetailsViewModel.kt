@@ -17,15 +17,17 @@ class DetailsViewModel @Inject constructor(private val repository: MovieReposito
         MainViewModel(repository) {
 
     private var _detailsUiState = MutableStateFlow<UiState>(UiState.Loading())
-    val detailsUiState = _detailsUiState.asStateFlow()
+    val detailsUiState
+        get() = _detailsUiState.asStateFlow()
 
     private var _isInWatchList: MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    private var _selectedMovie = MutableStateFlow<MovieModel?>(null)
-    val selectedMovie = _selectedMovie.asStateFlow()
-
     val isInWatchList
         get() = _isInWatchList
+
+
+    private var _selectedMovie = MutableStateFlow<MovieModel?>(null)
+    val selectedMovie
+        get() = _selectedMovie.asStateFlow()
 
     fun addToWatchList(movie: MovieModel) {
         repository.addToWatchList(movie)

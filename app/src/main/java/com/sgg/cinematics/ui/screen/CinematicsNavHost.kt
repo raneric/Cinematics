@@ -21,6 +21,7 @@ import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.ui.commonui.LoadingScreen
 import com.sgg.cinematics.ui.screen.details.DetailsScreen
 import com.sgg.cinematics.ui.screen.details.DetailsViewModel
+import com.sgg.cinematics.ui.screen.login.LoginScreen
 import com.sgg.cinematics.ui.screen.movieList.MovieListScreen
 import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
 import com.sgg.cinematics.ui.screen.userProfile.UserProfileScreen
@@ -47,6 +48,8 @@ fun CinematicsNavHost(
 
     val detailsUiState = detailsViewModel.detailsUiState.collectAsStateWithLifecycle()
     val listUiState = listViewModel.listUiState.collectAsStateWithLifecycle()
+
+    val connectedUser = listViewModel.connectedUser?.collectAsStateWithLifecycle()
 
     NavHost(
         navController = navController,
@@ -133,7 +136,15 @@ fun CinematicsNavHost(
         }
 
         composable(route = Destination.UserProfileScreen.route) {
-            UserProfileScreen(user = userModelLists[0])
+            if (connectedUser == null) {
+                LoginScreen()
+            } else {
+                UserProfileScreen(user = userModelLists[0])
+            }
+        }
+
+        composable(route = Destination.LoginScreen.route) {
+            LoginScreen()
         }
     }
 }
