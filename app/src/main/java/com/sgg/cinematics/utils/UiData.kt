@@ -1,6 +1,6 @@
 package com.sgg.cinematics.utils
 
-import com.sgg.cinematics.data.model.AuthUser
+import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.data.model.MovieModel
 import kotlinx.coroutines.flow.Flow
 
@@ -9,5 +9,5 @@ sealed interface UiData {
 
     data class DetailScreenData(val movie: MovieModel) : UiData
 
-    data class LoginUiState(var user: AuthUser?) : UiData
+    data class LoginUiState(var user: FirebaseUser?) : UiData
 }

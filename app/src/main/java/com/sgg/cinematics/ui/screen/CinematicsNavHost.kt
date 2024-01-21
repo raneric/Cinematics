@@ -1,5 +1,10 @@
 package com.sgg.cinematics.ui.screen
 
+import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.foundation.background
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -8,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,11 +23,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.ui.commonui.LoadingScreen
 import com.sgg.cinematics.ui.screen.details.DetailsScreen
 import com.sgg.cinematics.ui.screen.details.DetailsViewModel
 import com.sgg.cinematics.ui.screen.login.LoginScreen
+import com.sgg.cinematics.ui.screen.login.LoginViewModel
 import com.sgg.cinematics.ui.screen.movieList.MovieListScreen
 import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
 import com.sgg.cinematics.ui.screen.userProfile.UserProfileScreen
@@ -35,6 +43,7 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 @Composable
 fun CinematicsNavHost(
         navController: NavHostController,
+        user: FirebaseUser?,
         movieListViewModel: MovieListViewModel,
         movieListUiMode: MovieListUiMode,
         windowsWidthSizeClass: WindowWidthSizeClass,
@@ -57,39 +66,35 @@ fun CinematicsNavHost(
         modifier = modifier) {
 
         composable(route = Destination.TrendingScreen.route) {
-            ScreenWrapper(
-                uiState = listUiState.value,
-                componentOnSuccess = {
-                    val uiData = (listUiState.value as UiState.Success).uiData as UiData.ListScreenData
-                    val trendingMovies = uiData.movieList.collectAsStateWithLifecycle(initialValue = emptyList())
-                    MovieListScreen(movieListUiMode = movieListUiMode,
-                                    movieList = trendingMovies.value,
-                                    navController = navController,
-                                    windowsWidthSizeClass = windowsWidthSizeClass,
-                                    modifier = Modifier.semantics {
-                                        contentDescription = Destination.TrendingScreen.testTag
-                                    }) { movieId ->
-                        detailsViewModel.updateUiState(movieId)
-                    }
-                }, componentOnError = { /*TODO*/ })
+            ScreenWrapper(uiState = listUiState.value, componentOnSuccess = {
+                val uiData = (listUiState.value as UiState.Success).uiData as UiData.ListScreenData
+                val trendingMovies = uiData.movieList.collectAsStateWithLifecycle(initialValue = emptyList())
+                MovieListScreen(movieListUiMode = movieListUiMode,
+                                movieList = trendingMovies.value,
+                                navController = navController,
+                                windowsWidthSizeClass = windowsWidthSizeClass,
+                                modifier = Modifier.semantics {
+                                    contentDescription = Destination.TrendingScreen.testTag
+                                }) { movieId ->
+                    detailsViewModel.updateUiState(movieId)
+                }
+            }, componentOnError = { /*TODO*/ })
         }
 
         composable(route = Destination.TopRatedScreen.route) {
-            ScreenWrapper(
-                uiState = listUiState.value,
-                componentOnSuccess = {
-                    val uiData = (listUiState.value as UiState.Success).uiData as UiData.ListScreenData
-                    val topRated = uiData.movieList.collectAsStateWithLifecycle(initialValue = emptyList())
-                    MovieListScreen(movieListUiMode = movieListUiMode,
-                                    movieList = topRated.value,
-                                    navController = navController,
-                                    windowsWidthSizeClass = windowsWidthSizeClass,
-                                    modifier = Modifier.semantics {
-                                        contentDescription = Destination.TrendingScreen.testTag
-                                    }) { movieId ->
-                        detailsViewModel.updateUiState(movieId)
-                    }
-                }, componentOnError = { /*TODO*/ })
+            ScreenWrapper(uiState = listUiState.value, componentOnSuccess = {
+                val uiData = (listUiState.value as UiState.Success).uiData as UiData.ListScreenData
+                val topRated = uiData.movieList.collectAsStateWithLifecycle(initialValue = emptyList())
+                MovieListScreen(movieListUiMode = movieListUiMode,
+                                movieList = topRated.value,
+                                navController = navController,
+                                windowsWidthSizeClass = windowsWidthSizeClass,
+                                modifier = Modifier.semantics {
+                                    contentDescription = Destination.TrendingScreen.testTag
+                                }) { movieId ->
+                    detailsViewModel.updateUiState(movieId)
+                }
+            }, componentOnError = { /*TODO*/ })
         }
 
         composable(route = Destination.WatchListScreen.route) {
@@ -115,36 +120,60 @@ fun CinematicsNavHost(
                 }
             }
 
-            ScreenWrapper(
-                uiState = detailsUiState.value,
-                componentOnSuccess = {
-                    val uiData = (detailsUiState.value as UiState.Success).uiData as UiData.DetailScreenData
-                    DetailsScreen(
-                        movie = uiData.movie,
-                        addOrRemoveToWatchList = { TODO() },
-                        onRecommendationItemClicked = { movieId ->
-                            navigateToDetailsScreen(
-                                movieId = movieId, navController = navController)
-                        },
-                        modifier = Modifier.semantics {
-                            contentDescription = Destination.DetailScreen.testTag
-                        },
-                        isInWatchList = movieIsInWatchList) {
-                        navController.navigateUp()
-                    }
-                }, componentOnError = {/*TODO*/ })
+            ScreenWrapper(uiState = detailsUiState.value, componentOnSuccess = {
+                val uiData = (detailsUiState.value as UiState.Success).uiData as UiData.DetailScreenData
+                DetailsScreen(
+                    movie = uiData.movie,
+                    addOrRemoveToWatchList = { TODO() },
+                    onRecommendationItemClicked = { movieId ->
+                        navigateToDetailsScreen(
+                            movieId = movieId, navController = navController)
+                    },
+                    modifier = Modifier.semantics {
+                        contentDescription = Destination.DetailScreen.testTag
+                    },
+                    isInWatchList = movieIsInWatchList) {
+                    navController.navigateUp()
+                }
+            }, componentOnError = {/*TODO*/ })
         }
 
         composable(route = Destination.UserProfileScreen.route) {
-            if (connectedUser == null) {
-                LoginScreen()
+
+            if (user == null) {
+                navController.navigate(Destination.LoginScreen.route)
             } else {
                 UserProfileScreen(user = userModelLists[0])
             }
         }
 
         composable(route = Destination.LoginScreen.route) {
-            LoginScreen()
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            val userData = loginViewModel.userLoginData.collectAsStateWithLifecycle()
+            val isEmailValid = loginViewModel.isEmailValid.collectAsStateWithLifecycle()
+            val loadingState = loginViewModel.loginUiState.collectAsStateWithLifecycle()
+
+            LoginScreen(userData = userData.value,
+                        isEmailValid = isEmailValid.value,
+                        updateEmail = { loginViewModel.updateEmail(it) },
+                        updatePassword = { loginViewModel.updatePassword(it) },
+                        login = { loginViewModel.login(navController) })
+
+            if (loadingState.value is UiState.Error) {
+                Toast.makeText(
+                    LocalContext.current,
+                    (loadingState.value as UiState.Error).error,
+                    Toast.LENGTH_LONG)
+                        .show()
+            }
+
+            AnimatedVisibility(
+                visible = loadingState.value is UiState.Loading,
+                enter = fadeIn()) {
+                LoadingScreen(
+                    modifier = Modifier.background(
+                        color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)))
+            }
         }
     }
 }

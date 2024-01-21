@@ -3,6 +3,7 @@ package com.sgg.cinematics.ui.screen.details
 import androidx.lifecycle.viewModelScope
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
+import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.UiData
 import com.sgg.cinematics.utils.UiState
@@ -13,8 +14,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsViewModel @Inject constructor(private val repository: MovieRepository) :
-        MainViewModel(repository) {
+class DetailsViewModel @Inject constructor(
+        private val repository: MovieRepository,
+        private val authService: AuthService
+) : MainViewModel(repository, authService) {
 
     private var _detailsUiState = MutableStateFlow<UiState>(UiState.Loading())
     val detailsUiState

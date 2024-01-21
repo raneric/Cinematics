@@ -1,10 +1,11 @@
 package com.sgg.cinematics.service
 
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.coroutines.flow.Flow
 
 interface AuthService {
 
-    fun getConnectedUser(): FirebaseUser?
+    val connectedUser: Flow<FirebaseUser?>
 
     suspend fun signInWithEmailAndPassword(
             email: String,

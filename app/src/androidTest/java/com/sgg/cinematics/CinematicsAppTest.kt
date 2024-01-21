@@ -33,7 +33,7 @@ class CinematicsAppTest : BaseTest() {
         viewModel = MainViewModel(movieRepository)
         rule.setContent {
             val windowWidth = calculateWindowSizeClass(activity = rule.activity)
-            CinematicsAppScreen(windowsWidthSizeClass = windowWidth.widthSizeClass)
+            CinematicsAppScreen(user = user, windowsWidthSizeClass = windowWidth.widthSizeClass)
         }
     }
 

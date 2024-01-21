@@ -24,9 +24,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sgg.cinematics.R
+import com.sgg.cinematics.data.model.AuthUser
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.custom_red_button_color
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_onSecondary
@@ -36,10 +35,12 @@ import com.sgg.cinematics.utils.DarkAndLightPreview
 @Composable
 fun LoginScreen(
         modifier: Modifier = Modifier,
+        userData: AuthUser?,
+        isEmailValid: Boolean,
+        updateEmail: (String) -> Unit,
+        updatePassword: (String) -> Unit,
+        login: () -> Unit
 ) {
-    val viewModel = hiltViewModel<LoginViewModel>()
-    val userData = viewModel.uiDate.collectAsStateWithLifecycle()
-    val isEmailValid = viewModel.isEmailValid.collectAsStateWithLifecycle()
     Column(
         modifier = modifier
                 .fillMaxSize()
@@ -47,17 +48,20 @@ fun LoginScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally) {
 
-        EmailTextField(value = userData.value.user?.email,
-                       isEmailValid = isEmailValid.value,
-                       onEmailChange = { viewModel.updateEmail(it) })
+        EmailTextField(value = userData?.email,
+                       isEmailValid = isEmailValid,
+                       onEmailChange = { updateEmail(it) })
         Spacer(modifier = Modifier.height(16.dp))
 
         PasswordTextField(
-            value = userData.value.user?.password,
-            onPasswordChange = { viewModel.updatePassword(it) })
+            value = userData?.password,
+            onPasswordChange = { updatePassword(it) })
         Spacer(modifier = Modifier.height(16.dp))
 
-        SinInSignUpButton(onLoginClick = {}, onCreateAccountClick = {})
+        SinInSignUpButton(
+            isLoginButtonEnabled = (isEmailValid && userData?.password != ""),
+            onLoginClick = { login() },
+            onCreateAccountClick = {})
     }
 }
 
@@ -113,11 +117,13 @@ fun PasswordTextField(
 
 @Composable
 fun SinInSignUpButton(
+        isLoginButtonEnabled: Boolean,
         onLoginClick: () -> Unit,
         onCreateAccountClick: () -> Unit
 ) {
     Button(
-        onClick = { onLoginClick },
+        enabled = isLoginButtonEnabled,
+        onClick = onLoginClick,
         colors = ButtonDefaults.buttonColors(md_theme_light_secondary),
         shape = MaterialTheme.shapes.small,
         modifier = Modifier.fillMaxWidth()) {
@@ -136,7 +142,7 @@ fun SinInSignUpButton(
     }
 
     Button(
-        onClick = { onLoginClick },
+        onClick = { },
         shape = MaterialTheme.shapes.small,
         colors = ButtonDefaults.buttonColors(custom_red_button_color),
         modifier = Modifier.fillMaxWidth()) {
@@ -154,7 +160,7 @@ fun SinInSignUpButton(
         }
     }
 
-    TextButton(onClick = { onCreateAccountClick }) {
+    TextButton(onClick = onCreateAccountClick) {
         Text(
             style = MaterialTheme.typography.labelLarge, text = "Create account")
     }
@@ -164,6 +170,10 @@ fun SinInSignUpButton(
 @Composable
 fun LoginScreenPreview() {
     CinematicsTheme {
-        LoginScreen()
+        LoginScreen(userData = null,
+                    isEmailValid = false,
+                    updateEmail = {},
+                    updatePassword = {},
+                    login = {})
     }
 }

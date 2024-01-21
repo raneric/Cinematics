@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
 import com.sgg.cinematics.ui.components.BottomNavScreen
 import com.sgg.cinematics.ui.components.CinematicsNavigationRail
@@ -30,7 +31,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun CinematicsAppScreen(windowsWidthSizeClass: WindowWidthSizeClass) {
+fun CinematicsAppScreen(
+        user: FirebaseUser?,
+        windowsWidthSizeClass: WindowWidthSizeClass
+) {
 
     val movieListViewModel = hiltViewModel<MovieListViewModel>()
 
@@ -62,6 +66,7 @@ fun CinematicsAppScreen(windowsWidthSizeClass: WindowWidthSizeClass) {
 
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
         CinematicsAppCompact(
+            user = user,
             isBottomNavVisible = isBottomNavVisible,
             isFabViewSwitchVisible = isFabViewSwitchVisible,
             activeDestination = activeDestination,
@@ -71,6 +76,7 @@ fun CinematicsAppScreen(windowsWidthSizeClass: WindowWidthSizeClass) {
             viewModel = movieListViewModel)
     } else {
         CinematicsAppMedium(
+            user = user,
             navController = navController,
             activeDestination = activeDestination,
             uiListMode = uiListMode.value,
@@ -98,8 +104,10 @@ fun CinematicsAppCompact(
         uiListMode: MovieListUiMode,
         viewModel: MovieListViewModel,
         windowsWidthSizeClass: WindowWidthSizeClass,
-        modifier: Modifier = Modifier
-) {
+        user: FirebaseUser?,
+        modifier: Modifier = Modifier,
+
+        ) {
 
     Scaffold(bottomBar = {
         AnimatedVisibility(visible = isBottomNavVisible,
@@ -120,6 +128,7 @@ fun CinematicsAppCompact(
     }) { paddingValue ->
         CinematicsNavHost(
             navController = navController,
+            user = user,
             movieListViewModel = viewModel,
             movieListUiMode = uiListMode,
             windowsWidthSizeClass = windowsWidthSizeClass,
@@ -144,14 +153,17 @@ fun CinematicsAppMedium(
         uiListMode: MovieListUiMode,
         viewModel: MovieListViewModel,
         windowsWidthSizeClass: WindowWidthSizeClass,
-        modifier: Modifier = Modifier
-) {
+        user: FirebaseUser?,
+        modifier: Modifier = Modifier,
+
+        ) {
     Row {
         CinematicsNavigationRail(activeDestination = activeDestination) {
             navController.navigate(it)
         }
         CinematicsNavHost(
             navController = navController,
+            user = user,
             movieListViewModel = viewModel,
             movieListUiMode = uiListMode,
             windowsWidthSizeClass = windowsWidthSizeClass)
@@ -171,4 +183,6 @@ private fun NavDestination.activeNavItem(): NavItemVariant {
     }
 }
 
-private fun NavDestination.isIntListDestination() = this.route != Destination.DetailScreen.route && this.route != Destination.UserProfileScreen.route
+private fun NavDestination.isIntListDestination() = this.route == Destination.TrendingScreen.route
+        || this.route == Destination.TopRatedScreen.route
+        || this.route == Destination.WatchListScreen.route

@@ -2,6 +2,12 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="LoadingScreenPreview">
+        <State />
+      </entry>
+      <entry key="LoadingScreenPreview - DarkAndLightPreview 1">
+        <State />
+      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -21,43 +27,11 @@
       <entry key="details_screen_with_movie_in_watch_list()">
         <State />
       </entry>
-      <entry key="details_screen_with_movie_not_in_watch_list()">
-        <State />
-      </entry>
-      <entry key="test_display_login_in_profile_screen_when_no_user_connected()">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/WXGA_API_26.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-01-04T18:22:14.580135299Z" />
-        </State>
-      </entry>
       <entry key="test_empty_movies_list_screen()">
         <State />
       </entry>
       <entry key="test_fab_view_switch_with_default_carousel()">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="SERIAL_NUMBER" />
-                  <value value="afe4f58c" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-01-04T18:58:48.196843110Z" />
-        </State>
+        <State />
       </entry>
     </value>
   </component>

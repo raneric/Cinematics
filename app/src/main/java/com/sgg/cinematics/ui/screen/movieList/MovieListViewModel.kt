@@ -3,6 +3,7 @@ package com.sgg.cinematics.ui.screen.movieList
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.data.repository.impl.UiStatePreferencesRepositoryImpl
+import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
@@ -17,8 +18,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
         private val repository: MovieRepository,
+        private val authService: AuthService,
         private val uiStateRepository: UiStatePreferencesRepositoryImpl
-) : MainViewModel(repository) {
+) : MainViewModel(repository, authService) {
 
     private var _listUiState = MutableStateFlow<UiState>(UiState.Loading())
     val listUiState = _listUiState.asStateFlow()
