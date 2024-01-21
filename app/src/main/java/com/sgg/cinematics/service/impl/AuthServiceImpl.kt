@@ -1,5 +1,6 @@
 package com.sgg.cinematics.service.impl
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.service.AuthService
@@ -24,6 +25,9 @@ class AuthServiceImpl @Inject constructor(private val firebaseAuth: FirebaseAuth
             password: String
     ) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener {
+                    Log.d("LOGIN_DEBUG", "LOGIN SUCCESS with ${it.user?.email}")
+                }
                 .await()
     }
 

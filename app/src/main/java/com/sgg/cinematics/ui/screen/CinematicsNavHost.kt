@@ -23,7 +23,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.ui.commonui.LoadingScreen
 import com.sgg.cinematics.ui.screen.details.DetailsScreen
@@ -43,7 +42,6 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 @Composable
 fun CinematicsNavHost(
         navController: NavHostController,
-        user: FirebaseUser?,
         movieListViewModel: MovieListViewModel,
         movieListUiMode: MovieListUiMode,
         windowsWidthSizeClass: WindowWidthSizeClass,
@@ -58,7 +56,7 @@ fun CinematicsNavHost(
     val detailsUiState = detailsViewModel.detailsUiState.collectAsStateWithLifecycle()
     val listUiState = listViewModel.listUiState.collectAsStateWithLifecycle()
 
-    val connectedUser = listViewModel.connectedUser?.collectAsStateWithLifecycle()
+    val connectedUser = listViewModel.connectedUser.collectAsStateWithLifecycle(initialValue = null)
 
     NavHost(
         navController = navController,
@@ -110,7 +108,7 @@ fun CinematicsNavHost(
         }
 
         composable(route = Destination.DetailScreen.route,
-                   arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { backStackEntry ->
+                   arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) {
 
             var movieIsInWatchList by remember { mutableStateOf(false) }
 
@@ -140,7 +138,7 @@ fun CinematicsNavHost(
 
         composable(route = Destination.UserProfileScreen.route) {
 
-            if (user == null) {
+            if (connectedUser.value == null) {
                 navController.navigate(Destination.LoginScreen.route)
             } else {
                 UserProfileScreen(user = userModelLists[0])
@@ -193,7 +191,6 @@ fun CinematicsNavHost(
 @Composable
 fun ScreenWrapper(
         uiState: UiState,
-        modifier: Modifier = Modifier,
         componentOnSuccess: @Composable () -> Unit,
         componentOnError: @Composable () -> Unit,
 

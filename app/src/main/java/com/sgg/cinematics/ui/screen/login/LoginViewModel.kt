@@ -11,7 +11,6 @@ import com.sgg.cinematics.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -39,7 +38,6 @@ class LoginViewModel @Inject constructor(
     }
 
     fun updatePassword(password: String) {
-
         val autUser = AuthUser(email = userLoginData.value?.email ?: "", password = password)
         _userLoginData.value = autUser
     }
@@ -52,17 +50,12 @@ class LoginViewModel @Inject constructor(
                     authService.signInWithEmailAndPassword(
                         email = user.email,
                         password = user.password)
-                    updateConnectedUser()
                     navController.navigate(Destination.UserProfileScreen.route)
                 } catch (e: Exception) {
                     _loginUiState.value = UiState.Error(e.message.toString())
                 }
             }
         }
-    }
-
-    private suspend fun updateConnectedUser() {
-        _connectedUser?.value = authService.connectedUser.stateIn(viewModelScope).value
     }
 
     private fun validateEmail(mail: String): Boolean {

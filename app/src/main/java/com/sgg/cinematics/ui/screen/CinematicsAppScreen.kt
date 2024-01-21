@@ -18,7 +18,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
 import com.sgg.cinematics.ui.components.BottomNavScreen
 import com.sgg.cinematics.ui.components.CinematicsNavigationRail
@@ -32,7 +31,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CinematicsAppScreen(
-        user: FirebaseUser?,
         windowsWidthSizeClass: WindowWidthSizeClass
 ) {
 
@@ -66,7 +64,6 @@ fun CinematicsAppScreen(
 
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
         CinematicsAppCompact(
-            user = user,
             isBottomNavVisible = isBottomNavVisible,
             isFabViewSwitchVisible = isFabViewSwitchVisible,
             activeDestination = activeDestination,
@@ -76,7 +73,6 @@ fun CinematicsAppScreen(
             viewModel = movieListViewModel)
     } else {
         CinematicsAppMedium(
-            user = user,
             navController = navController,
             activeDestination = activeDestination,
             uiListMode = uiListMode.value,
@@ -104,7 +100,6 @@ fun CinematicsAppCompact(
         uiListMode: MovieListUiMode,
         viewModel: MovieListViewModel,
         windowsWidthSizeClass: WindowWidthSizeClass,
-        user: FirebaseUser?,
         modifier: Modifier = Modifier,
 
         ) {
@@ -128,7 +123,6 @@ fun CinematicsAppCompact(
     }) { paddingValue ->
         CinematicsNavHost(
             navController = navController,
-            user = user,
             movieListViewModel = viewModel,
             movieListUiMode = uiListMode,
             windowsWidthSizeClass = windowsWidthSizeClass,
@@ -153,7 +147,6 @@ fun CinematicsAppMedium(
         uiListMode: MovieListUiMode,
         viewModel: MovieListViewModel,
         windowsWidthSizeClass: WindowWidthSizeClass,
-        user: FirebaseUser?,
         modifier: Modifier = Modifier,
 
         ) {
@@ -163,7 +156,6 @@ fun CinematicsAppMedium(
         }
         CinematicsNavHost(
             navController = navController,
-            user = user,
             movieListViewModel = viewModel,
             movieListUiMode = uiListMode,
             windowsWidthSizeClass = windowsWidthSizeClass)

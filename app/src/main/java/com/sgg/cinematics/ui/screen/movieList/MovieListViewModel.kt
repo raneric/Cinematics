@@ -49,6 +49,4 @@ class MovieListViewModel @Inject constructor(
     suspend fun switchListViewMode(movieListUiMode: MovieListUiMode) {
         uiStateRepository.updateUiState(movieListUiMode)
     }
-
-
 }
