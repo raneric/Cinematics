@@ -16,12 +16,12 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/WXGA_API_26.avd" />
+                  <value value="$USER_HOME$/.android/avd/Resizable_Experimental_API_34.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2023-12-28T18:59:51.267653872Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-01-21T15:20:42.056449992Z" />
         </State>
       </entry>
       <entry key="details_screen_with_movie_in_watch_list()">

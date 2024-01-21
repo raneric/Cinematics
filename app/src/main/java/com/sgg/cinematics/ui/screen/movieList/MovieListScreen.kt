@@ -83,14 +83,9 @@ fun MovieListScreen(
             }
         }
     } else {
-        AnimatedVisibility(
-            visible = movieListUiMode is MovieListUiMode.CarouselView,
-            enter = scaleIn(),
-            exit = fadeOut()) {
-            GridMovieListScreen(movieList = movieList) { movieId ->
-                navigateToDetailsScreen(movieId = movieId, navController = navController)
-                onItemClicked(movieId)
-            }
+        GridMovieListScreen(movieList = movieList) { movieId ->
+            navigateToDetailsScreen(movieId = movieId, navController = navController)
+            onItemClicked(movieId)
         }
     }
 }

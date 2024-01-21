@@ -162,7 +162,8 @@ fun SinInSignUpButton(
 
     TextButton(onClick = onCreateAccountClick) {
         Text(
-            style = MaterialTheme.typography.labelLarge, text = "Create account")
+            style = MaterialTheme.typography.labelLarge,
+            text = stringResource(id = R.string.txt_create_account))
     }
 }
 

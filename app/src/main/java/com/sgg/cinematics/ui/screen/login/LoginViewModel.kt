@@ -39,6 +39,7 @@ class LoginViewModel @Inject constructor(
     }
 
     fun updatePassword(password: String) {
+
         val autUser = AuthUser(email = userLoginData.value?.email ?: "", password = password)
         _userLoginData.value = autUser
     }
