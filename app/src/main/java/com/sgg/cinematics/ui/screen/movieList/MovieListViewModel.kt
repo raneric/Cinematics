@@ -7,7 +7,6 @@ import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
-import com.sgg.cinematics.utils.UiData
 import com.sgg.cinematics.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -22,28 +21,27 @@ class MovieListViewModel @Inject constructor(
         private val uiStateRepository: UiStatePreferencesRepositoryImpl
 ) : MainViewModel(repository, authService) {
 
-    private var _listUiState = MutableStateFlow<UiState>(UiState.Loading())
+    private var _listUiState = MutableStateFlow<UiState>(UiState.Loading)
     val listUiState = _listUiState.asStateFlow()
 
     val uiListMode: Flow<MovieListUiMode> = uiStateRepository.movieListUiModeFlow
 
-    private var _trendingMovies: Flow<List<MovieModel>> = repository.getTrending()
-    val trendingMovies: Flow<List<MovieModel>>
-        get() = _trendingMovies
+    private var _movieList: Flow<List<MovieModel>> = repository.getTrending()
+    val movieList: Flow<List<MovieModel>>
+        get() = _movieList
 
     fun updateUiState(destinationRoute: String) {
-        _listUiState.value = UiState.Loading()
+        _listUiState.value = UiState.Loading
         when (destinationRoute) {
             Destination.TrendingScreen.route -> {
-                val movieList = repository.getTrending()
-                _listUiState.value = UiState.Success(UiData.ListScreenData(movieList))
+                _movieList = repository.getTrending()
             }
 
             Destination.TopRatedScreen.route -> {
-                val movieList = repository.getTopRated()
-                _listUiState.value = UiState.Success(UiData.ListScreenData(movieList))
+                _movieList = repository.getTopRated()
             }
         }
+        _listUiState.value = UiState.Success
     }
 
     suspend fun switchListViewMode(movieListUiMode: MovieListUiMode) {

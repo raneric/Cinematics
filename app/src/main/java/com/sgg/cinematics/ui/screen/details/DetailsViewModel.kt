@@ -5,7 +5,6 @@ import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
-import com.sgg.cinematics.utils.UiData
 import com.sgg.cinematics.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +18,7 @@ class DetailsViewModel @Inject constructor(
         private val authService: AuthService
 ) : MainViewModel(repository, authService) {
 
-    private var _detailsUiState = MutableStateFlow<UiState>(UiState.Loading())
+    private var _detailsUiState = MutableStateFlow<UiState>(UiState.Loading)
     val detailsUiState
         get() = _detailsUiState.asStateFlow()
 
@@ -43,14 +42,15 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun updateUiState(id: Int) {
-        _detailsUiState.value = UiState.Loading()
+        _detailsUiState.value = UiState.Loading
         viewModelScope.launch {
-            repository.getMovie(id)
-                    ?.let { movie ->
-                        _detailsUiState.value = UiState.Success(
-                            uiData = UiData.DetailScreenData(
-                                movie = movie))
-                    }
+            try {
+                val result = repository.getMovie(id)
+                _selectedMovie.value = result
+                _detailsUiState.value = UiState.Success
+            } catch (e: Exception) {
+                _detailsUiState.value = UiState.Error(e.message!!)
+            }
         }
     }
 }

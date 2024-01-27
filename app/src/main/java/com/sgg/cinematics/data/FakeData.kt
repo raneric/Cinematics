@@ -146,7 +146,7 @@ var watchList = mutableListOf<MovieModel>()
 
 val userModelLists = listOf(
     UserModel(
-        id = 1,
+        id = "1",
         name = "Kate Lane",
         userName = "@kat_m",
         email = "kate@gmail.com",
@@ -156,7 +156,7 @@ val userModelLists = listOf(
         picture = R.drawable.profil1
     ),
     UserModel(
-        id = 2,
+        id = "2",
         name = "Hong Lee",
         userName = "@lee_h",
         email = "hong@gmail.com",
@@ -165,7 +165,7 @@ val userModelLists = listOf(
         picture = R.drawable.profil2
     ),
     UserModel(
-        id = 3,
+        id = "3",
         name = "Jack Rose",
         userName = "@r_jack",
         email = "jack@gmail.com",
@@ -174,7 +174,7 @@ val userModelLists = listOf(
         picture = R.drawable.profil4
     ),
     UserModel(
-        id = 4,
+        id = "4",
         name = "Catherine Knowles",
         userName = "@cath_kon",
         email = "cath@gmail.com",
@@ -183,7 +183,7 @@ val userModelLists = listOf(
         picture = R.drawable.profil3
     ),
     UserModel(
-        id = 5,
+        id = "5",
         name = "Ahmed Marks",
         userName = "@ahmed",
         email = "marks@gmail.com",
@@ -192,7 +192,7 @@ val userModelLists = listOf(
         picture = R.drawable.profil5
     ),
     UserModel(
-        id = 6,
+        id = "6",
         name = "Lola Oneal",
         userName = "@lola",
         email = "lola@gmail.com",
@@ -201,7 +201,7 @@ val userModelLists = listOf(
         picture = R.drawable.profil6
     ),
     UserModel(
-        id = 7,
+        id = "7",
         name = "Ollie Nelson",
         userName = "@ollie",
         email = "ollie@gmail.com",
@@ -210,7 +210,7 @@ val userModelLists = listOf(
         picture = R.drawable.profil7
     ),
     UserModel(
-        id = 8,
+        id = "8",
         name = "Bianca Brock",
         userName = "@bianca",
         email = "bianca@gmail.com",
@@ -219,7 +219,7 @@ val userModelLists = listOf(
         picture = R.drawable.profil8
     ),
     UserModel(
-        id = 9,
+        id = "9",
         name = "Lewis Lowe",
         userName = "@lewis",
         email = "lew@gmail.com",
@@ -228,7 +228,7 @@ val userModelLists = listOf(
         picture = R.drawable.profil9
     ),
     UserModel(
-        id = 10,
+        id = "10",
         name = "Asia Bush",
         userName = "@asia",
         email = "asia@gmail.com",

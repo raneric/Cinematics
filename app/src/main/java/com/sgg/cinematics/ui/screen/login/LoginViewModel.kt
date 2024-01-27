@@ -43,13 +43,14 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login(navController: NavHostController) {
-        _loginUiState.value = UiState.Loading()
+        _loginUiState.value = UiState.Loading
         userLoginData.value?.let { user ->
             viewModelScope.launch {
                 try {
                     authService.signInWithEmailAndPassword(
                         email = user.email,
                         password = user.password)
+                    UiState.Success
                     navController.navigate(Destination.UserProfileScreen.route)
                 } catch (e: Exception) {
                     _loginUiState.value = UiState.Error(e.message.toString())
@@ -63,4 +64,7 @@ class LoginViewModel @Inject constructor(
         return emailRegex.matches(mail)
     }
 
+    fun logout() {
+        authService.signOut()
+    }
 }

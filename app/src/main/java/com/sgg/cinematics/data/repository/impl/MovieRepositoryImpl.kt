@@ -1,9 +1,9 @@
 package com.sgg.cinematics.data.repository.impl
 
-import com.sgg.cinematics.data.datasource.MovieDataSource
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.data.watchList
+import com.sgg.cinematics.service.MovieDataSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

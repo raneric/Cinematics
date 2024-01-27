@@ -1,4 +1,4 @@
-package com.sgg.cinematics.data.datasource
+package com.sgg.cinematics.service
 
 import com.sgg.cinematics.data.model.MovieModel
 import kotlinx.coroutines.flow.Flow

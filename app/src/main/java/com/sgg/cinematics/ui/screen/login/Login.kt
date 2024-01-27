@@ -2,6 +2,7 @@ package com.sgg.cinematics.ui.screen.login
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,6 +27,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.AuthUser
+import com.sgg.cinematics.ui.commonui.BackNavigationFab
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.custom_red_button_color
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_onSecondary
@@ -39,29 +41,33 @@ fun LoginScreen(
         isEmailValid: Boolean,
         updateEmail: (String) -> Unit,
         updatePassword: (String) -> Unit,
-        login: () -> Unit
+        login: () -> Unit,
+        onNavigateBack: () -> Unit
 ) {
-    Column(
-        modifier = modifier
+    Box {
+        BackNavigationFab(onNavigateBack = onNavigateBack)
+        Column(
+            modifier = modifier
                 .fillMaxSize()
                 .padding(horizontal = 32.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally) {
 
-        EmailTextField(value = userData?.email,
-                       isEmailValid = isEmailValid,
-                       onEmailChange = { updateEmail(it) })
-        Spacer(modifier = Modifier.height(16.dp))
+            EmailTextField(value = userData?.email,
+                           isEmailValid = isEmailValid,
+                           onEmailChange = { updateEmail(it) })
+            Spacer(modifier = Modifier.height(16.dp))
 
-        PasswordTextField(
-            value = userData?.password,
-            onPasswordChange = { updatePassword(it) })
-        Spacer(modifier = Modifier.height(16.dp))
+            PasswordTextField(
+                value = userData?.password,
+                onPasswordChange = { updatePassword(it) })
+            Spacer(modifier = Modifier.height(16.dp))
 
-        SinInSignUpButton(
-            isLoginButtonEnabled = (isEmailValid && userData?.password != ""),
-            onLoginClick = { login() },
-            onCreateAccountClick = {})
+            SinInSignUpButton(
+                isLoginButtonEnabled = (isEmailValid && userData?.password != ""),
+                onLoginClick = { login() },
+                onCreateAccountClick = {})
+        }
     }
 }
 
@@ -175,6 +181,7 @@ fun LoginScreenPreview() {
                     isEmailValid = false,
                     updateEmail = {},
                     updatePassword = {},
-                    login = {})
+                    login = {},
+                    onNavigateBack = {})
     }
 }

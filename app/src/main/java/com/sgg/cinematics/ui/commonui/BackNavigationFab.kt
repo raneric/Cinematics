@@ -22,8 +22,8 @@ fun BackNavigationFab(
     FloatingActionButton(
         onClick = onNavigateBack,
         elevation = FloatingActionButtonDefaults.elevation(12.dp),
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
+        containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
         shape = CircleShape,
         modifier = modifier.offset(
             x = dimensionResource(id = R.dimen.low_dp),

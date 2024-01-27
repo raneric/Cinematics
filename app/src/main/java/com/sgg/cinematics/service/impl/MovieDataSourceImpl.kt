@@ -1,11 +1,11 @@
-package com.sgg.cinematics.data.datasource.impl
+package com.sgg.cinematics.service.impl
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
-import com.sgg.cinematics.data.datasource.MovieDataSource
 import com.sgg.cinematics.data.model.MovieModel
+import com.sgg.cinematics.service.MovieDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -27,7 +27,7 @@ class MovieDataSourceImpl @Inject constructor(private val firestore: FirebaseFir
 
     override suspend fun getMovie(id: Int): MovieModel? {
         return firestore.collection(MOVIE_COLLECTION)
-                .whereEqualTo("id", id)
+                .whereEqualTo("id", "qdsqdq")
                 .get()
                 .await()
                 .first()

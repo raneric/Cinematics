@@ -54,7 +54,7 @@ fun CinematicsAppScreen(
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
         activeDestination = navDestination.activeNavItem()
-        isBottomNavVisible = navDestination.route != Destination.DetailScreen.route
+        isBottomNavVisible = navDestination.isInBottomNavDestination()
         isFabViewSwitchVisible = navDestination.isIntListDestination()
 
         navDestination.route?.let { route ->
@@ -63,21 +63,19 @@ fun CinematicsAppScreen(
     }
 
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
-        CinematicsAppCompact(
-            isBottomNavVisible = isBottomNavVisible,
-            isFabViewSwitchVisible = isFabViewSwitchVisible,
-            activeDestination = activeDestination,
-            navController = navController,
-            uiListMode = uiListMode.value,
-            windowsWidthSizeClass = windowsWidthSizeClass,
-            viewModel = movieListViewModel)
+        CinematicsAppCompact(isBottomNavVisible = isBottomNavVisible,
+                             isFabViewSwitchVisible = isFabViewSwitchVisible,
+                             activeDestination = activeDestination,
+                             navController = navController,
+                             uiListMode = uiListMode.value,
+                             windowsWidthSizeClass = windowsWidthSizeClass,
+                             viewModel = movieListViewModel)
     } else {
-        CinematicsAppMedium(
-            navController = navController,
-            activeDestination = activeDestination,
-            uiListMode = uiListMode.value,
-            viewModel = movieListViewModel,
-            windowsWidthSizeClass = windowsWidthSizeClass)
+        CinematicsAppMedium(navController = navController,
+                            activeDestination = activeDestination,
+                            uiListMode = uiListMode.value,
+                            viewModel = movieListViewModel,
+                            windowsWidthSizeClass = windowsWidthSizeClass)
     }
 }
 
@@ -121,12 +119,11 @@ fun CinematicsAppCompact(
             }
         }
     }) { paddingValue ->
-        CinematicsNavHost(
-            navController = navController,
-            movieListViewModel = viewModel,
-            movieListUiMode = uiListMode,
-            windowsWidthSizeClass = windowsWidthSizeClass,
-            modifier = Modifier.padding(paddingValue))
+        CinematicsNavHost(navController = navController,
+                          movieListViewModel = viewModel,
+                          movieListUiMode = uiListMode,
+                          windowsWidthSizeClass = windowsWidthSizeClass,
+                          modifier = Modifier.padding(paddingValue))
     }
 }
 
@@ -154,11 +151,10 @@ fun CinematicsAppMedium(
         CinematicsNavigationRail(activeDestination = activeDestination) {
             navController.navigate(it)
         }
-        CinematicsNavHost(
-            navController = navController,
-            movieListViewModel = viewModel,
-            movieListUiMode = uiListMode,
-            windowsWidthSizeClass = windowsWidthSizeClass)
+        CinematicsNavHost(navController = navController,
+                          movieListViewModel = viewModel,
+                          movieListUiMode = uiListMode,
+                          windowsWidthSizeClass = windowsWidthSizeClass)
     }
 }
 
@@ -168,13 +164,23 @@ fun CinematicsAppMedium(
  */
 private fun NavDestination.activeNavItem(): NavItemVariant {
     return when (this.route) {
-        Destination.TopRatedScreen.route -> NavItemVariant.TopRated
-        Destination.WatchListScreen.route -> NavItemVariant.WatchList
+        Destination.TopRatedScreen.route    -> NavItemVariant.TopRated
+        Destination.WatchListScreen.route   -> NavItemVariant.WatchList
         Destination.UserProfileScreen.route -> NavItemVariant.UserProfile
-        else -> NavItemVariant.Trending
+        else                                -> NavItemVariant.Trending
     }
 }
 
-private fun NavDestination.isIntListDestination() = this.route == Destination.TrendingScreen.route
-        || this.route == Destination.TopRatedScreen.route
-        || this.route == Destination.WatchListScreen.route
+private fun NavDestination.isInBottomNavDestination(): Boolean {
+    return this.route == Destination.TrendingScreen.route ||
+           this.route == Destination.TopRatedScreen.route ||
+           this.route == Destination.WatchListScreen.route ||
+           this.route == Destination.UserProfileScreen.route
+}
+
+private fun NavDestination.isIntListDestination(): Boolean {
+    return this.route == Destination.TrendingScreen.route ||
+           this.route == Destination.TopRatedScreen.route ||
+           this.route == Destination.WatchListScreen.route
+}
+

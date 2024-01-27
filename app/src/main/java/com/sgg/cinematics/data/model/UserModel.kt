@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import java.time.LocalDate
 
 data class UserModel(
-        val id: Int,
+        val id: String,
         val name: String,
         val userName: String,
         val email: String,

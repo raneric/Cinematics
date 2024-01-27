@@ -9,6 +9,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,11 +54,14 @@ import com.sgg.cinematics.ui.ui.theme.profile_background_color
 import com.sgg.cinematics.ui.ui.theme.userBioText
 import com.sgg.cinematics.ui.ui.theme.userProfileContent
 import com.sgg.cinematics.ui.ui.theme.userProfileTitle
+import com.sgg.cinematics.ui.ui.theme.user_profile_txt_color
+import com.sgg.cinematics.utils.DarkAndLightPreview
 
 @Composable
 fun UserProfileScreen(
         user: UserModel,
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
+        logout: () -> Unit
 ) {
     val fabSize = with(LocalDensity.current) { 64.dp.toPx() }
     val scrollState = rememberScrollState()
@@ -76,30 +81,33 @@ fun UserProfileScreen(
     }
 
     UserProfileLayout(modifier = modifier
-            .padding(16.dp)
-            .background(MaterialTheme.colorScheme.surface)
-            .verticalScroll(scrollState), pictureSection = {
-        ProfilePictureSection(user = user, fabSize = fabSize)
-    }, fab = {
-        FloatingActionButton(
-            onClick = {},
-            modifier = Modifier
-                    .graphicsLayer {
-                        scaleY = fabScale.value
-                        scaleY = fabScale.value
-                    },
-            interactionSource = interactionSource,
-            elevation = FloatingActionButtonDefaults.elevation(12.dp),
-            containerColor = custom_green_btn_color,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            shape = CircleShape) {
-            Icon(
-                painter = painterResource(id = R.drawable.icon_edit_32),
-                contentDescription = stringResource(id = R.string.content_descrip_back_fab))
-        }
-    }, userInfo = {
-        UserInfoSection(user = user, fabSize = fabSize)
-    })
+        .padding(16.dp)
+        .background(MaterialTheme.colorScheme.surface)
+        .verticalScroll(scrollState),
+                      pictureSection = {
+                          ProfilePictureSection(user = user, logout = logout, fabSize = fabSize)
+                      },
+                      fab = {
+                          FloatingActionButton(
+                              onClick = {},
+                              modifier = Modifier
+                                  .graphicsLayer {
+                                      scaleY = fabScale.value
+                                      scaleY = fabScale.value
+                                  },
+                              interactionSource = interactionSource,
+                              elevation = FloatingActionButtonDefaults.elevation(12.dp),
+                              containerColor = custom_green_btn_color,
+                              contentColor = MaterialTheme.colorScheme.onPrimary,
+                              shape = CircleShape) {
+                              Icon(
+                                  painter = painterResource(id = R.drawable.icon_edit_32),
+                                  contentDescription = stringResource(id = R.string.content_descrip_back_fab))
+                          }
+                      },
+                      userInfo = {
+                          UserInfoSection(user = user, fabSize = fabSize)
+                      })
 }
 
 @Composable
@@ -117,11 +125,11 @@ fun UserProfileLayout(
         val sectionMargin = 24.dp.toPx()
 
         val picturePlaceable = pictureSectionMeasurable.first()
-                .measure(constraint)
+            .measure(constraint)
         val fabPlaceable = fabMeasurable.first()
-                .measure(constraint)
+            .measure(constraint)
         val userInfoPlaceable = userInfoMeasurable.first()
-                .measure(constraint)
+            .measure(constraint)
 
         val fabOverflow = fabPlaceable.width / 6
 
@@ -145,27 +153,38 @@ fun UserProfileLayout(
 fun ProfilePictureSection(
         user: UserModel,
         fabSize: Float,
+        logout: () -> Unit,
         modifier: Modifier = Modifier
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceAround,
-        modifier = Modifier
+    Box {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
                 .fillMaxWidth()
                 .height(275.dp)
                 .clip(MaterialTheme.shapes.medium)
                 .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.BOTTOM_RIGHT))
                 .background(profile_background_color)) {
-        Image(
-            painter = painterResource(id = user.picture),
-            contentDescription = "",
-            alignment = Alignment.Center,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
+            Image(
+                painter = painterResource(id = user.picture),
+                contentDescription = "",
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
                     .size(200.dp)
                     .clip(CircleShape),
-        )
-        Text(text = user.name, style = userProfileTitle)
+            )
+            Text(text = user.name, style = userProfileTitle)
+        }
+        Column {
+            IconButton(onClick = logout) {
+                Icon(
+                    tint = Color.Black,
+                    painter = painterResource(id = R.drawable.icon_logout_24px),
+                    contentDescription = "")
+            }
+        }
     }
 }
 
@@ -178,11 +197,11 @@ fun UserInfoSection(
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
-                .fillMaxWidth()
-                .clip(MaterialTheme.shapes.medium)
-                .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.TOP_RIGHT))
-                .background(profile_background_color)
-                .padding(10.dp)) {
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
+            .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.TOP_RIGHT))
+            .background(profile_background_color)
+            .padding(10.dp)) {
         Text(text = stringResource(id = R.string.txt_user_info_tittle), style = userProfileTitle)
         Divider(color = Color(0xFFD1D1D1))
         UserInfoItem(text = user.userName, R.drawable.icon_user_name)
@@ -193,8 +212,6 @@ fun UserInfoSection(
         Divider(color = Color(0xFFE1E1E1))
         UserInfoItem(text = user.address, R.drawable.icon_location)
         Bio(text = user.bio ?: "N/A")
-
-
     }
 }
 
@@ -209,18 +226,18 @@ fun Bio(
             style = userProfileTitle,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                    .background(color = profile_background_color)
-                    .widthIn(min = 30.dp))
+                .background(color = profile_background_color)
+                .widthIn(min = 30.dp))
     }, textBio = {
         Text(
             text = text,
             style = userBioText,
             modifier = Modifier
-                    .fillMaxWidth()
-                    .border(
-                        BorderStroke(1.dp, Color(0xFFE1E1E1)),
-                        shape = MaterialTheme.shapes.small)
-                    .padding(horizontal = 8.dp, vertical = 12.dp))
+                .fillMaxWidth()
+                .border(
+                    BorderStroke(1.dp, Color(0xFFE1E1E1)),
+                    shape = MaterialTheme.shapes.small)
+                .padding(horizontal = 8.dp, vertical = 12.dp))
     }, modifier = modifier)
 }
 
@@ -234,11 +251,11 @@ fun BioLayout(
         contents = listOf(tittle, textBio),
         modifier = modifier) { (titleMeasurable, textMeasurable), constraint ->
         val tittlePlaceable = titleMeasurable.first()
-                .measure(constraint)
+            .measure(constraint)
         val textPlaceable = textMeasurable.first()
-                .measure(constraint)
+            .measure(constraint)
         val tittleMargin = 16.dp.toPx()
-                .toInt()
+            .toInt()
         val layoutHeight = tittlePlaceable.height + textPlaceable.height
 
         layout(width = textPlaceable.width, height = layoutHeight) {
@@ -252,7 +269,9 @@ fun BioLayout(
 @Composable
 fun UserProfileScreenPreview() {
     CinematicsTheme {
-        UserProfileScreen(user = userModelLists[0])
+        UserProfileScreen(user = userModelLists[0]) {
+
+        }
     }
 }
 
@@ -280,11 +299,11 @@ fun UserInfoSectionPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@DarkAndLightPreview
 @Composable
 fun ProfilePictureSectionPreview() {
     val fabSize = with(LocalDensity.current) { 60.dp.toPx() }
     CinematicsTheme {
-        ProfilePictureSection(user = userModelLists[0], fabSize = fabSize)
+        ProfilePictureSection(user = userModelLists[0], logout = {}, fabSize = fabSize)
     }
 }
