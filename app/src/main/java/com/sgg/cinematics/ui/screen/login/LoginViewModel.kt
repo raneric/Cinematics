@@ -2,7 +2,7 @@ package com.sgg.cinematics.ui.screen.login
 
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
-import com.sgg.cinematics.data.model.AuthUser
+import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
@@ -23,7 +23,7 @@ class LoginViewModel @Inject constructor(
     private var _loginUiState = MutableStateFlow<UiState?>(null)
     val loginUiState = _loginUiState
 
-    private var _userLoginData = MutableStateFlow<AuthUser?>(null)
+    private var _userLoginData = MutableStateFlow<AuthData?>(null)
     val userLoginData
         get() = _userLoginData.asStateFlow()
 
@@ -33,12 +33,12 @@ class LoginViewModel @Inject constructor(
 
     fun updateEmail(mail: String) {
         _isEmailValid.value = validateEmail(mail)
-        val autUser = AuthUser(email = mail, password = userLoginData.value?.password ?: "")
+        val autUser = AuthData(email = mail, password = userLoginData.value?.password ?: "")
         _userLoginData.value = autUser
     }
 
     fun updatePassword(password: String) {
-        val autUser = AuthUser(email = userLoginData.value?.email ?: "", password = password)
+        val autUser = AuthData(email = userLoginData.value?.email ?: "", password = password)
         _userLoginData.value = autUser
     }
 

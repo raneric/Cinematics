@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.screen.userProfile
+package com.sgg.cinematics.ui.screen.account
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.Animatable
@@ -54,7 +54,6 @@ import com.sgg.cinematics.ui.ui.theme.profile_background_color
 import com.sgg.cinematics.ui.ui.theme.userBioText
 import com.sgg.cinematics.ui.ui.theme.userProfileContent
 import com.sgg.cinematics.ui.ui.theme.userProfileTitle
-import com.sgg.cinematics.ui.ui.theme.user_profile_txt_color
 import com.sgg.cinematics.utils.DarkAndLightPreview
 
 @Composable
@@ -175,7 +174,7 @@ fun ProfilePictureSection(
                     .size(200.dp)
                     .clip(CircleShape),
             )
-            Text(text = user.name, style = userProfileTitle)
+            Text(text = user.fullName, style = userProfileTitle)
         }
         Column {
             IconButton(onClick = logout) {
@@ -210,7 +209,7 @@ fun UserInfoSection(
         Divider(color = Color(0xFFE1E1E1))
         UserInfoItem(text = user.email, R.drawable.icon_email)
         Divider(color = Color(0xFFE1E1E1))
-        UserInfoItem(text = user.address, R.drawable.icon_location)
+        UserInfoItem(text = user.location ?: "N/A", R.drawable.icon_location)
         Bio(text = user.bio ?: "N/A")
     }
 }

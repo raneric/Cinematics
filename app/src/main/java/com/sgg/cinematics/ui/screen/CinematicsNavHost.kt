@@ -31,7 +31,7 @@ import com.sgg.cinematics.ui.screen.login.LoginScreen
 import com.sgg.cinematics.ui.screen.login.LoginViewModel
 import com.sgg.cinematics.ui.screen.movieList.MovieListScreen
 import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
-import com.sgg.cinematics.ui.screen.userProfile.UserProfileScreen
+import com.sgg.cinematics.ui.screen.account.UserProfileScreen
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
 import com.sgg.cinematics.utils.UiState

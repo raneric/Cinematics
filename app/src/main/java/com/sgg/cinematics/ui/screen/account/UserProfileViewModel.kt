@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.screen.userProfile
+package com.sgg.cinematics.ui.screen.account
 
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.service.AuthService

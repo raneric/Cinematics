@@ -26,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.sgg.cinematics.R
-import com.sgg.cinematics.data.model.AuthUser
+import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.custom_red_button_color
@@ -37,7 +37,7 @@ import com.sgg.cinematics.utils.DarkAndLightPreview
 @Composable
 fun LoginScreen(
         modifier: Modifier = Modifier,
-        userData: AuthUser?,
+        userData: AuthData?,
         isEmailValid: Boolean,
         updateEmail: (String) -> Unit,
         updatePassword: (String) -> Unit,

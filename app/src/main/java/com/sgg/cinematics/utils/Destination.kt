@@ -11,5 +11,5 @@ sealed class Destination(
     object DetailScreen : Destination(route = "details/{movieId}", testTag = "details_screen")
     object UserProfileScreen : Destination(route = "user_profile", testTag = "user_profile_screen")
     object LoginScreen : Destination(route = "login", testTag = "login_screen")
-
+    object CreateAccount : Destination(route = "create_account", testTag = "create_account_screen")
 }

@@ -18,7 +18,7 @@ val movieList = listOf(
         stars = 3,
         author = "J.J. Abrams",
         overview = "The revival of Emperor Palpatine resurrects the battle between the Resistance and the First Order while the Jedi's legendary conflict with the Sith Lord comes to a head." +
-                "The revival of Emperor Palpatine resurrects the battle between the"
+                   "The revival of Emperor Palpatine resurrects the battle between the"
     ),
     MovieModel(
         id = 1,
@@ -147,92 +147,102 @@ var watchList = mutableListOf<MovieModel>()
 val userModelLists = listOf(
     UserModel(
         id = "1",
-        name = "Kate Lane",
+        firstName = "Kate",
+        lastName = "Lane",
         userName = "@kat_m",
         email = "kate@gmail.com",
-        address = "Antsirabe - Madagascar",
+        location = "Antsirabe - Madagascar",
         bio = "Hacktoberfest is a month-long celebration of open source projects, their maintainers, and the entire community of contributors. Each October, open source maintainers give new contributors extra attention as they guide developers through their first pull requests on GitHub.",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil1
     ),
     UserModel(
         id = "2",
-        name = "Hong Lee",
+        firstName = "Hong",
+        lastName = "Lee",
         userName = "@lee_h",
         email = "hong@gmail.com",
-        address = "Majunga - Madagascar",
+        location = "Majunga - Madagascar",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil2
     ),
     UserModel(
         id = "3",
-        name = "Jack Rose",
+        firstName = "Jack",
+        lastName = "Rose",
         userName = "@r_jack",
         email = "jack@gmail.com",
-        address = "Antananarivo - Madagascar",
+        location = "Antananarivo - Madagascar",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil4
     ),
     UserModel(
         id = "4",
-        name = "Catherine Knowles",
+        firstName = "Catherine",
+        lastName = "Knowles",
         userName = "@cath_kon",
         email = "cath@gmail.com",
-        address = "Toliara - Madagascar",
+        location = "Toliara - Madagascar",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil3
     ),
     UserModel(
         id = "5",
-        name = "Ahmed Marks",
+        firstName = "Ahmed",
+        lastName = "Marks",
         userName = "@ahmed",
         email = "marks@gmail.com",
-        address = "Fianarantsoa - Madagascar",
+        location = "Fianarantsoa - Madagascar",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil5
     ),
     UserModel(
         id = "6",
-        name = "Lola Oneal",
+        firstName = "Lola",
+        lastName = "Oneal",
         userName = "@lola",
         email = "lola@gmail.com",
-        address = "Antananarivo - Madagascar",
+        location = "Antananarivo - Madagascar",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil6
     ),
     UserModel(
         id = "7",
-        name = "Ollie Nelson",
+        firstName = "Ollie",
+        lastName = "Nelson",
         userName = "@ollie",
         email = "ollie@gmail.com",
-        address = "Antananarivo - Madagascar",
+        location = "Antananarivo - Madagascar",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil7
     ),
     UserModel(
         id = "8",
-        name = "Bianca Brock",
+        firstName = "Bianca",
+        lastName = "Brock",
         userName = "@bianca",
         email = "bianca@gmail.com",
-        address = "Antananarivo - Madagascar",
+        location = "Antananarivo - Madagascar",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil8
     ),
     UserModel(
         id = "9",
-        name = "Lewis Lowe",
+        firstName = "Lewis",
+        lastName = "Lowe",
         userName = "@lewis",
         email = "lew@gmail.com",
-        address = "Antananrivo - Madagascar",
+        location = "Antananrivo - Madagascar",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil9
     ),
     UserModel(
         id = "10",
-        name = "Asia Bush",
+        firstName = "Asia",
+        lastName = "Bush",
         userName = "@asia",
         email = "asia@gmail.com",
-        address = "Antananrivo - Madagascar",
+        location = "Antananrivo - Madagascar",
         birthDate = LocalDate.of(1989, 8, 23),
         picture = R.drawable.profil10
     )

@@ -38,16 +38,20 @@ import com.sgg.cinematics.utils.formatDate
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun AverageRating(ratingStars: Int,
-                  ratingValue: String,
-                  textColor: Color = md_theme_light_onPrimary,
-                  modifier: Modifier = Modifier) {
-    Row(verticalAlignment = Alignment.CenterVertically,
+fun AverageRating(
+        ratingStars: Int,
+        ratingValue: String,
+        textColor: Color = md_theme_light_onPrimary,
+        modifier: Modifier = Modifier
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier) {
-        Text(text = ratingValue,
-             style = ratingTypo,
-             color = textColor)
+        Text(
+            text = ratingValue,
+            style = ratingTypo,
+            color = textColor)
         StarRating(ratingStars)
     }
 }
@@ -59,10 +63,13 @@ fun AverageRating(ratingStars: Int,
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun AverageDetailRating(ratingStars: Int,
-                        ratingValue: Double,
-                        modifier: Modifier = Modifier) {
-    Row(horizontalArrangement = Arrangement.SpaceBetween,
+fun AverageDetailRating(
+        ratingStars: Int,
+        ratingValue: Double,
+        modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = modifier.fillMaxWidth()) {
         Text(
             text = stringResource(id = R.string.txt_rating_section, ratingValue),
@@ -77,8 +84,10 @@ fun AverageDetailRating(ratingStars: Int,
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun UserRatings(ratingList: List<UserRatingModel>,
-                modifier: Modifier = Modifier) {
+fun UserRatings(
+        ratingList: List<UserRatingModel>,
+        modifier: Modifier = Modifier
+) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp), modifier = modifier) {
         ratingList.forEach {
             RatingRow(userRatingModel = it)
@@ -92,19 +101,23 @@ fun UserRatings(ratingList: List<UserRatingModel>,
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun RatingRow(userRatingModel: UserRatingModel,
-              modifier: Modifier = Modifier) {
-    Row(horizontalArrangement = Arrangement.spacedBy(16.dp),
+fun RatingRow(
+        userRatingModel: UserRatingModel,
+        modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically) {
-        Image(painter = painterResource(id = userRatingModel.userModel.picture),
-              contentDescription = "user rating image",
-              alignment = Alignment.Center,
-              contentScale = ContentScale.Crop,
-              modifier = modifier
-                      .size(width = 45.dp, height = 45.dp)
-                      .clip(CircleShape))
+        Image(
+            painter = painterResource(id = userRatingModel.userModel.picture),
+            contentDescription = "user rating image",
+            alignment = Alignment.Center,
+            contentScale = ContentScale.Crop,
+            modifier = modifier
+                .size(width = 45.dp, height = 45.dp)
+                .clip(CircleShape))
         Column {
-            Text(text = "${userRatingModel.userModel.name} - ${userRatingModel.date.formatDate}")
+            Text(text = "${userRatingModel.userModel.firstName} - ${userRatingModel.date.formatDate}")
             StarRating(ratingStars = userRatingModel.rating)
         }
     }
@@ -120,14 +133,16 @@ fun StarRating(@IntRange(from = 0, to = 5) ratingStars: Int) {
     val negativeRating = 1..(5 - ratingStars)
     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         positiveRating.forEach { _ ->
-            Icon(painter = painterResource(id = R.drawable.star_24),
-                 contentDescription = stringResource(id = R.string.content_descrip_star_rating),
-                 tint = rating_positive)
+            Icon(
+                painter = painterResource(id = R.drawable.star_24),
+                contentDescription = stringResource(id = R.string.content_descrip_star_rating),
+                tint = rating_positive)
         }
         negativeRating.forEach { _ ->
-            Icon(painter = painterResource(id = R.drawable.star_24),
-                 contentDescription = stringResource(id = R.string.content_descrip_star_rating),
-                 tint = rating_negative)
+            Icon(
+                painter = painterResource(id = R.drawable.star_24),
+                contentDescription = stringResource(id = R.string.content_descrip_star_rating),
+                tint = rating_negative)
         }
     }
 }
