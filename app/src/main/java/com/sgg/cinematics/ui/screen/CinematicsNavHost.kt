@@ -25,13 +25,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.ui.commonui.LoadingScreen
+import com.sgg.cinematics.ui.screen.account.CreateAccountScreen
+import com.sgg.cinematics.ui.screen.account.UserProfileScreen
 import com.sgg.cinematics.ui.screen.details.DetailsScreen
 import com.sgg.cinematics.ui.screen.details.DetailsViewModel
 import com.sgg.cinematics.ui.screen.login.LoginScreen
 import com.sgg.cinematics.ui.screen.login.LoginViewModel
 import com.sgg.cinematics.ui.screen.movieList.MovieListScreen
 import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
-import com.sgg.cinematics.ui.screen.account.UserProfileScreen
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
 import com.sgg.cinematics.utils.UiState
@@ -151,11 +152,12 @@ fun CinematicsNavHost(
             val loadingState = loginViewModel.loginUiState.collectAsStateWithLifecycle()
 
             LoginScreen(userData = userData.value,
-                        isEmailValid = isEmailValid.value,
+                        isEmailValid = { loginViewModel.validateEmail(it) },
                         updateEmail = { loginViewModel.updateEmail(it) },
                         updatePassword = { loginViewModel.updatePassword(it) },
                         login = { loginViewModel.login(navController) },
-                        onNavigateBack = { navController.navigate(Destination.TrendingScreen.route) })
+                        onNavigateBack = { navController.navigate(Destination.TrendingScreen.route) },
+                        onCreateAccountClick = { navController.navigate(Destination.CreateAccount.route) })
 
             if (loadingState.value is UiState.Error) {
                 Toast.makeText(
@@ -171,6 +173,10 @@ fun CinematicsNavHost(
                     modifier = Modifier.background(
                         color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)))
             }
+        }
+
+        composable(route = Destination.CreateAccount.route) {
+            CreateAccountScreen()
         }
     }
 }

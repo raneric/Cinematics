@@ -59,7 +59,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun validateEmail(mail: String): Boolean {
+    fun validateEmail(mail: String): Boolean {
         val emailRegex = ".+@{1}.+\\..+".toRegex()
         return emailRegex.matches(mail)
     }
