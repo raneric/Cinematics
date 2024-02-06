@@ -37,6 +37,7 @@ import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
 import com.sgg.cinematics.utils.UiState
 import com.sgg.cinematics.utils.navigateToDetailsScreen
+import com.sgg.cinematics.utils.validateEmail
 
 // TODO: Refactoring for this composable function
 @Composable
@@ -118,21 +119,23 @@ fun CinematicsNavHost(
                 }
             }
 
-            ScreenWrapper(uiState = detailsUiState.value, componentOnSuccess = {
-                DetailsScreen(
-                    movie = uiData.value!!,
-                    addOrRemoveToWatchList = { TODO() },
-                    onRecommendationItemClicked = { movieId ->
-                        navigateToDetailsScreen(
-                            movieId = movieId, navController = navController)
-                    },
-                    modifier = Modifier.semantics {
-                        contentDescription = Destination.DetailScreen.testTag
-                    },
-                    isInWatchList = movieIsInWatchList) {
-                    navController.navigateUp()
-                }
-            }, componentOnError = {/*TODO*/ })
+            ScreenWrapper(
+                uiState = detailsUiState.value,
+                componentOnSuccess = {
+                    DetailsScreen(
+                        movie = uiData.value!!,
+                        addOrRemoveToWatchList = { TODO() },
+                        onRecommendationItemClicked = { movieId ->
+                            navigateToDetailsScreen(
+                                movieId = movieId, navController = navController)
+                        },
+                        modifier = Modifier.semantics {
+                            contentDescription = Destination.DetailScreen.testTag
+                        },
+                        isInWatchList = movieIsInWatchList) {
+                        navController.navigateUp()
+                    }
+                }, componentOnError = { })
         }
 
         composable(route = Destination.UserProfileScreen.route) {
@@ -152,7 +155,7 @@ fun CinematicsNavHost(
             val loadingState = loginViewModel.loginUiState.collectAsStateWithLifecycle()
 
             LoginScreen(userData = userData.value,
-                        isEmailValid = { loginViewModel.validateEmail(it) },
+                        isEmailValid = { validateEmail(it) },
                         updateEmail = { loginViewModel.updateEmail(it) },
                         updatePassword = { loginViewModel.updatePassword(it) },
                         login = { loginViewModel.login(navController) },
