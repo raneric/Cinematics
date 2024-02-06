@@ -16,21 +16,21 @@ class MovieDataSourceImpl @Inject constructor(private val firestore: FirebaseFir
         MovieDataSource {
     override fun getAllMovies(): Flow<List<MovieModel>> {
         return firestore.collection(MOVIE_COLLECTION)
-                .dataObjects()
+            .dataObjects()
     }
 
     override fun getTopRatedMovies(): Flow<List<MovieModel>> {
         return firestore.collection(MOVIE_COLLECTION)
-                .orderBy("ratingNote", Query.Direction.DESCENDING)
-                .dataObjects()
+            .orderBy("ratingNote", Query.Direction.DESCENDING)
+            .dataObjects()
     }
 
     override suspend fun getMovie(id: Int): MovieModel? {
         return firestore.collection(MOVIE_COLLECTION)
-                .whereEqualTo("id", "qdsqdq")
-                .get()
-                .await()
-                .first()
-                .toObject<MovieModel>()
+            .whereEqualTo("id", id)
+            .get()
+            .await()
+            .first()
+            .toObject<MovieModel>()
     }
 }
