@@ -56,7 +56,7 @@ fun LoginScreen(
 
             ControlledTextField(value = userData?.email,
                                 iconResId = R.drawable.icon_mail_24px,
-                                placeholderResId = R.string.content_descrip_mail_icon,
+                                placeholderResId = R.string.placeholder_mail,
                                 iconContentDescripResId = R.string.content_descrip_mail_icon,
                                 isValidData = { email -> isEmailValid(email) },
                                 onValueChange = { email -> updateEmail(email) })
