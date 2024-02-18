@@ -5,8 +5,10 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -38,6 +40,9 @@ fun PasswordTextField(
                 painter = painterResource(id = R.drawable.icon_lock_24px),
                 contentDescription = stringResource(id = R.string.content_descrip_password_icon))
         },
+        colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+        ),
         visualTransformation = PasswordVisualTransformation(),
     )
 }
@@ -53,16 +58,51 @@ fun ControlledTextField(
         onValueChange: (String) -> Unit
 ) {
     val isValidData = if (value != null) isValidData(value) else true
+
     TextField(value = value ?: "",
               isError = !isValidData,
               onValueChange = { email ->
                   onValueChange(email)
-              }, placeholder = {
-            Text(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodyLarge,
-                text = stringResource(id = placeholderResId))
-        }, leadingIcon = {
+              },
+              placeholder = {
+                  Text(
+                      color = MaterialTheme.colorScheme.onSurfaceVariant,
+                      style = MaterialTheme.typography.bodyLarge,
+                      text = stringResource(id = placeholderResId))
+              }, colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+        ), leadingIcon = {
+            Icon(
+                painter = painterResource(id = iconResId),
+                contentDescription = stringResource(id = iconContentDescripResId))
+        }, modifier = Modifier.fillMaxWidth())
+}
+
+@Composable
+fun ControlledOutlinedTextField(
+        modifier: Modifier = Modifier,
+        value: String?,
+        @DrawableRes iconResId: Int,
+        @StringRes placeholderResId: Int,
+        @StringRes iconContentDescripResId: Int,
+        isValidData: (String) -> Boolean,
+        onValueChange: (String) -> Unit
+) {
+    val isValidData = if (value != null) isValidData(value) else true
+
+    OutlinedTextField(value = value ?: "",
+              isError = !isValidData,
+              onValueChange = { email ->
+                  onValueChange(email)
+              },
+              placeholder = {
+                  Text(
+                      color = MaterialTheme.colorScheme.onSurfaceVariant,
+                      style = MaterialTheme.typography.bodyLarge,
+                      text = stringResource(id = placeholderResId))
+              }, colors = TextFieldDefaults.colors(
+            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
+        ), leadingIcon = {
             Icon(
                 painter = painterResource(id = iconResId),
                 contentDescription = stringResource(id = iconContentDescripResId))

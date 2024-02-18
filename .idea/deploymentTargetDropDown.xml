@@ -2,6 +2,9 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
+      <entry key="CustomDropdownMenuPreview">
+        <State />
+      </entry>
       <entry key="LoadingScreenPreview">
         <State />
       </entry>
@@ -16,16 +19,13 @@
               <deviceKey>
                 <Key>
                   <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Resizable_Experimental_API_34.avd" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
                 </Key>
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-01-21T15:20:42.056449992Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-02-05T18:38:18.280208753Z" />
         </State>
-      </entry>
-      <entry key="details_screen_with_movie_in_watch_list()">
-        <State />
       </entry>
       <entry key="test_empty_movies_list_screen()">
         <State />

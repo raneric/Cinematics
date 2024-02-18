@@ -30,10 +30,11 @@ class CinematicsAppTest : BaseTest() {
     fun setup() {
         val movieRepository = TestMovieRepository()
         uiStatePrefRepo = UiStatePreferencesRepositoryImpl(testDataStore)
-        viewModel = MainViewModel(movieRepository)
+        val fakeAuth = FakeAuthService()
+        viewModel = MainViewModel(movieRepository, fakeAuth)
         rule.setContent {
             val windowWidth = calculateWindowSizeClass(activity = rule.activity)
-            CinematicsAppScreen(user = user, windowsWidthSizeClass = windowWidth.widthSizeClass)
+            CinematicsAppScreen(windowsWidthSizeClass = windowWidth.widthSizeClass)
         }
     }
 
@@ -41,7 +42,7 @@ class CinematicsAppTest : BaseTest() {
     fun test_fab_view_switch_with_default_carousel() {
         val fabSwitchViewTestTag = rule.activity.getString(R.string.test_tag_fab_view_switch)
         rule.onNodeWithTag(testTag = fabSwitchViewTestTag, useUnmergedTree = true)
-                .assertIsDisplayed()
+            .assertIsDisplayed()
     }
 
     @Test
@@ -49,18 +50,18 @@ class CinematicsAppTest : BaseTest() {
         val fabSwitchViewTestTag = rule.activity.getString(R.string.test_tag_fab_view_switch)
 
         rule.onNodeWithTag(testTag = fabSwitchViewTestTag)
-                .performClick()
+            .performClick()
         rule.onNodeWithTag(testTag = R.drawable.view_list_32.toString(), useUnmergedTree = true)
-                .assertIsDisplayed()
+            .assertIsDisplayed()
         rule.onNodeWithTag(testTag = MovieListUiMode.CarouselView.testTag)
-                .assertIsDisplayed()
+            .assertIsDisplayed()
 
         rule.onNodeWithTag(testTag = fabSwitchViewTestTag)
-                .performClick()
+            .performClick()
         rule.onNodeWithTag(testTag = R.drawable.view_carousel_32.toString(), useUnmergedTree = true)
-                .assertIsDisplayed()
+            .assertIsDisplayed()
         rule.onNodeWithTag(testTag = MovieListUiMode.ListView.testTag)
-                .assertIsDisplayed()
+            .assertIsDisplayed()
     }
 
     @Test
@@ -72,16 +73,16 @@ class CinematicsAppTest : BaseTest() {
         navigateToDetailsScreen()
 
         rule.onNodeWithContentDescription(Destination.DetailScreen.testTag)
-                .assertIsDisplayed()
+            .assertIsDisplayed()
         rule.onNodeWithText(addToWatchListTxt)
-                .performScrollTo()
+            .performScrollTo()
         rule.onNodeWithText(addToWatchListTxt)
-                .assertIsDisplayed()
+            .assertIsDisplayed()
         rule.onNodeWithTag(testTagButton)
-                .performClick()
+            .performClick()
         rule.waitForIdle()
         rule.onNodeWithText(removeToWatchListTxt)
-                .assertExists()
+            .assertExists()
     }
 
     @Test
@@ -90,16 +91,16 @@ class CinematicsAppTest : BaseTest() {
         val fabViewSwitchTestTag = rule.activity.getString(R.string.test_tag_fab_view_switch)
         navigateToDetailsScreen()
         rule.onNodeWithTag(bottomNavTestTag)
-                .assertDoesNotExist()
+            .assertDoesNotExist()
         rule.onNodeWithTag(testTag = fabViewSwitchTestTag, useUnmergedTree = true)
-                .assertDoesNotExist()
+            .assertDoesNotExist()
     }
 
     @Test
     fun test_display_login_in_profile_screen_when_no_user_connected() {
         val content = rule.activity.getString(NavItemVariant.UserProfile.iconContentDescription)
         rule.onNodeWithContentDescription(content)
-                .performClick()
+            .performClick()
     }
 
     private fun navigateToDetailsScreen() {

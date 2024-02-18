@@ -12,7 +12,9 @@ data class UserModel(
         val location: String? = null,
         val birthDate: LocalDate,
         val bio: String? = null,
-        @DrawableRes val picture: Int,
+        var pictureUrl: String? = null,
+        @DrawableRes
+        val picture: Int,
 ) {
     val fullName
         get() = "$firstName $lastName"

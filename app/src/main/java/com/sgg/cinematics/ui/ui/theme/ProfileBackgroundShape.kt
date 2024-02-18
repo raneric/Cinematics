@@ -15,13 +15,15 @@ import kotlin.math.sin
 
 /**
  * This is a custom shape for the user profile background, the edge of the rectangle is cut
- * to at the size of the fab
+ * at the size of the fab
  *
  * @property fabSize
  * @property cutPosition
  */
-class ProfileBackgroundShape(private val fabSize: Float,
-                             private val cutPosition: ShapeCutPosition) : Shape {
+class ProfileBackgroundShape(
+        private val fabSize: Float,
+        private val cutPosition: ShapeCutPosition
+) : Shape {
 
     private val startAngle = (15 * PI) / 180
     private val endAngle = (50 * PI) / 180
@@ -29,14 +31,16 @@ class ProfileBackgroundShape(private val fabSize: Float,
     private val fabR
         get() = fabSize / 2
 
-    override fun createOutline(size: Size,
-                               layoutDirection: LayoutDirection,
-                               density: Density): Outline {
+    override fun createOutline(
+            size: Size,
+            layoutDirection: LayoutDirection,
+            density: Density
+    ): Outline {
 
         return when (cutPosition) {
             ShapeCutPosition.TOP_RIGHT -> createTopRightCut(size)
 
-            else -> createBottomRightCut(size)
+            else                       -> createBottomRightCut(size)
         }
     }
 
@@ -49,11 +53,13 @@ class ProfileBackgroundShape(private val fabSize: Float,
             reset()
             lineTo(size.width, 0f)
             lineTo(size.width, size.height)
-            arcTo(rect = Rect(offset = Offset(arcOffsetX.toFloat(), arcOffsetY.toFloat()),
-                              size = Size(fabSize, fabSize)),
-                  startAngleDegrees = -50f,
-                  sweepAngleDegrees = -115f,
-                  forceMoveTo = false)
+            arcTo(
+                rect = Rect(
+                    offset = Offset(arcOffsetX.toFloat(), arcOffsetY.toFloat()),
+                    size = Size(fabSize, fabSize)),
+                startAngleDegrees = -50f,
+                sweepAngleDegrees = -115f,
+                forceMoveTo = false)
             lineTo(0f, size.height)
             close()
         })
@@ -67,11 +73,13 @@ class ProfileBackgroundShape(private val fabSize: Float,
         return Outline.Generic(Path().apply {
             reset()
             lineTo(size.width, 0f)
-            arcTo(rect = Rect(offset = Offset(arcOffsetX.toFloat(), -arcOffsetY.toFloat()),
-                              size = Size(fabSize, fabSize)),
-                  startAngleDegrees = 165f,
-                  sweepAngleDegrees = -115f,
-                  forceMoveTo = false)
+            arcTo(
+                rect = Rect(
+                    offset = Offset(arcOffsetX.toFloat(), -arcOffsetY.toFloat()),
+                    size = Size(fabSize, fabSize)),
+                startAngleDegrees = 165f,
+                sweepAngleDegrees = -115f,
+                forceMoveTo = false)
             lineTo(size.width, size.height)
             lineTo(0f, size.height)
             close()

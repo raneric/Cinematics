@@ -8,6 +8,7 @@ import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.UiState
+import com.sgg.cinematics.utils.validateEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -57,11 +58,6 @@ class LoginViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun validateEmail(mail: String): Boolean {
-        val emailRegex = ".+@{1}.+\\..+".toRegex()
-        return emailRegex.matches(mail)
     }
 
     fun logout() {

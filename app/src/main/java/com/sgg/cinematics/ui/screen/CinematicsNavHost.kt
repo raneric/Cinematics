@@ -179,7 +179,9 @@ fun CinematicsNavHost(
         }
 
         composable(route = Destination.CreateAccount.route) {
-            CreateAccountScreen()
+            CreateAccountScreen() {
+
+            }
         }
     }
 }
