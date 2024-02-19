@@ -12,6 +12,7 @@ data class UserModel(
         val location: String? = null,
         val birthDate: LocalDate,
         val bio: String? = null,
+        var gender: String? = null,
         var pictureUrl: String? = null,
         @DrawableRes
         val picture: Int,
