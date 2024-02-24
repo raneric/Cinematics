@@ -2,10 +2,50 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="CustomDropdownMenuPreview">
-        <State />
+      <entry key="CinematicsAppTest">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-24T10:30:17.642421058Z" />
+        </State>
       </entry>
-      <entry key="LoadingScreenPreview">
+      <entry key="CinematicsAppTest (1)">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-24T12:44:41.494184577Z" />
+        </State>
+      </entry>
+      <entry key="CustomDropdownMenuPreview">
         <State />
       </entry>
       <entry key="LoadingScreenPreview - DarkAndLightPreview 1">
@@ -27,11 +67,21 @@
           <timeTargetWasSelectedWithDropDown value="2024-02-05T18:38:18.280208753Z" />
         </State>
       </entry>
-      <entry key="test_empty_movies_list_screen()">
-        <State />
-      </entry>
       <entry key="test_fab_view_switch_with_default_carousel()">
-        <State />
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-24T12:54:25.772629135Z" />
+        </State>
       </entry>
     </value>
   </component>

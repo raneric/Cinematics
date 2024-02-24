@@ -1,6 +1,8 @@
-package com.sgg.cinematics
+package com.sgg.cinematics.ui.details
 
 import androidx.compose.ui.test.onNodeWithText
+import com.sgg.cinematics.BaseTest
+import com.sgg.cinematics.R
 import com.sgg.cinematics.data.movieList
 import com.sgg.cinematics.ui.screen.details.DetailsContent
 import org.junit.Test

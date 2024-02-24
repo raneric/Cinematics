@@ -1,11 +1,11 @@
-package com.sgg.cinematics
+package com.sgg.cinematics.service
 
 import com.google.firebase.auth.FirebaseUser
-import com.sgg.cinematics.service.AuthService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
 
-class FakeAuthService() : AuthService {
+class FakeAuthService @Inject constructor() : AuthService {
     override val connectedUser: Flow<FirebaseUser?> = flowOf(null)
 
     override suspend fun signInWithEmailAndPassword(

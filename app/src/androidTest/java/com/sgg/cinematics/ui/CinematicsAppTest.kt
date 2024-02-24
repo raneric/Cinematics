@@ -1,4 +1,4 @@
-package com.sgg.cinematics
+package com.sgg.cinematics.ui
 
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
@@ -9,6 +9,8 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import com.sgg.cinematics.BaseTest
+import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.components.NavItemVariant
 import com.sgg.cinematics.ui.screen.CinematicsAppScreen
 import com.sgg.cinematics.utils.Destination

@@ -3,6 +3,20 @@
   <component name="AndroidTestResultsUserPreferences">
     <option name="androidTestResultsTableState">
       <map>
+        <entry key="-2082607340">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_7_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="Xiaomi Redmi Note 9 Pro Max" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-1470894292">
           <value>
             <AndroidTestResultsTableState>
@@ -10,6 +24,20 @@
                 <map>
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_5_API_26" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="Xiaomi Redmi Note 9 Pro Max" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="-935545132">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_7_API_33" value="120" />
                   <entry key="Tests" value="360" />
                   <entry key="Xiaomi Redmi Note 9 Pro Max" value="120" />
                 </map>
@@ -198,6 +226,20 @@
                   <entry key="Duration" value="90" />
                   <entry key="Pixel_5_API_26" value="120" />
                   <entry key="Tests" value="360" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
+        <entry key="826466318">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_7_API_33" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="Xiaomi Redmi Note 9 Pro Max" value="120" />
                 </map>
               </option>
             </AndroidTestResultsTableState>

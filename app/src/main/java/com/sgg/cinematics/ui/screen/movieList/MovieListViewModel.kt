@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(
+open class MovieListViewModel @Inject constructor(
         private val repository: MovieRepository,
         private val authService: AuthService,
         private val uiStateRepository: UiStatePreferencesRepositoryImpl
