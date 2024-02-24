@@ -43,7 +43,6 @@ import com.sgg.cinematics.utils.validateEmail
 @Composable
 fun CinematicsNavHost(
         navController: NavHostController,
-        movieListViewModel: MovieListViewModel,
         movieListUiMode: MovieListUiMode,
         windowsWidthSizeClass: WindowWidthSizeClass,
         modifier: Modifier = Modifier
@@ -53,9 +52,9 @@ fun CinematicsNavHost(
     val loginViewModel = hiltViewModel<LoginViewModel>()
     val listViewModel = hiltViewModel<MovieListViewModel>()
 
-    val watchList = movieListViewModel.watchList
+    val watchList = listViewModel.watchList
 
-    val movieList = movieListViewModel.movieList.collectAsStateWithLifecycle(initialValue = emptyList())
+    val movieList = listViewModel.movieList.collectAsStateWithLifecycle(initialValue = emptyList())
 
     val listUiState = listViewModel.listUiState.collectAsStateWithLifecycle()
 
