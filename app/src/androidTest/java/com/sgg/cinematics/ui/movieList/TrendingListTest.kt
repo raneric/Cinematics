@@ -8,13 +8,13 @@ class TrendingListTest : BaseTest() {
 
     @Test
     fun test_empty_movies_list_screen() {
-        val emptyListText = rule.activity.getString(R.string.txt_no_item_found)
-        rule.setContent {
+        val emptyListText = composeRule.activity.getString(R.string.txt_no_item_found)
+        composeRule.setContent {
             VerticalMovieListScreen(movieList = emptyList()) {
 
             }
         }
-        rule.onNodeWithText(emptyListText)
-                .assertExists()
+        composeRule.onNodeWithText(emptyListText)
+            .assertExists()
     }
 }

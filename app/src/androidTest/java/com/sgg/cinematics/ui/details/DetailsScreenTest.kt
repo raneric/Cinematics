@@ -9,27 +9,27 @@ class DetailsScreenTest : BaseTest() {
 
     @Test
     fun details_screen_with_movie_not_in_watch_list() {
-        val addToWatchListButtonText = rule.activity.getString(R.string.txt_add_to_watch_btn)
-        rule.setContent {
+        val addToWatchListButtonText = composeRule.activity.getString(R.string.txt_add_to_watch_btn)
+        composeRule.setContent {
             DetailsContent(movie = movieList[0],
                            isInWatchList = false,
                            onRecommendationItemClicked = {},
                            addOrRemoveWatchList = { /*TODO*/ })
         }
-        rule.onNodeWithText(addToWatchListButtonText)
-                .assertExists()
+        composeRule.onNodeWithText(addToWatchListButtonText)
+            .assertExists()
     }
 
     @Test
     fun details_screen_with_movie_in_watch_list() {
-        val removeToWatchListButtonText = rule.activity.getString(R.string.txt_remove_to_watch_btn)
-        rule.setContent {
+        val removeToWatchListButtonText = composeRule.activity.getString(R.string.txt_remove_to_watch_btn)
+        composeRule.setContent {
             DetailsContent(movie = movieList[0],
                            isInWatchList = true,
                            onRecommendationItemClicked = {},
                            addOrRemoveWatchList = { /*TODO*/ })
         }
-        rule.onNodeWithText(removeToWatchListButtonText)
-                .assertExists()
+        composeRule.onNodeWithText(removeToWatchListButtonText)
+            .assertExists()
     }
 }
