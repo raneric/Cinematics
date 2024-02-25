@@ -23,6 +23,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.ui.commonui.LoadingScreen
 import com.sgg.cinematics.ui.screen.account.CreateAccountScreen
@@ -44,6 +45,7 @@ import com.sgg.cinematics.utils.validateEmail
 fun CinematicsNavHost(
         navController: NavHostController,
         movieListUiMode: MovieListUiMode,
+        movies: List<MovieModel>,
         windowsWidthSizeClass: WindowWidthSizeClass,
         modifier: Modifier = Modifier
 ) {
@@ -68,7 +70,7 @@ fun CinematicsNavHost(
         composable(route = Destination.TrendingScreen.route) {
             ScreenWrapper(uiState = listUiState.value, componentOnSuccess = {
                 MovieListScreen(movieListUiMode = movieListUiMode,
-                                movieList = movieList.value,
+                                movieList = movies,
                                 navController = navController,
                                 windowsWidthSizeClass = windowsWidthSizeClass,
                                 modifier = Modifier.semantics {
@@ -82,7 +84,7 @@ fun CinematicsNavHost(
         composable(route = Destination.TopRatedScreen.route) {
             ScreenWrapper(uiState = listUiState.value, componentOnSuccess = {
                 MovieListScreen(movieListUiMode = movieListUiMode,
-                                movieList = movieList.value,
+                                movieList = movies,
                                 navController = navController,
                                 windowsWidthSizeClass = windowsWidthSizeClass,
                                 modifier = Modifier.semantics {
