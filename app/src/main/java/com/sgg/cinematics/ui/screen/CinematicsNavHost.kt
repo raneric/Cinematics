@@ -23,6 +23,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.userModelLists
+import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.commonui.LoadingScreen
 import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.ui.screen.account.CreateAccountScreen
@@ -32,7 +33,6 @@ import com.sgg.cinematics.ui.screen.details.DetailsViewModel
 import com.sgg.cinematics.ui.screen.login.LoginScreen
 import com.sgg.cinematics.ui.screen.login.LoginViewModel
 import com.sgg.cinematics.ui.screen.movieList.MovieListScreen
-import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
 import com.sgg.cinematics.utils.UiState
@@ -51,11 +51,10 @@ fun CinematicsNavHost(
         modifier: Modifier = Modifier
 ) {
 
-    val detailsViewModel = hiltViewModel<DetailsViewModel>()
     val loginViewModel = hiltViewModel<LoginViewModel>()
-    val listViewModel = hiltViewModel<MovieListViewModel>()
+    val mainViewModel = hiltViewModel<MainViewModel>()
 
-    val connectedUser = listViewModel.connectedUser.collectAsStateWithLifecycle(initialValue = null)
+    val connectedUser = mainViewModel.connectedUser.collectAsStateWithLifecycle(initialValue = null)
 
     NavHost(
         navController = navController,
@@ -104,6 +103,7 @@ fun CinematicsNavHost(
 
         composable(route = Destination.DetailScreen.route) {
 
+            val detailsViewModel = hiltViewModel<DetailsViewModel>()
             var movieIsInWatchList by remember { mutableStateOf(false) }
             val detailsUiState = detailsViewModel.detailsUiState.collectAsStateWithLifecycle()
             val uiData = detailsViewModel.selectedMovie.collectAsStateWithLifecycle()
@@ -146,7 +146,6 @@ fun CinematicsNavHost(
 
         composable(route = Destination.LoginScreen.route) {
             val userData = loginViewModel.userLoginData.collectAsStateWithLifecycle()
-            val isEmailValid = loginViewModel.isEmailValid.collectAsStateWithLifecycle()
             val loadingState = loginViewModel.loginUiState.collectAsStateWithLifecycle()
 
             LoginScreen(userData = userData.value,

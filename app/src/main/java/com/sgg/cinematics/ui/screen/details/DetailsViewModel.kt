@@ -47,7 +47,7 @@ class DetailsViewModel @Inject constructor(
             try {
                 val result = repository.getMovie(id)
                 _selectedMovie.value = result
-                _detailsUiState.value = UiState.Success
+                _detailsUiState.value = if (result == null) UiState.Error("Movie not found") else UiState.Success
             } catch (e: Exception) {
                 _detailsUiState.value = UiState.Error(e.message!!)
             }
