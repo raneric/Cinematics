@@ -19,13 +19,12 @@ import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.ui.commonui.LoadingScreen
+import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.ui.screen.account.CreateAccountScreen
 import com.sgg.cinematics.ui.screen.account.UserProfileScreen
 import com.sgg.cinematics.ui.screen.details.DetailsScreen
@@ -46,6 +45,8 @@ fun CinematicsNavHost(
         navController: NavHostController,
         movieListUiMode: MovieListUiMode,
         movies: List<MovieModel>,
+        listUiState: UiState,
+        updateSelectedMovie: (movieId: Int) -> Unit,
         windowsWidthSizeClass: WindowWidthSizeClass,
         modifier: Modifier = Modifier
 ) {
@@ -53,12 +54,6 @@ fun CinematicsNavHost(
     val detailsViewModel = hiltViewModel<DetailsViewModel>()
     val loginViewModel = hiltViewModel<LoginViewModel>()
     val listViewModel = hiltViewModel<MovieListViewModel>()
-
-    val watchList = listViewModel.watchList
-
-    val movieList = listViewModel.movieList.collectAsStateWithLifecycle(initialValue = emptyList())
-
-    val listUiState = listViewModel.listUiState.collectAsStateWithLifecycle()
 
     val connectedUser = listViewModel.connectedUser.collectAsStateWithLifecycle(initialValue = null)
 
@@ -68,7 +63,7 @@ fun CinematicsNavHost(
         modifier = modifier) {
 
         composable(route = Destination.TrendingScreen.route) {
-            ScreenWrapper(uiState = listUiState.value, componentOnSuccess = {
+            ScreenWrapper(uiState = listUiState, componentOnSuccess = {
                 MovieListScreen(movieListUiMode = movieListUiMode,
                                 movieList = movies,
                                 navController = navController,
@@ -76,13 +71,13 @@ fun CinematicsNavHost(
                                 modifier = Modifier.semantics {
                                     contentDescription = Destination.TrendingScreen.testTag
                                 }) { movieId ->
-                    detailsViewModel.updateUiState(movieId)
+                    updateSelectedMovie(movieId)
                 }
             }, componentOnError = { /*TODO*/ })
         }
 
         composable(route = Destination.TopRatedScreen.route) {
-            ScreenWrapper(uiState = listUiState.value, componentOnSuccess = {
+            ScreenWrapper(uiState = listUiState, componentOnSuccess = {
                 MovieListScreen(movieListUiMode = movieListUiMode,
                                 movieList = movies,
                                 navController = navController,
@@ -90,25 +85,24 @@ fun CinematicsNavHost(
                                 modifier = Modifier.semantics {
                                     contentDescription = Destination.TrendingScreen.testTag
                                 }) { movieId ->
-                    detailsViewModel.updateUiState(movieId)
+                    updateSelectedMovie(movieId)
                 }
             }, componentOnError = { /*TODO*/ })
         }
 
         composable(route = Destination.WatchListScreen.route) {
             MovieListScreen(movieListUiMode = movieListUiMode,
-                            movieList = watchList,
+                            movieList = movies,
                             navController = navController,
                             windowsWidthSizeClass = windowsWidthSizeClass,
                             modifier = Modifier.semantics {
                                 contentDescription = Destination.WatchListScreen.testTag
                             }) { movieId ->
-                detailsViewModel.updateUiState(movieId)
+                updateSelectedMovie(movieId)
             }
         }
 
-        composable(route = Destination.DetailScreen.route,
-                   arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) {
+        composable(route = Destination.DetailScreen.route) {
 
             var movieIsInWatchList by remember { mutableStateOf(false) }
             val detailsUiState = detailsViewModel.detailsUiState.collectAsStateWithLifecycle()
@@ -184,37 +178,6 @@ fun CinematicsNavHost(
 
             }
         }
-    }
-}
-
-
-/**
- * This composable wrap a screen and display component toward uiState :
- *  - [UiState.Success] : show component [componentOnSuccess] param
- *  - [UiState.Loading] : Show spinning progress
- *  - [UiState.Error] : show snackbar and error page with [componentOnError] param
- *
- * @param uiState : the current ui state
- * @param componentOnSuccess : component to display on success
- * @param componentOnError : component to display on error
- * @param modifier: A modifier with default value [Modifier]
- */
-@Composable
-fun ScreenWrapper(
-        uiState: UiState,
-        componentOnSuccess: @Composable () -> Unit,
-        componentOnError: @Composable () -> Unit,
-) {
-    if (uiState is UiState.Loading) {
-        LoadingScreen()
-    }
-
-    if (uiState is UiState.Success) {
-        componentOnSuccess()
-    }
-
-    if (uiState is UiState.Error) {
-        componentOnError()
     }
 }
 
