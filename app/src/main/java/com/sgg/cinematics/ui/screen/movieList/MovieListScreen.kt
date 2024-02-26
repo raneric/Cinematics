@@ -57,7 +57,6 @@ fun MovieListScreen(
         movieList: List<MovieModel>,
         navController: NavHostController,
         windowsWidthSizeClass: WindowWidthSizeClass,
-        onItemClicked: (Int) -> Unit
 ) {
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
         AnimatedVisibility(
@@ -68,7 +67,6 @@ fun MovieListScreen(
                 movieList = movieList,
                 modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
-                onItemClicked(movieId)
             }
         }
         AnimatedVisibility(
@@ -79,13 +77,11 @@ fun MovieListScreen(
                 movieList = movieList,
                 modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
-                onItemClicked(movieId)
             }
         }
     } else {
         GridMovieListScreen(movieList = movieList) { movieId ->
             navigateToDetailsScreen(movieId = movieId, navController = navController)
-            onItemClicked(movieId)
         }
     }
 }
@@ -109,10 +105,10 @@ fun VerticalMovieListScreen(
         items(movieList) {
             MovieCad(movie = it,
                      modifier = Modifier
-                             .testTag(stringResource(id = R.string.test_tag_card))
-                             .clickable {
-                                 onItemClicked(it.id)
-                             })
+                         .testTag(stringResource(id = R.string.test_tag_card))
+                         .clickable {
+                             onItemClicked(it.id)
+                         })
         }
     }
 }
@@ -154,10 +150,10 @@ fun HorizontalMovieListScreen(
                 pageSpacing = 8.dp) {
                 VerticalMovieCard(movie = movieList[it],
                                   modifier = Modifier
-                                          .testTag(stringResource(id = R.string.test_tag_card))
-                                          .clickable {
-                                              onItemClicked(movieList[it].id)
-                                          })
+                                      .testTag(stringResource(id = R.string.test_tag_card))
+                                      .clickable {
+                                          onItemClicked(movieList[it].id)
+                                      })
             }
         }
     }
@@ -173,10 +169,10 @@ fun GridMovieListScreen(
         items(movieList) {
             MovieCad(movie = it,
                      modifier = Modifier
-                             .testTag(stringResource(id = R.string.test_tag_card))
-                             .clickable {
-                                 onItemClicked(it.id)
-                             })
+                         .testTag(stringResource(id = R.string.test_tag_card))
+                         .clickable {
+                             onItemClicked(it.id)
+                         })
         }
     }
 }

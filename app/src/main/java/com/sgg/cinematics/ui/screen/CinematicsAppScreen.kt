@@ -9,6 +9,7 @@ import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -24,7 +25,6 @@ import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
 import com.sgg.cinematics.ui.components.BottomNavScreen
 import com.sgg.cinematics.ui.components.CinematicsNavigationRail
 import com.sgg.cinematics.ui.components.NavItemVariant
-import com.sgg.cinematics.ui.screen.details.DetailsViewModel
 import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
@@ -39,7 +39,6 @@ fun CinematicsAppScreen(
 ) {
     val mainViewModel = hiltViewModel<MainViewModel>()
     val movieListViewModel = hiltViewModel<MovieListViewModel>()
-    val detailViewModel = hiltViewModel<DetailsViewModel>()
 
     val navController = rememberNavController()
 
@@ -53,7 +52,7 @@ fun CinematicsAppScreen(
         mutableStateOf(true)
     }
 
-    var activeDestination: NavItemVariant by rememberSaveable {
+    var activeDestination: NavItemVariant by remember {
         mutableStateOf(NavItemVariant.Trending)
     }
 
@@ -83,9 +82,6 @@ fun CinematicsAppScreen(
             movies = movies.value,
             connectedUser = connectedUser.value,
             listUiState = listUiState.value,
-            updateSelectedMovie = {
-                detailViewModel.updateUiState(it)
-            },
             windowsWidthSizeClass = windowsWidthSizeClass,
             viewModel = movieListViewModel)
     } else {
@@ -96,9 +92,6 @@ fun CinematicsAppScreen(
             movies = movies.value,
             connectedUser = connectedUser.value,
             listUiState = listUiState.value,
-            updateSelectedMovie = {
-                detailViewModel.updateUiState(it)
-            },
             windowsWidthSizeClass = windowsWidthSizeClass)
     }
 }
@@ -115,6 +108,7 @@ fun CinematicsAppScreen(
  */
 @Composable
 fun CinematicsAppCompact(
+        modifier: Modifier = Modifier,
         isBottomNavVisible: Boolean,
         isFabViewSwitchVisible: Boolean,
         activeDestination: NavItemVariant,
@@ -124,35 +118,34 @@ fun CinematicsAppCompact(
         movies: List<MovieModel>,
         listUiState: UiState,
         connectedUser: FirebaseUser?,
-        updateSelectedMovie: (movieId: Int) -> Unit,
-        windowsWidthSizeClass: WindowWidthSizeClass,
-        modifier: Modifier = Modifier,
+        windowsWidthSizeClass: WindowWidthSizeClass
 ) {
 
-    Scaffold(bottomBar = {
-        AnimatedVisibility(visible = isBottomNavVisible,
-                           enter = slideInVertically(initialOffsetY = { -40 })) {
-            BottomNavScreen(activeDestination = activeDestination) { destinationRoute ->
-                navController.navigate(route = destinationRoute)
-            }
-        }
-    }, floatingActionButton = {
-        if (isFabViewSwitchVisible) {
-            MovieDisplaySwitchFab(uiListMode.fabIcon) {
-                val nextMovieListUiMode = if (uiListMode is MovieListUiMode.ListView) MovieListUiMode.CarouselView else MovieListUiMode.ListView
-                CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.switchListViewMode(nextMovieListUiMode)
+    Scaffold(
+        modifier = modifier,
+        bottomBar = {
+            AnimatedVisibility(visible = isBottomNavVisible,
+                               enter = slideInVertically(initialOffsetY = { -40 })) {
+                BottomNavScreen(activeDestination = activeDestination) { destinationRoute ->
+                    navController.navigate(route = destinationRoute)
                 }
             }
-        }
-    }) { paddingValue ->
+        }, floatingActionButton = {
+            if (isFabViewSwitchVisible) {
+                MovieDisplaySwitchFab(uiListMode.fabIcon) {
+                    val nextMovieListUiMode = if (uiListMode is MovieListUiMode.ListView) MovieListUiMode.CarouselView else MovieListUiMode.ListView
+                    CoroutineScope(Dispatchers.IO).launch {
+                        viewModel.switchListViewMode(nextMovieListUiMode)
+                    }
+                }
+            }
+        }) { paddingValue ->
         CinematicsNavHost(
             navController = navController,
             movieListUiMode = uiListMode,
             movies = movies,
             listUiState = listUiState,
             connectedUser = connectedUser,
-            updateSelectedMovie = updateSelectedMovie,
             windowsWidthSizeClass = windowsWidthSizeClass,
             modifier = Modifier.padding(paddingValue))
     }
@@ -170,17 +163,17 @@ fun CinematicsAppCompact(
  */
 @Composable
 fun CinematicsAppMedium(
+        modifier: Modifier = Modifier,
         navController: NavHostController,
         activeDestination: NavItemVariant,
         uiListMode: MovieListUiMode,
         movies: List<MovieModel>,
         listUiState: UiState,
         connectedUser: FirebaseUser?,
-        updateSelectedMovie: (movieId: Int) -> Unit,
         windowsWidthSizeClass: WindowWidthSizeClass,
-        modifier: Modifier = Modifier,
-) {
-    Row {
+
+        ) {
+    Row(modifier = modifier) {
         CinematicsNavigationRail(activeDestination = activeDestination) {
             navController.navigate(it)
         }
@@ -189,7 +182,6 @@ fun CinematicsAppMedium(
             movieListUiMode = uiListMode,
             movies = movies,
             listUiState = listUiState,
-            updateSelectedMovie = updateSelectedMovie,
             connectedUser = connectedUser,
             windowsWidthSizeClass = windowsWidthSizeClass)
     }

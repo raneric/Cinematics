@@ -49,7 +49,6 @@ fun CinematicsNavHost(
         movies: List<MovieModel>,
         listUiState: UiState,
         connectedUser: FirebaseUser?,
-        updateSelectedMovie: (movieId: Int) -> Unit,
         windowsWidthSizeClass: WindowWidthSizeClass,
         modifier: Modifier = Modifier
 ) {
@@ -69,9 +68,7 @@ fun CinematicsNavHost(
                                 windowsWidthSizeClass = windowsWidthSizeClass,
                                 modifier = Modifier.semantics {
                                     contentDescription = Destination.TrendingScreen.testTag
-                                }) { movieId ->
-                    updateSelectedMovie(movieId)
-                }
+                                })
             }, componentOnError = { /*TODO*/ })
         }
 
@@ -83,9 +80,7 @@ fun CinematicsNavHost(
                                 windowsWidthSizeClass = windowsWidthSizeClass,
                                 modifier = Modifier.semantics {
                                     contentDescription = Destination.TrendingScreen.testTag
-                                }) { movieId ->
-                    updateSelectedMovie(movieId)
-                }
+                                })
             }, componentOnError = { /*TODO*/ })
         }
 
@@ -96,23 +91,24 @@ fun CinematicsNavHost(
                             windowsWidthSizeClass = windowsWidthSizeClass,
                             modifier = Modifier.semantics {
                                 contentDescription = Destination.WatchListScreen.testTag
-                            }) { movieId ->
-                updateSelectedMovie(movieId)
-            }
+                            })
         }
 
         composable(
             route = Destination.DetailScreen.route,
-            arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) {
+            arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { navBackStackEntry ->
+
+            val movieId = navBackStackEntry.arguments?.getInt(MOVIE_ID_ARGS)
 
             val detailsViewModel = hiltViewModel<DetailsViewModel>()
+            //TODO implementation of add to watchList
             var movieIsInWatchList by remember { mutableStateOf(false) }
             val detailsUiState = detailsViewModel.detailsUiState.collectAsStateWithLifecycle()
             val uiData = detailsViewModel.selectedMovie.collectAsStateWithLifecycle()
 
             LaunchedEffect(Unit) {
-                detailsViewModel.isInWatchList.collect { isInWatchList ->
-                    movieIsInWatchList = isInWatchList
+                movieId?.let { movieId ->
+                    detailsViewModel.updateUiState(movieId)
                 }
             }
 
