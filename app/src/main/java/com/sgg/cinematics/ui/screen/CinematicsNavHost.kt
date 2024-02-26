@@ -19,11 +19,13 @@ import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.userModelLists
-import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.commonui.LoadingScreen
 import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.ui.screen.account.CreateAccountScreen
@@ -46,15 +48,13 @@ fun CinematicsNavHost(
         movieListUiMode: MovieListUiMode,
         movies: List<MovieModel>,
         listUiState: UiState,
+        connectedUser: FirebaseUser?,
         updateSelectedMovie: (movieId: Int) -> Unit,
         windowsWidthSizeClass: WindowWidthSizeClass,
         modifier: Modifier = Modifier
 ) {
 
     val loginViewModel = hiltViewModel<LoginViewModel>()
-    val mainViewModel = hiltViewModel<MainViewModel>()
-
-    val connectedUser = mainViewModel.connectedUser.collectAsStateWithLifecycle(initialValue = null)
 
     NavHost(
         navController = navController,
@@ -101,7 +101,9 @@ fun CinematicsNavHost(
             }
         }
 
-        composable(route = Destination.DetailScreen.route) {
+        composable(
+            route = Destination.DetailScreen.route,
+            arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) {
 
             val detailsViewModel = hiltViewModel<DetailsViewModel>()
             var movieIsInWatchList by remember { mutableStateOf(false) }
@@ -135,7 +137,7 @@ fun CinematicsNavHost(
 
         composable(route = Destination.UserProfileScreen.route) {
 
-            if (connectedUser.value == null) {
+            if (connectedUser == null) {
                 navController.navigate(Destination.LoginScreen.route)
             } else {
                 UserProfileScreen(user = userModelLists[0]) {
