@@ -15,38 +15,8 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-28T16:24:22.216103528Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-02-28T18:07:06.298281602Z" />
         </State>
-      </entry>
-      <entry key="test_click_fab_view_switch_carousel_list_and_list_carousel()">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-28T17:03:26.047399089Z" />
-        </State>
-      </entry>
-      <entry key="test_click_fab_view_switch_list_carousel_and_carousel_list()">
-        <State />
       </entry>
       <entry key="test_details_screen_without_bottom_nav_and_fab_switch_btn()">
         <State>
@@ -55,45 +25,13 @@
               <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
+                  <type value="SERIAL_NUMBER" />
+                  <value value="afe4f58c" />
                 </Key>
               </deviceKey>
             </Target>
           </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-28T17:10:18.507672347Z" />
-        </State>
-      </entry>
-      <entry key="test_display_login_in_profile_screen_when_no_user_connected()">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-28T17:12:42.966942286Z" />
-        </State>
-      </entry>
-      <entry key="test_navigate_to_detail_screen_and_add_to_watch_list_button()">
-        <State>
-          <runningDeviceTargetSelectedWithDropDown>
-            <Target>
-              <type value="RUNNING_DEVICE_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="$USER_HOME$/.android/avd/Pixel_7_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </runningDeviceTargetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-28T17:09:17.556793633Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-02-28T17:55:22.516105812Z" />
         </State>
       </entry>
     </value>
