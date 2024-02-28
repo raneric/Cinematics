@@ -34,7 +34,6 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -89,7 +88,7 @@ dependencies {
     // Navigation in compose dependency
     implementation "androidx.navigation:navigation-compose:$nav_version"
 
-    implementation 'androidx.activity:activity-compose:1.8.2'
+    implementation 'androidx.activity:activity-compose:1.6.1'
 
     // Constraint layout dependency
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
