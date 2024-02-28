@@ -67,8 +67,8 @@ fun CinematicsAppScreen(
         isBottomNavVisible = navDestination.isInBottomNavDestination()
         isFabViewSwitchVisible = navDestination.isIntListDestination()
 
-        navDestination.route?.let {
-            mainViewModel.updateMovieList(it)
+        navDestination.route?.let { route ->
+            mainViewModel.updateMovieList(route)
         }
     }
 
@@ -126,7 +126,7 @@ fun CinematicsAppCompact(
         bottomBar = {
             AnimatedVisibility(visible = isBottomNavVisible,
                                enter = slideInVertically(initialOffsetY = { -40 })) {
-                BottomNavScreen(activeDestination = activeDestination) { destinationRoute ->
+                BottomNavScreen(activeNavItem = activeDestination) { destinationRoute ->
                     navController.navigate(route = destinationRoute)
                 }
             }
@@ -174,7 +174,7 @@ fun CinematicsAppMedium(
 
         ) {
     Row(modifier = modifier) {
-        CinematicsNavigationRail(activeDestination = activeDestination) {
+        CinematicsNavigationRail(activeNavItem = activeDestination) {
             navController.navigate(it)
         }
         CinematicsNavHost(
@@ -212,4 +212,3 @@ private fun NavDestination.isIntListDestination(): Boolean {
            this.route == Destination.TopRatedScreen.route ||
            this.route == Destination.WatchListScreen.route
 }
-
