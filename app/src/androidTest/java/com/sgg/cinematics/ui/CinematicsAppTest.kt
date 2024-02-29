@@ -4,7 +4,9 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import com.sgg.cinematics.BaseTest
 import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.components.NavItemVariant
@@ -56,15 +58,15 @@ class CinematicsAppTest : BaseTest() {
 
         composeRule.onNodeWithContentDescription(Destination.DetailScreen.testTag)
             .assertIsDisplayed()
-        /* composeRule.onNodeWithText(addToWatchListTxt)
-             .performScrollTo()
-         composeRule.onNodeWithText(addToWatchListTxt)
-             .assertIsDisplayed()
-         composeRule.onNodeWithTag(testTagButton)
-             .performClick()
-         composeRule.waitForIdle()
-         composeRule.onNodeWithText(removeToWatchListTxt)
-             .assertExists()*/
+        composeRule.onNodeWithText(addToWatchListTxt)
+            .performScrollTo()
+        composeRule.onNodeWithText(addToWatchListTxt)
+            .assertIsDisplayed()
+        composeRule.onNodeWithTag(testTagButton)
+            .performClick()
+        composeRule.waitForIdle()
+        composeRule.onNodeWithText(removeToWatchListTxt)
+            .assertExists()
     }
 
     @Test
@@ -74,15 +76,18 @@ class CinematicsAppTest : BaseTest() {
         navigateToDetailsScreen()
         composeRule.onNodeWithTag(bottomNavTestTag)
             .assertDoesNotExist()
-        /* composeRule.onNodeWithTag(testTag = fabViewSwitchTestTag, useUnmergedTree = true)
-             .assertDoesNotExist()*/
+        composeRule.onNodeWithTag(testTag = fabViewSwitchTestTag, useUnmergedTree = true)
+            .assertDoesNotExist()
     }
 
     @Test
     fun test_display_login_in_profile_screen_when_no_user_connected() {
         val content = composeRule.activity.getString(NavItemVariant.UserProfile.iconContentDescription)
-        composeRule.onNodeWithContentDescription(content)
+        val loginScreenTestTag = composeRule.activity.getString(R.string.test_tag_login_screen)
+        composeRule.onNodeWithContentDescription(label = content, useUnmergedTree = true)
             .performClick()
+        composeRule.onNodeWithTag(loginScreenTestTag)
+            .assertIsDisplayed()
     }
 
     private fun navigateToDetailsScreen() {

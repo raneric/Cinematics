@@ -20,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,7 +37,7 @@ import com.sgg.cinematics.utils.DarkAndLightPreview
 
 @Composable
 fun LoginScreen(
-        modifier: Modifier = Modifier,
+        modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_login_screen)),
         userData: AuthData?,
         isEmailValid: (String) -> Boolean,
         updateEmail: (String) -> Unit,

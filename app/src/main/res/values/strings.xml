@@ -66,5 +66,6 @@
     <string name="test_tag_bottom_nav">bottom_nav_test_tag</string>
     <string name="test_tag_fab_view_switch">test_tag_fab_view_switch</string>
     <string name="test_tag_detail_content">details_content_test_tag</string>
+    <string name="test_tag_login_screen">login_screen_test_tag</string>
 
 </resources>
