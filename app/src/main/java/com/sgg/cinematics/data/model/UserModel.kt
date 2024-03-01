@@ -7,7 +7,6 @@ data class UserModel(
         val id: String,
         val firstName: String,
         val lastName: String,
-        val userName: String,
         val email: String,
         val location: String? = null,
         val birthDate: LocalDate,

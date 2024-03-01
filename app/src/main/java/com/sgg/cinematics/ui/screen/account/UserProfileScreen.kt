@@ -203,8 +203,6 @@ fun UserInfoSection(
             .padding(10.dp)) {
         Text(text = stringResource(id = R.string.txt_user_info_tittle), style = userProfileTitle)
         Divider(color = Color(0xFFD1D1D1))
-        UserInfoItem(text = user.userName, R.drawable.icon_user_name)
-        Divider(color = Color(0xFFE1E1E1))
         UserInfoItem(text = user.birthDate.toString(), R.drawable.icon_birthday_date)
         Divider(color = Color(0xFFE1E1E1))
         UserInfoItem(text = user.email, R.drawable.icon_email)
