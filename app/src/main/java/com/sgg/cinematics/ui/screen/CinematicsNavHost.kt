@@ -44,21 +44,22 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 // TODO: Refactoring for this composable function
 @Composable
 fun CinematicsNavHost(
-        navController: NavHostController,
-        movieListUiMode: MovieListUiMode,
-        movies: List<MovieModel>,
-        listUiState: UiState,
-        connectedUser: FirebaseUser?,
-        windowsWidthSizeClass: WindowWidthSizeClass,
-        modifier: Modifier = Modifier
+    navController: NavHostController,
+    movieListUiMode: MovieListUiMode,
+    movies: List<MovieModel>,
+    listUiState: UiState,
+    connectedUser: FirebaseUser?,
+    windowsWidthSizeClass: WindowWidthSizeClass,
+    modifier: Modifier = Modifier
 ) {
 
     val loginViewModel = hiltViewModel<LoginViewModel>()
 
     NavHost(
-        navController = navController,
-        startDestination = Destination.TrendingScreen.route,
-        modifier = modifier) {
+            navController = navController,
+            startDestination = Destination.TrendingScreen.route,
+            modifier = modifier
+    ) {
 
         composable(route = Destination.TrendingScreen.route) {
             ScreenWrapper(uiState = listUiState, componentOnSuccess = {
@@ -95,8 +96,9 @@ fun CinematicsNavHost(
         }
 
         composable(
-            route = Destination.DetailScreen.route,
-            arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })) { navBackStackEntry ->
+                route = Destination.DetailScreen.route,
+                arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })
+        ) { navBackStackEntry ->
 
             val movieId = navBackStackEntry.arguments?.getInt(MOVIE_ID_ARGS)
 
@@ -113,22 +115,24 @@ fun CinematicsNavHost(
             }
 
             ScreenWrapper(
-                uiState = detailsUiState.value,
-                componentOnSuccess = {
-                    DetailsScreen(
-                        movie = uiData.value!!,
-                        addOrRemoveToWatchList = { TODO() },
-                        onRecommendationItemClicked = { movieId ->
-                            navigateToDetailsScreen(
-                                movieId = movieId, navController = navController)
-                        },
-                        modifier = Modifier.semantics {
-                            contentDescription = Destination.DetailScreen.testTag
-                        },
-                        isInWatchList = movieIsInWatchList) {
-                        navController.navigateUp()
-                    }
-                }, componentOnError = { })
+                    uiState = detailsUiState.value,
+                    componentOnSuccess = {
+                        DetailsScreen(
+                                movie = uiData.value!!,
+                                addOrRemoveToWatchList = { TODO() },
+                                onRecommendationItemClicked = { movieId ->
+                                    navigateToDetailsScreen(
+                                            movieId = movieId, navController = navController
+                                    )
+                                },
+                                modifier = Modifier.semantics {
+                                    contentDescription = Destination.DetailScreen.testTag
+                                },
+                                isInWatchList = movieIsInWatchList
+                        ) {
+                            navController.navigateUp()
+                        }
+                    }, componentOnError = { })
         }
 
         composable(route = Destination.UserProfileScreen.route) {
@@ -156,24 +160,31 @@ fun CinematicsNavHost(
 
             if (loadingState.value is UiState.Error) {
                 Toast.makeText(
-                    LocalContext.current,
-                    (loadingState.value as UiState.Error).error,
-                    Toast.LENGTH_LONG)
+                        LocalContext.current,
+                        (loadingState.value as UiState.Error).error,
+                        Toast.LENGTH_LONG
+                )
                     .show()
             }
 
             AnimatedVisibility(
-                visible = loadingState.value is UiState.Loading, enter = fadeIn()) {
+                    visible = loadingState.value is UiState.Loading, enter = fadeIn()
+            ) {
                 LoadingScreen(
-                    modifier = Modifier.background(
-                        color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)))
+                        modifier = Modifier.background(
+                                color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
+                        )
+                )
             }
         }
 
         composable(route = Destination.CreateAccount.route) {
-            CreateAccountScreen() {
+            CreateAccountScreen(
+                    onNavigateBack = {
+                        navController.popBackStack()
+                    }, onCreateAccountClick = {
 
-            }
+            })
         }
     }
 }

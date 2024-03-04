@@ -61,6 +61,8 @@
     <string name="label_location">Location</string>
     <string name="label_password">Password</string>
     <string name="label_confirm_password">Confirm password</string>
+    <string name="label_gender">Gender</string>
+
 
     <string name="test_tag_card">card_test_tag</string>
     <string name="test_tag_overview">overview_test_tag</string>
@@ -70,4 +72,8 @@
     <string name="test_tag_detail_content">details_content_test_tag</string>
     <string name="test_tag_login_screen">login_screen_test_tag</string>
 
+    <string-array name="gender_list">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
 </resources>
