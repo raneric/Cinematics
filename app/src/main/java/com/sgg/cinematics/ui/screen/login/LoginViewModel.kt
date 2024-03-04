@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-        private val repository: MovieRepository,
-        private val authService: AuthService
+    private val repository: MovieRepository,
+    private val authService: AuthService
 ) : MainViewModel(repository, authService) {
 
     private var _loginUiState = MutableStateFlow<UiState?>(null)
@@ -35,14 +35,13 @@ class LoginViewModel @Inject constructor(
     fun updateEmail(mail: String) {
         _isEmailValid.value = UserDataValidatorUseCase.validateEmail(mail)
         if (_isEmailValid.value) {
-            val autUser = AuthData(email = mail, password = userLoginData.value?.password ?: "")
+            val autUser = _userLoginData.value?.copy(email = mail)
             _userLoginData.value = autUser
         }
     }
 
     fun updatePassword(password: String) {
-        
-        val autUser = AuthData(email = userLoginData.value?.email ?: "", password = password)
+        val autUser = _userLoginData.value?.copy(password = password)
         _userLoginData.value = autUser
     }
 
@@ -52,8 +51,9 @@ class LoginViewModel @Inject constructor(
             viewModelScope.launch {
                 try {
                     authService.signInWithEmailAndPassword(
-                        email = user.email,
-                        password = user.password)
+                            email = user.email,
+                            password = user.password
+                    )
                     UiState.Success
                     navController.navigate(Destination.UserProfileScreen.route)
                 } catch (e: Exception) {
