@@ -28,7 +28,8 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
 import com.sgg.cinematics.ui.commonui.ControlledTextField
-import com.sgg.cinematics.ui.commonui.PasswordTextField
+import com.sgg.cinematics.ui.commonui.PasswordTextFieldWrapper
+import com.sgg.cinematics.ui.commonui.TextFieldVariant
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.custom_red_button_color
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_onSecondary
@@ -37,23 +38,24 @@ import com.sgg.cinematics.utils.DarkAndLightPreview
 
 @Composable
 fun LoginScreen(
-        modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_login_screen)),
-        userData: AuthData?,
-        isEmailValid: (String) -> Boolean,
-        updateEmail: (String) -> Unit,
-        updatePassword: (String) -> Unit,
-        login: () -> Unit,
-        onNavigateBack: () -> Unit,
-        onCreateAccountClick: () -> Unit
+    modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_login_screen)),
+    userData: AuthData?,
+    isEmailValid: (String) -> Boolean,
+    updateEmail: (String) -> Unit,
+    updatePassword: (String) -> Unit,
+    login: () -> Unit,
+    onNavigateBack: () -> Unit,
+    onCreateAccountClick: () -> Unit
 ) {
     Box {
         BackNavigationFab(onNavigateBack = onNavigateBack)
         Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(horizontal = 32.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 32.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
             ControlledTextField(value = userData?.email,
                                 iconResId = R.drawable.icon_mail_24px,
@@ -63,66 +65,82 @@ fun LoginScreen(
                                 onValueChange = { email -> updateEmail(email) })
             Spacer(modifier = Modifier.height(16.dp))
 
-            PasswordTextField(value = userData?.password, onPasswordChange = { updatePassword(it) })
+            PasswordTextFieldWrapper(
+                    value = userData?.password,
+                    textFieldVariant = TextFieldVariant.FILLED,
+                    isError = false,
+                    placeHolder = stringResource(id = R.string.placeholder_password),
+                    onPasswordChange = { updatePassword(it) })
+
             Spacer(modifier = Modifier.height(16.dp))
 
             SinInSignUpButton(
-                isLoginButtonEnabled = (userData?.password != ""),
-                onLoginClick = { login() },
-                onCreateAccountClick = onCreateAccountClick)
+                    isLoginButtonEnabled = (userData?.password != ""),
+                    onLoginClick = { login() },
+                    onCreateAccountClick = onCreateAccountClick
+            )
         }
     }
 }
 
 @Composable
 fun SinInSignUpButton(
-        isLoginButtonEnabled: Boolean,
-        onLoginClick: () -> Unit,
-        onCreateAccountClick: () -> Unit
+    isLoginButtonEnabled: Boolean,
+    onLoginClick: () -> Unit,
+    onCreateAccountClick: () -> Unit
 ) {
     Button(
-        enabled = isLoginButtonEnabled,
-        onClick = onLoginClick,
-        colors = ButtonDefaults.buttonColors(md_theme_light_secondary),
-        shape = MaterialTheme.shapes.small,
-        modifier = Modifier.fillMaxWidth()) {
+            enabled = isLoginButtonEnabled,
+            onClick = onLoginClick,
+            colors = ButtonDefaults.buttonColors(md_theme_light_secondary),
+            shape = MaterialTheme.shapes.small,
+            modifier = Modifier.fillMaxWidth()
+    ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically) {
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+        ) {
             Icon(
-                tint = md_theme_light_onSecondary,
-                painter = painterResource(id = R.drawable.icon_login_24px),
-                contentDescription = "")
+                    tint = md_theme_light_onSecondary,
+                    painter = painterResource(id = R.drawable.icon_login_24px),
+                    contentDescription = ""
+            )
             Text(
-                color = md_theme_light_onSecondary,
-                style = MaterialTheme.typography.labelLarge,
-                text = stringResource(id = R.string.txt_login_btn))
+                    color = md_theme_light_onSecondary,
+                    style = MaterialTheme.typography.labelLarge,
+                    text = stringResource(id = R.string.txt_login_btn)
+            )
         }
     }
 
     Button(
-        onClick = { },
-        shape = MaterialTheme.shapes.small,
-        colors = ButtonDefaults.buttonColors(custom_red_button_color),
-        modifier = Modifier.fillMaxWidth()) {
+            onClick = { },
+            shape = MaterialTheme.shapes.small,
+            colors = ButtonDefaults.buttonColors(custom_red_button_color),
+            modifier = Modifier.fillMaxWidth()
+    ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically) {
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+        ) {
             Image(
-                painter = painterResource(id = R.drawable.icon_gmail),
-                modifier = Modifier.size(24.dp),
-                contentDescription = "")
+                    painter = painterResource(id = R.drawable.icon_gmail),
+                    modifier = Modifier.size(24.dp),
+                    contentDescription = ""
+            )
             Text(
-                color = md_theme_light_onSecondary,
-                style = MaterialTheme.typography.labelLarge,
-                text = stringResource(id = R.string.txt_login_with_google_btn))
+                    color = md_theme_light_onSecondary,
+                    style = MaterialTheme.typography.labelLarge,
+                    text = stringResource(id = R.string.txt_login_with_google_btn)
+            )
         }
     }
 
     TextButton(onClick = onCreateAccountClick) {
         Text(
-            style = MaterialTheme.typography.labelLarge,
-            text = stringResource(id = R.string.txt_create_account))
+                style = MaterialTheme.typography.labelLarge,
+                text = stringResource(id = R.string.txt_create_account)
+        )
     }
 }
 

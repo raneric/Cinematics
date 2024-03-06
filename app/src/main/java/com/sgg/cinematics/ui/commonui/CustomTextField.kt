@@ -4,58 +4,147 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import com.sgg.cinematics.R
 
-
 @Composable
-fun PasswordTextField(
-        modifier: Modifier = Modifier,
-        value: String?,
-        onPasswordChange: (String) -> Unit
+fun PasswordTextFieldWrapper(
+    modifier: Modifier = Modifier,
+    value: String?,
+    textFieldVariant: TextFieldVariant = TextFieldVariant.OUTLINED,
+    isError: Boolean,
+    errorMessage: String = "",
+    placeHolder: String,
+    onPasswordChange: (String) -> Unit
 ) {
-    TextField(
-        value = value ?: "",
-        onValueChange = { password ->
-            onPasswordChange(password)
-        },
-        modifier = Modifier.fillMaxWidth(),
-        placeholder = {
-            Text(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodyLarge,
-                text = stringResource(id = R.string.placeholder_password))
-        },
-        leadingIcon = {
-            Icon(
-                painter = painterResource(id = R.drawable.icon_lock_24px),
-                contentDescription = stringResource(id = R.string.content_descrip_password_icon))
-        },
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-        ),
-        visualTransformation = PasswordVisualTransformation(),
-    )
+
+    var passwordVisualTransform: VisualTransformation by remember {
+        mutableStateOf(PasswordVisualTransformation())
+    }
+
+    val passwordTrailingIcon = if (passwordVisualTransform == PasswordVisualTransformation()) {
+        painterResource(id = R.drawable.icon_visibility_lock_24px)
+    } else {
+        painterResource(id = R.drawable.icon_visibility_off_24px)
+    }
+
+    when (textFieldVariant) {
+        TextFieldVariant.FILLED   -> {
+            TextField(
+                    value = value ?: "",
+                    isError = isError,
+                    onValueChange = { password ->
+                        onPasswordChange(password)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = {
+                        Text(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyLarge,
+                                text = placeHolder
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                                painter = painterResource(id = R.drawable.icon_lock_24px),
+                                contentDescription = stringResource(id = R.string.content_descrip_password_icon)
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            passwordVisualTransform = reversePasswordState(
+                                    passwordVisualTransform
+                            )
+                        }) {
+                            Icon(
+                                    painter = passwordTrailingIcon,
+                                    contentDescription = stringResource(id = R.string.content_descrip_password_icon)
+                            )
+                        }
+
+                    },
+                    colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(
+                                    alpha = 0.6f
+                            )
+                    ),
+                    supportingText = {
+                        if (isError) {
+                            Text(text = errorMessage)
+                        }
+                    },
+                    visualTransformation = passwordVisualTransform,
+            )
+        }
+
+        TextFieldVariant.OUTLINED -> {
+            OutlinedTextField(
+                    value = value ?: "",
+                    isError = isError,
+                    onValueChange = { password ->
+                        onPasswordChange(password)
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    placeholder = {
+                        Text(
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                style = MaterialTheme.typography.bodyLarge,
+                                text = stringResource(id = R.string.placeholder_password)
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = {
+                            passwordVisualTransform = reversePasswordState(
+                                    passwordVisualTransform
+                            )
+                        }) {
+                            Icon(
+                                    painter = passwordTrailingIcon,
+                                    contentDescription = stringResource(id = R.string.content_descrip_password_icon)
+                            )
+                        }
+
+                    },
+                    colors = TextFieldDefaults.colors(
+                            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(
+                                    alpha = 0.6f
+                            )
+                    ),
+                    supportingText = {
+                        if (isError) {
+                            Text(text = errorMessage)
+                        }
+                    },
+                    visualTransformation = passwordVisualTransform,
+            )
+        }
+    }
 }
 
 @Composable
 fun ControlledTextField(
-        modifier: Modifier = Modifier,
-        value: String?,
-        @DrawableRes iconResId: Int,
-        @StringRes placeholderResId: Int,
-        @StringRes iconContentDescripResId: Int,
-        isValidData: (String) -> Boolean,
-        onValueChange: (String) -> Unit
+    modifier: Modifier = Modifier,
+    value: String?,
+    @DrawableRes iconResId: Int,
+    @StringRes placeholderResId: Int,
+    @StringRes iconContentDescripResId: Int,
+    isValidData: (String) -> Boolean,
+    onValueChange: (String) -> Unit
 ) {
     val isValidData = if (value != null) isValidData(value) else true
 
@@ -66,45 +155,63 @@ fun ControlledTextField(
               },
               placeholder = {
                   Text(
-                      color = MaterialTheme.colorScheme.onSurfaceVariant,
-                      style = MaterialTheme.typography.bodyLarge,
-                      text = stringResource(id = placeholderResId))
+                          color = MaterialTheme.colorScheme.onSurfaceVariant,
+                          style = MaterialTheme.typography.bodyLarge,
+                          text = stringResource(id = placeholderResId)
+                  )
               }, colors = TextFieldDefaults.colors(
             unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-        ), leadingIcon = {
-            Icon(
+    ), leadingIcon = {
+        Icon(
                 painter = painterResource(id = iconResId),
-                contentDescription = stringResource(id = iconContentDescripResId))
-        }, modifier = Modifier.fillMaxWidth())
+                contentDescription = stringResource(id = iconContentDescripResId)
+        )
+    }, modifier = Modifier.fillMaxWidth()
+    )
 }
 
 @Composable
 fun ControlledOutlinedTextField(
-        modifier: Modifier = Modifier,
-        value: String?,
-        @DrawableRes iconResId: Int,
-        @StringRes placeholderResId: Int,
-        @StringRes iconContentDescripResId: Int,
-        isValidData: (String) -> Boolean,
-        onValueChange: (String) -> Unit
+    modifier: Modifier = Modifier,
+    value: String?,
+    @DrawableRes iconResId: Int,
+    @StringRes placeholderResId: Int,
+    @StringRes iconContentDescripResId: Int,
+    isValidData: (String) -> Boolean,
+    onValueChange: (String) -> Unit
 ) {
     val isValidData = if (value != null) isValidData(value) else true
 
     OutlinedTextField(value = value ?: "",
-              isError = !isValidData,
-              onValueChange = { email ->
-                  onValueChange(email)
-              },
-              placeholder = {
-                  Text(
-                      color = MaterialTheme.colorScheme.onSurfaceVariant,
-                      style = MaterialTheme.typography.bodyLarge,
-                      text = stringResource(id = placeholderResId))
-              }, colors = TextFieldDefaults.colors(
+                      isError = !isValidData,
+                      onValueChange = { email ->
+                          onValueChange(email)
+                      },
+                      placeholder = {
+                          Text(
+                                  color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                  style = MaterialTheme.typography.bodyLarge,
+                                  text = stringResource(id = placeholderResId)
+                          )
+                      }, colors = TextFieldDefaults.colors(
             unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-        ), leadingIcon = {
-            Icon(
+    ), leadingIcon = {
+        Icon(
                 painter = painterResource(id = iconResId),
-                contentDescription = stringResource(id = iconContentDescripResId))
-        }, modifier = Modifier.fillMaxWidth())
+                contentDescription = stringResource(id = iconContentDescripResId)
+        )
+    }, modifier = Modifier.fillMaxWidth()
+    )
+}
+
+private fun reversePasswordState(visualTransformation: VisualTransformation): VisualTransformation {
+    return if (visualTransformation == VisualTransformation.None) {
+        PasswordVisualTransformation()
+    } else {
+        VisualTransformation.None
+    }
+}
+
+enum class TextFieldVariant {
+    OUTLINED, FILLED
 }

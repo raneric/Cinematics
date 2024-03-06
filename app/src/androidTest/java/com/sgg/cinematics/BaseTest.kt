@@ -15,5 +15,4 @@ open class BaseTest {
     @get:Rule(order = 2)
     val composeRule = createAndroidComposeRule<MainActivity>()
 
-
 }

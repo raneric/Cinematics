@@ -4,11 +4,11 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavHostController
 import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.repository.MovieRepository
-import com.sgg.cinematics.domaine.UserDataValidatorUseCase
 import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.UiState
+import com.sgg.cinematics.utils.validateEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(
         get() = _isEmailValid
 
     fun updateEmail(mail: String) {
-        _isEmailValid.value = UserDataValidatorUseCase.validateEmail(mail)
+        _isEmailValid.value = validateEmail(mail)
         if (_isEmailValid.value) {
             val autUser = _userLoginData.value?.copy(email = mail)
             _userLoginData.value = autUser

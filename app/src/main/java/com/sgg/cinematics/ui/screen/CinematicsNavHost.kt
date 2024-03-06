@@ -26,7 +26,6 @@ import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.userModelLists
-import com.sgg.cinematics.domaine.UserDataValidatorUseCase.validateEmail
 import com.sgg.cinematics.ui.commonui.LoadingScreen
 import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.ui.screen.account.CreateAccountScreen
@@ -40,6 +39,7 @@ import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
 import com.sgg.cinematics.utils.UiState
 import com.sgg.cinematics.utils.navigateToDetailsScreen
+import com.sgg.cinematics.utils.validateEmail
 
 // TODO: Refactoring for this composable function
 @Composable

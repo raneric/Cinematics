@@ -3,6 +3,7 @@ package com.sgg.cinematics.ui.screen.account
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.service.AuthService
@@ -20,7 +21,14 @@ class UserProfileViewModel @Inject constructor(
     var userInfo by mutableStateOf(UserModel())
         private set
 
+    var authData by mutableStateOf(AuthData())
+        private set
+
     fun updateUserInfo(user: UserModel) {
         userInfo = user
+    }
+
+    fun updateAuthData(authData: AuthData) {
+        this.authData = authData
     }
 }

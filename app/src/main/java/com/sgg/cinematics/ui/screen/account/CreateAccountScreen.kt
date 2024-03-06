@@ -41,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sgg.cinematics.R
+import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
 import com.sgg.cinematics.ui.commonui.ControlledOutlinedTextField
@@ -49,6 +50,7 @@ import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_onSecondary
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_secondary
 import com.sgg.cinematics.utils.DarkAndLightPreview
+import com.sgg.cinematics.utils.validateEmail
 import java.time.Month
 import java.time.Year
 
@@ -65,6 +67,8 @@ fun CreateAccountScreen(
 
     val user = viewModel.userInfo
 
+    val authData = viewModel.authData
+
     Box {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp),
                horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,8 +81,18 @@ fun CreateAccountScreen(
             UserFullName(userInfo = user) { user ->
                 viewModel.updateUserInfo(user)
             }
-            UserEmail()
-            PasswordInputs()
+            UserEmail(
+                    userInfo = user,
+                    emailValidation = {
+                        validateEmail(it)
+                    },
+                    onValueChange = { user ->
+                        viewModel.updateUserInfo(user)
+                        viewModel.updateAuthData(authData.copy(email = user.email ?: ""))
+                    })
+            PasswordInputs(authData = authData) { authData ->
+                viewModel.updateAuthData(authData)
+            }
             BirthDatePicker()
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -173,7 +187,9 @@ fun UserFullName(
                                        style = MaterialTheme.typography.bodySmall
                                   )
                               },
-                              onValueChange = {})
+                              onValueChange = { firstName ->
+                                  onValueChange(userInfo.copy(lastName = firstName))
+                              })
             OutlinedTextField(value = userInfo.lastName,
                               modifier = textFiledModifier,
                               label = {
@@ -182,15 +198,19 @@ fun UserFullName(
                                   )
                               },
                               onValueChange = { lastName ->
-                                  userInfo.lastName = lastName
-                                  onValueChange(userInfo)
+                                  onValueChange(userInfo.copy(lastName = lastName))
                               })
         }
     }
 }
 
 @Composable
-fun UserEmail(modifier: Modifier = Modifier) {
+fun UserEmail(
+    modifier: Modifier = Modifier,
+    userInfo: UserModel,
+    emailValidation: (String) -> Boolean,
+    onValueChange: (UserModel) -> Unit
+) {
     Row(verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -198,17 +218,23 @@ fun UserEmail(modifier: Modifier = Modifier) {
              painter = painterResource(id = R.drawable.icon_mail_24px),
              contentDescription = ""
         )
-        ControlledOutlinedTextField(value = "",
+        ControlledOutlinedTextField(value = userInfo.email,
                                     iconResId = R.drawable.icon_mail_24px,
                                     placeholderResId = R.string.placeholder_mail,
                                     iconContentDescripResId = R.string.content_descrip_mail_icon,
-                                    isValidData = { true },
-                                    onValueChange = { })
+                                    isValidData = { emailValidation(it) },
+                                    onValueChange = { email ->
+                                        onValueChange(userInfo.copy(email = email))
+                                    })
     }
 }
 
 @Composable
-fun PasswordInputs(modifier: Modifier = Modifier) {
+fun PasswordInputs(
+    modifier: Modifier = Modifier,
+    authData: AuthData,
+    onValueChange: (AuthData) -> Unit,
+) {
 
     var passwordVisualTransform: VisualTransformation by remember {
         mutableStateOf(PasswordVisualTransformation())
@@ -220,6 +246,14 @@ fun PasswordInputs(modifier: Modifier = Modifier) {
         painterResource(id = R.drawable.icon_visibility_off_24px)
     }
 
+    val passwordConfirmation = remember {
+        mutableStateOf("")
+    }
+
+    val isPasswordDifferent = remember {
+        mutableStateOf(false)
+    }
+
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -229,14 +263,18 @@ fun PasswordInputs(modifier: Modifier = Modifier) {
              contentDescription = ""
         )
         Column {
-            OutlinedTextField(value = "",
+            OutlinedTextField(value = authData.password,
                               modifier = textFiledModifier,
+                              isError = isPasswordDifferent.value,
                               label = {
                                   Text(text = stringResource(id = R.string.label_password),
                                        style = MaterialTheme.typography.bodySmall
                                   )
                               },
-                              onValueChange = {},
+                              onValueChange = { password ->
+                                  onValueChange(authData.copy(password = password))
+                                  isPasswordDifferent.value = password != passwordConfirmation.value
+                              },
                               trailingIcon = {
                                   IconButton(onClick = {
                                       passwordVisualTransform = reversePasswordState(
@@ -250,14 +288,18 @@ fun PasswordInputs(modifier: Modifier = Modifier) {
                               },
                               visualTransformation = passwordVisualTransform
             )
-            OutlinedTextField(value = "",
+            OutlinedTextField(value = passwordConfirmation.value,
+                              isError = isPasswordDifferent.value,
                               modifier = textFiledModifier,
                               label = {
                                   Text(text = stringResource(id = R.string.label_confirm_password),
                                        style = MaterialTheme.typography.bodySmall
                                   )
                               },
-                              onValueChange = {},
+                              onValueChange = { passwordConfirm ->
+                                  passwordConfirmation.value = passwordConfirm
+                                  isPasswordDifferent.value = passwordConfirm != authData.password
+                              },
                               trailingIcon = {
                                   IconButton(onClick = {
                                       passwordVisualTransform = reversePasswordState(
