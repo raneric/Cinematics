@@ -7,7 +7,6 @@
     <string name="title_activity_main">Cinematics</string>
     <string name="txt_trending">Trending</string>
     <string name="txt_no_item_found">No Item found</string>
-    <string name="content_descrip_top_rated">top rated movies</string>
     <string name="txt_top_rated">Top Rated</string>
     <string name="txt_overview_section">Overview</string>
     <string name="txt_cast_section">Cast</string>
@@ -24,6 +23,8 @@
     <string name="txt_create_account">Create account or use anonymous</string>
     <string name="txt_next_button">Next step</string>
     <string name="txt_create_account_button">Create account</string>
+    <string name="txt_ok">Ok</string>
+    <string name="txt_cancel">Cancel</string>
 
     <string name="txt_overview_preview_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper.
@@ -46,6 +47,7 @@
     <string name="content_descrip_user_profile">User profile</string>
     <string name="content_descrip_password_icon">Password icon</string>
     <string name="content_descrip_mail_icon">Mail icon</string>
+    <string name="content_descrip_top_rated">top rated movies</string>
 
     <string name="label_movie_year">Year: %1$s</string>
     <string name="label_movie_duration">Duration: %1$s</string>
@@ -71,6 +73,9 @@
     <string name="test_tag_fab_view_switch">test_tag_fab_view_switch</string>
     <string name="test_tag_detail_content">details_content_test_tag</string>
     <string name="test_tag_login_screen">login_screen_test_tag</string>
+
+    <string name="password_confirmation_error">Password doesn\'t match</string>
+    <string name="password_pattern_error">Password must have uppercase, lowercase, digit and special characters and at least 8 characters</string>
 
     <string-array name="gender_list">
         <item>Male</item>

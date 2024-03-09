@@ -120,11 +120,6 @@ fun PasswordTextFieldWrapper(
                         }
 
                     },
-                    colors = TextFieldDefaults.colors(
-                            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(
-                                    alpha = 0.6f
-                            )
-                    ),
                     supportingText = {
                         if (isError) {
                             Text(text = errorMessage)
@@ -193,14 +188,12 @@ fun ControlledOutlinedTextField(
                                   style = MaterialTheme.typography.bodyLarge,
                                   text = stringResource(id = placeholderResId)
                           )
-                      }, colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-    ), leadingIcon = {
-        Icon(
-                painter = painterResource(id = iconResId),
-                contentDescription = stringResource(id = iconContentDescripResId)
-        )
-    }, modifier = Modifier.fillMaxWidth()
+                      },
+                      leadingIcon = {
+                          Icon(painter = painterResource(id = iconResId),
+                               contentDescription = stringResource(id = iconContentDescripResId)
+                          )
+                      }, modifier = Modifier.fillMaxWidth()
     )
 }
 

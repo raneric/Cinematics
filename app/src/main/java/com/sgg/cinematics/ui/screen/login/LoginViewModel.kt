@@ -8,7 +8,6 @@ import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.UiState
-import com.sgg.cinematics.utils.validateEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,7 +23,7 @@ class LoginViewModel @Inject constructor(
     private var _loginUiState = MutableStateFlow<UiState?>(null)
     val loginUiState = _loginUiState
 
-    private var _userLoginData = MutableStateFlow<AuthData?>(null)
+    private var _userLoginData = MutableStateFlow(AuthData())
     val userLoginData
         get() = _userLoginData.asStateFlow()
 
@@ -33,15 +32,12 @@ class LoginViewModel @Inject constructor(
         get() = _isEmailValid
 
     fun updateEmail(mail: String) {
-        _isEmailValid.value = validateEmail(mail)
-        if (_isEmailValid.value) {
-            val autUser = _userLoginData.value?.copy(email = mail)
-            _userLoginData.value = autUser
-        }
+        val autUser = _userLoginData.value.copy(email = mail)
+        _userLoginData.value = autUser
     }
 
     fun updatePassword(password: String) {
-        val autUser = _userLoginData.value?.copy(password = password)
+        val autUser = _userLoginData.value.copy(password = password)
         _userLoginData.value = autUser
     }
 

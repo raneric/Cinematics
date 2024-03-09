@@ -17,15 +17,21 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,8 +41,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -46,14 +50,19 @@ import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
 import com.sgg.cinematics.ui.commonui.ControlledOutlinedTextField
 import com.sgg.cinematics.ui.commonui.CustomDropdownMenu
+import com.sgg.cinematics.ui.commonui.PasswordTextFieldWrapper
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_onSecondary
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_secondary
 import com.sgg.cinematics.utils.DarkAndLightPreview
+import com.sgg.cinematics.utils.InputError
 import com.sgg.cinematics.utils.validateEmail
-import java.time.Month
-import java.time.Year
+import com.sgg.cinematics.utils.validatePassword
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateAccountScreen(
     modifier: Modifier = Modifier,
@@ -81,19 +90,18 @@ fun CreateAccountScreen(
             UserFullName(userInfo = user) { user ->
                 viewModel.updateUserInfo(user)
             }
-            UserEmail(
-                    userInfo = user,
-                    emailValidation = {
-                        validateEmail(it)
-                    },
-                    onValueChange = { user ->
-                        viewModel.updateUserInfo(user)
-                        viewModel.updateAuthData(authData.copy(email = user.email ?: ""))
-                    })
+            UserEmail(userInfo = user, emailValidation = {
+                validateEmail(it)
+            }, onValueChange = { user ->
+                viewModel.updateUserInfo(user)
+                viewModel.updateAuthData(authData.copy(email = user.email ?: ""))
+            })
             PasswordInputs(authData = authData) { authData ->
                 viewModel.updateAuthData(authData)
             }
-            BirthDatePicker()
+
+            BirthDatePicker(modifier = Modifier.fillMaxWidth())
+
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
@@ -106,6 +114,7 @@ fun CreateAccountScreen(
                                    optionList = stringArrayResource(id = R.array.gender_list).toList(),
                                    textLabel = stringResource(id = R.string.label_gender),
                                    onValueChange = {})
+
             }
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -180,26 +189,20 @@ fun UserFullName(
              contentDescription = ""
         )
         Column {
-            OutlinedTextField(value = userInfo.firstName,
-                              modifier = textFiledModifier,
-                              label = {
-                                  Text(text = stringResource(id = R.string.label_first_name),
-                                       style = MaterialTheme.typography.bodySmall
-                                  )
-                              },
-                              onValueChange = { firstName ->
-                                  onValueChange(userInfo.copy(lastName = firstName))
-                              })
-            OutlinedTextField(value = userInfo.lastName,
-                              modifier = textFiledModifier,
-                              label = {
-                                  Text(text = stringResource(id = R.string.label_last_name),
-                                       style = MaterialTheme.typography.bodySmall
-                                  )
-                              },
-                              onValueChange = { lastName ->
-                                  onValueChange(userInfo.copy(lastName = lastName))
-                              })
+            OutlinedTextField(value = userInfo.firstName, modifier = textFiledModifier, label = {
+                Text(text = stringResource(id = R.string.label_first_name),
+                     style = MaterialTheme.typography.bodySmall
+                )
+            }, onValueChange = { firstName ->
+                onValueChange(userInfo.copy(lastName = firstName))
+            })
+            OutlinedTextField(value = userInfo.lastName, modifier = textFiledModifier, label = {
+                Text(text = stringResource(id = R.string.label_last_name),
+                     style = MaterialTheme.typography.bodySmall
+                )
+            }, onValueChange = { lastName ->
+                onValueChange(userInfo.copy(lastName = lastName))
+            })
         }
     }
 }
@@ -236,22 +239,22 @@ fun PasswordInputs(
     onValueChange: (AuthData) -> Unit,
 ) {
 
-    var passwordVisualTransform: VisualTransformation by remember {
-        mutableStateOf(PasswordVisualTransformation())
-    }
-
-    val passwordTrailingIcon = if (passwordVisualTransform == PasswordVisualTransformation()) {
-        painterResource(id = R.drawable.icon_visibility_lock_24px)
-    } else {
-        painterResource(id = R.drawable.icon_visibility_off_24px)
-    }
-
     val passwordConfirmation = remember {
         mutableStateOf("")
     }
 
-    val isPasswordDifferent = remember {
-        mutableStateOf(false)
+    val passwordError = remember {
+        mutableStateOf(InputError(haveError = false,
+                                  messageResourceId = R.string.password_pattern_error
+        )
+        )
+    }
+
+    val confirmationPasswordError = remember {
+        mutableStateOf(InputError(haveError = false,
+                                  messageResourceId = R.string.password_confirmation_error
+        )
+        )
     }
 
     Row(modifier = modifier,
@@ -263,95 +266,81 @@ fun PasswordInputs(
              contentDescription = ""
         )
         Column {
-            OutlinedTextField(value = authData.password,
-                              modifier = textFiledModifier,
-                              isError = isPasswordDifferent.value,
-                              label = {
-                                  Text(text = stringResource(id = R.string.label_password),
-                                       style = MaterialTheme.typography.bodySmall
-                                  )
-                              },
-                              onValueChange = { password ->
-                                  onValueChange(authData.copy(password = password))
-                                  isPasswordDifferent.value = password != passwordConfirmation.value
-                              },
-                              trailingIcon = {
-                                  IconButton(onClick = {
-                                      passwordVisualTransform = reversePasswordState(
-                                              passwordVisualTransform
-                                      )
-                                  }) {
-                                      Icon(painter = passwordTrailingIcon,
-                                           contentDescription = ""
-                                      )
-                                  }
-                              },
-                              visualTransformation = passwordVisualTransform
-            )
-            OutlinedTextField(value = passwordConfirmation.value,
-                              isError = isPasswordDifferent.value,
-                              modifier = textFiledModifier,
-                              label = {
-                                  Text(text = stringResource(id = R.string.label_confirm_password),
-                                       style = MaterialTheme.typography.bodySmall
-                                  )
-                              },
-                              onValueChange = { passwordConfirm ->
-                                  passwordConfirmation.value = passwordConfirm
-                                  isPasswordDifferent.value = passwordConfirm != authData.password
-                              },
-                              trailingIcon = {
-                                  IconButton(onClick = {
-                                      passwordVisualTransform = reversePasswordState(
-                                              passwordVisualTransform
-                                      )
-                                  }) {
-                                      Icon(painter = passwordTrailingIcon,
-                                           contentDescription = ""
-                                      )
-                                  }
-                              },
-                              visualTransformation = passwordVisualTransform
-            )
+            PasswordTextFieldWrapper(value = authData.password,
+                                     isError = passwordError.value.haveError,
+                                     errorMessage = stringResource(id = passwordError.value.messageResourceId),
+                                     placeHolder = "",
+                                     onPasswordChange = { password ->
+                                         onValueChange(authData.copy(password = password))
+                                         passwordError.value.haveError = !validatePassword(authData.password)
+                                     })
+            PasswordTextFieldWrapper(value = passwordConfirmation.value,
+                                     isError = confirmationPasswordError.value.haveError,
+                                     errorMessage = stringResource(id = confirmationPasswordError.value.messageResourceId),
+                                     placeHolder = "",
+                                     onPasswordChange = {
+                                         passwordConfirmation.value = it
+                                         confirmationPasswordError.value.haveError = passwordConfirmation.value != authData.password
+                                     })
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BirthDatePicker(modifier: Modifier = Modifier) {
 
     var selectedValue by remember {
-        mutableStateOf("0")
+        mutableStateOf("dd/mm/yyyy")
     }
 
-    Row(verticalAlignment = Alignment.CenterVertically,
+    val datePickerState = rememberDatePickerState()
+
+    var datePickerDialogVisibility by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    datePickerState.selectedDateMillis?.let {
+        selectedValue = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date(it))
+    }
+
+    Row(modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Icon(tint = MaterialTheme.colorScheme.onSurface,
-             painter = painterResource(id = R.drawable.icon_calendar_24px),
+             painter = painterResource(id = R.drawable.icon_birth_24px),
              contentDescription = ""
         )
-        CustomDropdownMenu(modifier = Modifier.weight(0.5f),
-                           selectedValue = selectedValue,
-                           optionList = DAY_OPTION_LIST,
-                           textLabel = stringResource(id = R.string.label_day_of_birth),
-                           onValueChange = {
-                               selectedValue = it
-                           })
-        CustomDropdownMenu(modifier = Modifier.weight(0.5f),
-                           selectedValue = selectedValue,
-                           optionList = MONTH_LIST,
-                           textLabel = stringResource(id = R.string.label_month_of_birth),
-                           onValueChange = {
-                               selectedValue = it
-                           })
-        CustomDropdownMenu(modifier = Modifier.weight(1f),
-                           selectedValue = selectedValue,
-                           optionList = YEAR_RANGE,
-                           textLabel = stringResource(id = R.string.label_year_of_birth),
-                           onValueChange = {
-                               selectedValue = it
-                           })
+
+        OutlinedTextField(modifier = Modifier.weight(0.9f),
+                          value = selectedValue,
+                          onValueChange = {})
+
+        IconButton(modifier = Modifier.weight(0.1f),
+                   onClick = {
+                       datePickerDialogVisibility = true
+                   }) {
+            Icon(painter = painterResource(id = R.drawable.icon_calendar_24px),
+                 contentDescription = ""
+            )
+        }
+
+        if (datePickerDialogVisibility) {
+            DatePickerDialog(onDismissRequest = { datePickerDialogVisibility = false },
+                             confirmButton = {
+                                 TextButton(onClick = { datePickerDialogVisibility = false }) {
+                                     Text(text = stringResource(id = R.string.txt_ok))
+                                 }
+                             },
+                             dismissButton = {
+                                 TextButton(onClick = { datePickerDialogVisibility = false }) {
+                                     Text(text = stringResource(id = R.string.txt_cancel))
+                                 }
+                             }) {
+                DatePicker(state = datePickerState)
+            }
+        }
     }
 }
 
@@ -359,9 +348,7 @@ fun BirthDatePicker(modifier: Modifier = Modifier) {
 @Composable
 fun CreateAccountScreenPreview() {
     CinematicsTheme {
-        CreateAccountScreen(
-                onNavigateBack = {},
-                onCreateAccountClick = {})
+        CreateAccountScreen(onNavigateBack = {}, onCreateAccountClick = {})
     }
 }
 
@@ -373,23 +360,4 @@ fun ProfilePicturePreview() {
     }
 }
 
-val DAY_OPTION_LIST = (1..31).map { it.toString() }
-
-val MONTH_LIST = Month.values()
-    .map { month ->
-        month.name.lowercase()
-            .replaceFirstChar { it.uppercase() }
-    }
-
-val YEAR_RANGE = (1905..Year.now().value).sortedDescending()
-    .map { it.toString() }
-
 val textFiledModifier = Modifier.fillMaxWidth()
-
-private fun reversePasswordState(visualTransformation: VisualTransformation): VisualTransformation {
-    return if (visualTransformation == VisualTransformation.None) {
-        PasswordVisualTransformation()
-    } else {
-        VisualTransformation.None
-    }
-}
