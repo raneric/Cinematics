@@ -356,11 +356,11 @@ fun PasswordInputs(
 }
 
 /**
- * TODO
+ * This input is for user birth date, it can be updated manually or from date picker
  *
  * @param modifier: A modifier with default value [Modifier]
- * @param userInfo
- * @param onDateSelected
+ * @param userInfo: current [UserModel] tha hold user info from input
+ * @param onDateSelected: callback to update [UserModel.birthDate]
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
