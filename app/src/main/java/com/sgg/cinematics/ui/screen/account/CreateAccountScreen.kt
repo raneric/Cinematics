@@ -79,8 +79,6 @@ fun CreateAccountScreen(
 
     val authData = viewModel.authData
 
-    val displayedDate = if (user.birthDate == null) "" else user.birthDate.toString()
-
     Box {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp),
                horizontalAlignment = Alignment.CenterHorizontally,
@@ -111,14 +109,14 @@ fun CreateAccountScreen(
                            })
 
             BirthDatePicker(modifier = Modifier.fillMaxWidth(),
-                            valueToDisplay = displayedDate,
-                            onDateSelected = { millisDate ->
-                                viewModel.updateUserInfo(user.copy(birthDate = millisDate.millisToLocalDate()))
+                            userInfo = user,
+                            onDateSelected = { userInfo ->
+                                viewModel.updateUserInfo(userInfo)
                             })
 
-            GenderInput(value = user.gender ?: "",
-                        onValueChange = {
-                            viewModel.updateUserInfo(user.copy(gender = it))
+            GenderInput(userInfo = user,
+                        onValueChange = { user ->
+                            viewModel.updateUserInfo(user)
                         })
 
             Location(onValueChange = {})
@@ -142,6 +140,13 @@ fun CreateAccountScreen(
     }
 }
 
+/**
+ * Composable to display profile picture and let user to change it from camera or from photo picker
+ *
+ * @param modifier: A modifier with default value [Modifier]
+ * @param picture
+ * @param onClick
+ */
 @Composable
 fun ProfilePicture(
     modifier: Modifier = Modifier,
@@ -207,6 +212,13 @@ fun ProfilePicture(
     }
 }
 
+/**
+ * user first name and last name input
+ *
+ * @param modifier: A modifier with default value [Modifier]
+ * @param userInfo: current [UserModel] tha hold user info from input
+ * @param onValueChange: callback to update [UserModel.firstName] and [UserModel.lastName]
+ */
 @Composable
 fun UserFullName(
     modifier: Modifier = Modifier,
@@ -222,24 +234,38 @@ fun UserFullName(
              contentDescription = ""
         )
         Column {
-            OutlinedTextField(value = userInfo.firstName, modifier = textFiledModifier, label = {
-                Text(text = stringResource(id = R.string.label_first_name),
-                     style = MaterialTheme.typography.bodySmall
-                )
-            }, onValueChange = { firstName ->
-                onValueChange(userInfo.copy(lastName = firstName))
-            })
-            OutlinedTextField(value = userInfo.lastName, modifier = textFiledModifier, label = {
-                Text(text = stringResource(id = R.string.label_last_name),
-                     style = MaterialTheme.typography.bodySmall
-                )
-            }, onValueChange = { lastName ->
-                onValueChange(userInfo.copy(lastName = lastName))
-            })
+            OutlinedTextField(value = userInfo.firstName,
+                              modifier = Modifier.fillMaxWidth(),
+                              label = {
+                                  Text(text = stringResource(id = R.string.label_first_name),
+                                       style = MaterialTheme.typography.bodySmall
+                                  )
+                              },
+                              onValueChange = { firstName ->
+                                  onValueChange(userInfo.copy(lastName = firstName))
+                              })
+            OutlinedTextField(value = userInfo.lastName,
+                              modifier = Modifier.fillMaxWidth(),
+                              label = {
+                                  Text(text = stringResource(id = R.string.label_last_name),
+                                       style = MaterialTheme.typography.bodySmall
+                                  )
+                              },
+                              onValueChange = { lastName ->
+                                  onValueChange(userInfo.copy(lastName = lastName))
+                              })
         }
     }
 }
 
+/**
+ * Input for user email
+ *
+ * @param modifier: A modifier with default value [Modifier]
+ * @param userInfo: current [UserModel] tha hold user info from input
+ * @param emailValidation: email validator function to check if it mach pattern
+ * @param onValueChange: callback to update [UserModel.email]
+ */
 @Composable
 fun UserEmail(
     modifier: Modifier = Modifier,
@@ -265,6 +291,16 @@ fun UserEmail(
     }
 }
 
+/**
+ * Password input with conformation input. Show error if password don't match pattern and
+ * confirmation password doesn't match.
+ * This composable take an [AuthData] object as argument that will be used to create user account
+ * on firebase with email/password login type
+ *
+ * @param modifier: A modifier with default value [Modifier]
+ * @param authData: current [AuthData] tha hold user sign info from input
+ * @param onValueChange: callback to update [AuthData.password]
+ */
 @Composable
 fun PasswordInputs(
     modifier: Modifier = Modifier,
@@ -319,12 +355,19 @@ fun PasswordInputs(
     }
 }
 
+/**
+ * TODO
+ *
+ * @param modifier: A modifier with default value [Modifier]
+ * @param userInfo
+ * @param onDateSelected
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BirthDatePicker(
     modifier: Modifier = Modifier,
-    valueToDisplay: String,
-    onDateSelected: (Long) -> Unit
+    userInfo: UserModel,
+    onDateSelected: (UserModel) -> Unit
 ) {
 
     var selectedValue by remember {
@@ -341,6 +384,8 @@ fun BirthDatePicker(
         selectedValue = it
     }
 
+    val displayedDate = if (userInfo.birthDate == null) "" else userInfo.birthDate.toString()
+
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -356,7 +401,7 @@ fun BirthDatePicker(
                                    style = MaterialTheme.typography.bodySmall
                               )
                           },
-                          value = valueToDisplay,
+                          value = displayedDate,
                           onValueChange = {})
 
         IconButton(modifier = Modifier.weight(0.1f),
@@ -373,7 +418,7 @@ fun BirthDatePicker(
                              confirmButton = {
                                  TextButton(onClick = {
                                      datePickerDialogIsVisible = false
-                                     onDateSelected(selectedValue)
+                                     onDateSelected(userInfo.copy(birthDate = selectedValue.millisToLocalDate()))
                                  }) {
                                      Text(text = stringResource(id = R.string.txt_ok))
                                  }
@@ -392,8 +437,8 @@ fun BirthDatePicker(
 @Composable
 fun GenderInput(
     modifier: Modifier = Modifier,
-    value: String,
-    onValueChange: (String) -> Unit
+    userInfo: UserModel,
+    onValueChange: (UserModel) -> Unit
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -403,11 +448,13 @@ fun GenderInput(
              painter = painterResource(id = R.drawable.icon_men_24px),
              contentDescription = ""
         )
-        CustomDropdownMenu(modifier = textFiledModifier,
-                           selectedValue = value,
+        CustomDropdownMenu(modifier = Modifier.fillMaxWidth(),
+                           selectedValue = userInfo.gender ?: "",
                            optionList = stringArrayResource(id = R.array.gender_list).toList(),
                            textLabel = stringResource(id = R.string.label_gender),
-                           onValueChange = onValueChange
+                           onValueChange = { gender ->
+                               onValueChange(userInfo.copy(gender = gender))
+                           }
         )
 
     }
@@ -427,7 +474,7 @@ fun Location(
              contentDescription = ""
         )
         OutlinedTextField(value = "",
-                          modifier = textFiledModifier,
+                          modifier = Modifier.fillMaxWidth(),
                           label = {
                               Text(text = stringResource(id = R.string.label_location),
                                    style = MaterialTheme.typography.bodySmall
@@ -464,5 +511,3 @@ fun ProfilePicturePreview() {
         }
     }
 }
-
-val textFiledModifier = Modifier.fillMaxWidth()
