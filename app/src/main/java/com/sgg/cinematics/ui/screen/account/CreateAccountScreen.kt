@@ -1,7 +1,10 @@
 package com.sgg.cinematics.ui.screen.account
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +50,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.model.UserModel
@@ -63,7 +67,6 @@ import com.sgg.cinematics.utils.millisToLocalDate
 import com.sgg.cinematics.utils.validateEmail
 import com.sgg.cinematics.utils.validatePassword
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateAccountScreen(
     modifier: Modifier = Modifier,
@@ -87,7 +90,11 @@ fun CreateAccountScreen(
                    .padding(16.dp)
                    .verticalScroll(scrollState)
         ) {
-            ProfilePicture(onClick = {})
+            ProfilePicture(onPictureSelected = { uri ->
+                uri?.let {
+                    viewModel.updateProfilePictureUri(it)
+                }
+            })
 
             UserFullName(userInfo = user,
                          onValueChange = { user ->
@@ -145,29 +152,39 @@ fun CreateAccountScreen(
  *
  * @param modifier: A modifier with default value [Modifier]
  * @param picture
- * @param onClick
+ * @param onPictureSelected
  */
 @Composable
 fun ProfilePicture(
     modifier: Modifier = Modifier,
     picture: Painter = painterResource(id = R.drawable.default_user_profile),
-    onClick: () -> Unit
+    onPictureSelected: (Uri?) -> Unit
 ) {
 
     var pickPhotoDialogIsVisible by rememberSaveable {
         mutableStateOf(false)
     }
 
+    var selectedImage by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val photoPickerLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri ->
+        selectedImage = uri
+        onPictureSelected(uri)
+    }
+
     Box(modifier = modifier.padding(8.dp)) {
-        Image(modifier = Modifier
+        AsyncImage(modifier = Modifier
             .size(200.dp)
             .clip(CircleShape)
             .border(BorderStroke(4.dp, MaterialTheme.colorScheme.outline), CircleShape)
             .padding(4.dp)
             .align(alignment = Alignment.Center),
-              painter = picture,
-              contentScale = ContentScale.Crop,
-              contentDescription = ""
+                   model = selectedImage,
+                   contentScale = ContentScale.Crop,
+                   contentDescription = "",
+                   placeholder = painterResource(id = R.drawable.default_user_profile)
         )
         IconButton(modifier = Modifier.align(alignment = Alignment.BottomEnd),
                    onClick = { pickPhotoDialogIsVisible = true }) {
@@ -185,7 +202,7 @@ fun ProfilePicture(
                     ) {
                         OutlinedButton(modifier = Modifier.fillMaxWidth(),
                                        shape = MaterialTheme.shapes.small,
-                                       onClick = { }
+                                       onClick = { pickPhotoDialogIsVisible = false }
                         ) {
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Icon(painter = painterResource(id = R.drawable.icon_camera_24px),
@@ -196,7 +213,14 @@ fun ProfilePicture(
                         }
                         OutlinedButton(modifier = Modifier.fillMaxWidth(),
                                        shape = MaterialTheme.shapes.small,
-                                       onClick = {}
+                                       onClick = {
+                                           photoPickerLauncher.launch(
+                                                   PickVisualMediaRequest(
+                                                           ActivityResultContracts.PickVisualMedia.ImageOnly
+                                                   )
+                                           )
+                                           pickPhotoDialogIsVisible = false
+                                       }
                         ) {
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Icon(painter = painterResource(id = R.drawable.icon_upload_24px),

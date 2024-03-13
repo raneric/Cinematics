@@ -1,5 +1,6 @@
 package com.sgg.cinematics.ui.screen.account
 
+import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -24,11 +25,18 @@ class UserProfileViewModel @Inject constructor(
     var authData by mutableStateOf(AuthData())
         private set
 
+    var profilePictureUri by mutableStateOf<Uri?>(null)
+        private set
+
     fun updateUserInfo(user: UserModel) {
         userInfo = user
     }
 
     fun updateAuthData(authData: AuthData) {
         this.authData = authData
+    }
+
+    fun updateProfilePictureUri(uri: Uri) {
+        profilePictureUri = uri
     }
 }
