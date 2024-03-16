@@ -4,17 +4,17 @@ import kotlin.reflect.full.declaredMemberProperties
 
 
 data class MovieModel(
-        val id: Int = 0,
-        val title: String = "",
-        val year: Int = 0,
-        val duration: Double = 0.0,
-        val genres: List<String> = emptyList(),
-        val ratingNote: Double = 0.0,
-        val stars: Int = 0,
-        val picture: String = "",
-        val author: String = "",
-        var overview: String = "N/A",
-        var watched: Boolean = false,
+    val id: Int = 0,
+    val title: String = "",
+    val year: Int = 0,
+    val duration: Double = 0.0,
+    val genres: List<String> = emptyList(),
+    val ratingNote: Double = 0.0,
+    val stars: Int = 0,
+    val picture: String = "",
+    val author: String = "",
+    val overview: String = "N/A",
+    val watched: Boolean = false,
 ) {
     val displayedDuration: String
         get() {
@@ -35,6 +35,6 @@ private fun Double.toDisplayedDuration(): String {
     val min = ((this - hour) * 60).toInt()
     var result = StringBuilder()
     result.append(if (hour >= 10) hour.toString() else "0${hour}")
-            .append("h:${min}")
+        .append("h:${min}")
     return result.toString()
 }

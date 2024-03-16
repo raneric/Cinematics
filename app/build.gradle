@@ -70,6 +70,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-auth'
 
+    // Kotlin immutable collections
+    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:$kotlin_immutable_collection_version")
+
     //Google play service
     implementation "com.google.android.gms:play-services-auth:$play_service_auth_version"
 
