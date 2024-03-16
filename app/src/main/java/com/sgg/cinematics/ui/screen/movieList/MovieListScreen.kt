@@ -52,30 +52,34 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieListScreen(
-        movieListUiMode: MovieListUiMode,
-        modifier: Modifier = Modifier,
-        movieList: List<MovieModel>,
-        navController: NavHostController,
-        windowsWidthSizeClass: WindowWidthSizeClass,
+    modifier: Modifier = Modifier,
+    movieListUiMode: MovieListUiMode,
+    movieList: List<MovieModel>,
+    navController: NavHostController,
+    windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
         AnimatedVisibility(
-            visible = movieListUiMode is MovieListUiMode.ListView,
-            enter = scaleIn(),
-            exit = fadeOut()) {
+                visible = movieListUiMode is MovieListUiMode.ListView,
+                enter = scaleIn(),
+                exit = fadeOut()
+        ) {
             VerticalMovieListScreen(
-                movieList = movieList,
-                modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
+                    movieList = movieList,
+                    modifier = modifier.testTag(movieListUiMode.testTag)
+            ) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
             }
         }
         AnimatedVisibility(
-            visible = movieListUiMode is MovieListUiMode.CarouselView,
-            enter = scaleIn(),
-            exit = fadeOut()) {
+                visible = movieListUiMode is MovieListUiMode.CarouselView,
+                enter = scaleIn(),
+                exit = fadeOut()
+        ) {
             HorizontalMovieListScreen(
-                movieList = movieList,
-                modifier = modifier.testTag(movieListUiMode.testTag)) { movieId ->
+                    movieList = movieList,
+                    modifier = modifier.testTag(movieListUiMode.testTag)
+            ) { movieId ->
                 navigateToDetailsScreen(movieId = movieId, navController = navController)
             }
         }
@@ -97,9 +101,9 @@ fun MovieListScreen(
  */
 @Composable
 fun VerticalMovieListScreen(
-        movieList: List<MovieModel>,
-        modifier: Modifier = Modifier,
-        onItemClicked: (Int) -> Unit
+    movieList: List<MovieModel>,
+    modifier: Modifier = Modifier,
+    onItemClicked: (Int) -> Unit
 ) {
     LazyColumn(modifier = modifier) {
         items(movieList) {
@@ -125,9 +129,9 @@ fun VerticalMovieListScreen(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun HorizontalMovieListScreen(
-        movieList: List<MovieModel>,
-        modifier: Modifier = Modifier,
-        onItemClicked: (Int) -> Unit
+    movieList: List<MovieModel>,
+    modifier: Modifier = Modifier,
+    onItemClicked: (Int) -> Unit
 ) {
 
     val pageSate = rememberPagerState(pageCount = { movieList.size })
@@ -144,10 +148,11 @@ fun HorizontalMovieListScreen(
                 BackDrop(imageUrl = movieList[it].picture)
             }
             HorizontalPager(
-                state = pageSate,
-                contentPadding = PaddingValues(horizontal = 100.dp),
-                pageSize = PageSize.Fixed(300.dp),
-                pageSpacing = 8.dp) {
+                    state = pageSate,
+                    contentPadding = PaddingValues(horizontal = 100.dp),
+                    pageSize = PageSize.Fixed(300.dp),
+                    pageSpacing = 8.dp
+            ) {
                 VerticalMovieCard(movie = movieList[it],
                                   modifier = Modifier
                                       .testTag(stringResource(id = R.string.test_tag_card))
@@ -161,9 +166,9 @@ fun HorizontalMovieListScreen(
 
 @Composable
 fun GridMovieListScreen(
-        movieList: List<MovieModel>,
-        modifier: Modifier = Modifier,
-        onItemClicked: (Int) -> Unit
+    movieList: List<MovieModel>,
+    modifier: Modifier = Modifier,
+    onItemClicked: (Int) -> Unit
 ) {
     LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 400.dp)) {
         items(movieList) {

@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CinematicsAppScreen(
-        windowsWidthSizeClass: WindowWidthSizeClass
+    windowsWidthSizeClass: WindowWidthSizeClass
 ) {
     val mainViewModel = hiltViewModel<MainViewModel>()
     val movieListViewModel = hiltViewModel<MovieListViewModel>()
@@ -56,43 +56,48 @@ fun CinematicsAppScreen(
         mutableStateOf(NavItemVariant.Trending)
     }
 
-    val movies = mainViewModel.movies.collectAsStateWithLifecycle()
+    val movies = movieListViewModel.movies.collectAsStateWithLifecycle()
 
-    val listUiState = mainViewModel.listUiState.collectAsStateWithLifecycle()
+    val listUiState = movieListViewModel.listUiState.collectAsStateWithLifecycle()
 
     val uiListMode = movieListViewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
-        activeDestination = navDestination.activeNavItem()
         isBottomNavVisible = navDestination.isInBottomNavDestination()
         isFabViewSwitchVisible = navDestination.isIntListDestination()
-
-        navDestination.route?.let { route ->
-            mainViewModel.updateMovieList(route)
-        }
     }
 
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
         CinematicsAppCompact(
-            isBottomNavVisible = isBottomNavVisible,
-            isFabViewSwitchVisible = isFabViewSwitchVisible,
-            activeDestination = activeDestination,
-            navController = navController,
-            uiListMode = uiListMode.value,
-            movies = movies.value,
-            connectedUser = connectedUser.value,
-            listUiState = listUiState.value,
-            windowsWidthSizeClass = windowsWidthSizeClass,
-            viewModel = movieListViewModel)
+                isBottomNavVisible = isBottomNavVisible,
+                isFabViewSwitchVisible = isFabViewSwitchVisible,
+                activeDestination = activeDestination,
+                navController = navController,
+                uiListMode = uiListMode.value,
+                movies = movies.value,
+                connectedUser = connectedUser.value,
+                listUiState = listUiState.value,
+                windowsWidthSizeClass = windowsWidthSizeClass,
+                viewModel = movieListViewModel,
+                onNavigate = { navItem ->
+                    activeDestination = navItem
+                    movieListViewModel.updateMovieList(navItem.route)
+                }
+        )
     } else {
         CinematicsAppMedium(
-            navController = navController,
-            activeDestination = activeDestination,
-            uiListMode = uiListMode.value,
-            movies = movies.value,
-            connectedUser = connectedUser.value,
-            listUiState = listUiState.value,
-            windowsWidthSizeClass = windowsWidthSizeClass)
+                navController = navController,
+                activeDestination = activeDestination,
+                uiListMode = uiListMode.value,
+                movies = movies.value,
+                connectedUser = connectedUser.value,
+                listUiState = listUiState.value,
+                windowsWidthSizeClass = windowsWidthSizeClass,
+                onNavigate = { navItem ->
+                    activeDestination = navItem
+                    movieListViewModel.updateMovieList(navItem.route)
+                }
+        )
     }
 }
 
@@ -108,46 +113,48 @@ fun CinematicsAppScreen(
  */
 @Composable
 fun CinematicsAppCompact(
-        modifier: Modifier = Modifier,
-        isBottomNavVisible: Boolean,
-        isFabViewSwitchVisible: Boolean,
-        activeDestination: NavItemVariant,
-        navController: NavHostController,
-        uiListMode: MovieListUiMode,
-        viewModel: MovieListViewModel,
-        movies: List<MovieModel>,
-        listUiState: UiState,
-        connectedUser: FirebaseUser?,
-        windowsWidthSizeClass: WindowWidthSizeClass
+    modifier: Modifier = Modifier,
+    isBottomNavVisible: Boolean,
+    isFabViewSwitchVisible: Boolean,
+    activeDestination: NavItemVariant,
+    navController: NavHostController,
+    uiListMode: MovieListUiMode,
+    viewModel: MovieListViewModel,
+    movies: List<MovieModel>,
+    listUiState: UiState,
+    connectedUser: FirebaseUser?,
+    windowsWidthSizeClass: WindowWidthSizeClass,
+    onNavigate: (NavItemVariant) -> Unit,
 ) {
 
     Scaffold(
-        modifier = modifier,
-        bottomBar = {
-            AnimatedVisibility(visible = isBottomNavVisible,
-                               enter = slideInVertically(initialOffsetY = { -40 })) {
-                BottomNavScreen(activeNavItem = activeDestination) { destinationRoute ->
-                    navController.navigate(route = destinationRoute)
+            modifier = modifier,
+            bottomBar = {
+                AnimatedVisibility(visible = isBottomNavVisible,
+                                   enter = slideInVertically(initialOffsetY = { -40 })
+                ) {
+                    BottomNavScreen(activeNavItem = activeDestination,
+                                    onItemClicked = { onNavigate(it) })
+                }
+            }, floatingActionButton = {
+        if (isFabViewSwitchVisible) {
+            MovieDisplaySwitchFab(uiListMode.fabIcon) {
+                val nextMovieListUiMode = if (uiListMode is MovieListUiMode.ListView) MovieListUiMode.CarouselView else MovieListUiMode.ListView
+                CoroutineScope(Dispatchers.IO).launch {
+                    viewModel.switchListViewMode(nextMovieListUiMode)
                 }
             }
-        }, floatingActionButton = {
-            if (isFabViewSwitchVisible) {
-                MovieDisplaySwitchFab(uiListMode.fabIcon) {
-                    val nextMovieListUiMode = if (uiListMode is MovieListUiMode.ListView) MovieListUiMode.CarouselView else MovieListUiMode.ListView
-                    CoroutineScope(Dispatchers.IO).launch {
-                        viewModel.switchListViewMode(nextMovieListUiMode)
-                    }
-                }
-            }
-        }) { paddingValue ->
+        }
+    }) { paddingValue ->
         CinematicsNavHost(
-            navController = navController,
-            movieListUiMode = uiListMode,
-            movies = movies,
-            listUiState = listUiState,
-            connectedUser = connectedUser,
-            windowsWidthSizeClass = windowsWidthSizeClass,
-            modifier = Modifier.padding(paddingValue))
+                navController = navController,
+                movieListUiMode = uiListMode,
+                movies = movies,
+                listUiState = listUiState,
+                connectedUser = connectedUser,
+                windowsWidthSizeClass = windowsWidthSizeClass,
+                modifier = Modifier.padding(paddingValue)
+        )
     }
 }
 
@@ -163,27 +170,28 @@ fun CinematicsAppCompact(
  */
 @Composable
 fun CinematicsAppMedium(
-        modifier: Modifier = Modifier,
-        navController: NavHostController,
-        activeDestination: NavItemVariant,
-        uiListMode: MovieListUiMode,
-        movies: List<MovieModel>,
-        listUiState: UiState,
-        connectedUser: FirebaseUser?,
-        windowsWidthSizeClass: WindowWidthSizeClass,
-
-        ) {
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    activeDestination: NavItemVariant,
+    uiListMode: MovieListUiMode,
+    movies: List<MovieModel>,
+    listUiState: UiState,
+    connectedUser: FirebaseUser?,
+    windowsWidthSizeClass: WindowWidthSizeClass,
+    onNavigate: (NavItemVariant) -> Unit,
+) {
     Row(modifier = modifier) {
         CinematicsNavigationRail(activeNavItem = activeDestination) {
             navController.navigate(it)
         }
         CinematicsNavHost(
-            navController = navController,
-            movieListUiMode = uiListMode,
-            movies = movies,
-            listUiState = listUiState,
-            connectedUser = connectedUser,
-            windowsWidthSizeClass = windowsWidthSizeClass)
+                navController = navController,
+                movieListUiMode = uiListMode,
+                movies = movies,
+                listUiState = listUiState,
+                connectedUser = connectedUser,
+                windowsWidthSizeClass = windowsWidthSizeClass
+        )
     }
 }
 
