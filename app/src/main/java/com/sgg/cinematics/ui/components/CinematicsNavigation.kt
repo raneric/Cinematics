@@ -23,7 +23,6 @@ import com.sgg.cinematics.utils.Destination
 
 private val navItemList = listOf(
         NavItemVariant.Trending,
-        NavItemVariant.TopRated,
         NavItemVariant.WatchList,
         NavItemVariant.UserProfile
 )
@@ -63,13 +62,13 @@ fun BottomNavScreen(
 fun CinematicsNavigationRail(
     activeNavItem: NavItemVariant,
     modifier: Modifier = Modifier,
-    onItemClicked: (String) -> Unit
+    onItemClicked: (NavItemVariant) -> Unit
 ) {
     NavigationRail(modifier = modifier.padding(vertical = 50.dp)) {
         navItemList.forEach { navItem ->
             NavigationRailItem(
                     selected = navItem == activeNavItem,
-                    onClick = { onItemClicked(navItem.route) },
+                    onClick = { onItemClicked(navItem) },
                     icon = {
                         Icon(
                                 painter = painterResource(id = navItem.iconId),

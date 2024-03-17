@@ -3,6 +3,8 @@ package com.sgg.cinematics.ui.screen.login
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Modifier
@@ -18,7 +20,10 @@ import com.sgg.cinematics.utils.UiState
 import com.sgg.cinematics.utils.validateEmail
 
 fun NavGraphBuilder.loginScreen(navController: NavHostController) {
-    composable(route = Destination.LoginScreen.route) {
+    composable(route = Destination.LoginScreen.route,
+               enterTransition = { scaleIn() },
+               exitTransition = { scaleOut() }
+    ) {
         val loginViewModel = hiltViewModel<LoginViewModel>()
         val userData = loginViewModel.userLoginData.collectAsStateWithLifecycle()
         val loadingState = loginViewModel.loginUiState.collectAsStateWithLifecycle()

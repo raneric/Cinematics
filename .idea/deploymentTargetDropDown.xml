@@ -34,6 +34,25 @@
           <timeTargetWasSelectedWithDropDown value="2024-03-16T19:44:54.320245331Z" />
         </State>
       </entry>
+      <entry key="test_display_login_in_profile_screen_when_no_user_connected()">
+        <State>
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="SERIAL_NUMBER" />
+                  <value value="afe4f58c" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-03-16T19:56:59.594432151Z" />
+        </State>
+      </entry>
+      <entry key="test_navigate_to_detail_screen_and_add_to_watch_list_button()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>

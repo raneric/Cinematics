@@ -18,10 +18,11 @@ import com.sgg.cinematics.utils.UiState
  */
 @Composable
 fun ScreenWrapper(
-        uiState: UiState,
-        componentOnSuccess: @Composable () -> Unit,
-        componentOnError: @Composable () -> Unit,
+    uiState: UiState,
+    componentOnSuccess: @Composable () -> Unit,
+    componentOnError: @Composable () -> Unit,
 ) {
+    
     if (uiState is UiState.Loading) {
         LoadingScreen()
     }

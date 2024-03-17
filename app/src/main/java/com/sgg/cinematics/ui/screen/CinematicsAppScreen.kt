@@ -29,6 +29,8 @@ import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.MovieListUiMode
 import com.sgg.cinematics.utils.UiState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,8 +65,12 @@ fun CinematicsAppScreen(
     val uiListMode = movieListViewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
+        activeDestination = navDestination.activeNavItem()
         isBottomNavVisible = navDestination.isInBottomNavDestination()
         isFabViewSwitchVisible = navDestination.isIntListDestination()
+        navDestination.route?.let { route ->
+            movieListViewModel.updateMovieList(route)
+        }
     }
 
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
@@ -74,29 +80,21 @@ fun CinematicsAppScreen(
                 activeDestination = activeDestination,
                 navController = navController,
                 uiListMode = uiListMode.value,
-                movies = movies.value,
+                movies = movies.value.toImmutableList(),
                 connectedUser = connectedUser.value,
                 listUiState = listUiState.value,
                 windowsWidthSizeClass = windowsWidthSizeClass,
-                viewModel = movieListViewModel,
-                onNavigate = { navItem ->
-                    activeDestination = navItem
-                    movieListViewModel.updateMovieList(navItem.route)
-                }
+                viewModel = movieListViewModel
         )
     } else {
         CinematicsAppMedium(
                 navController = navController,
                 activeDestination = activeDestination,
                 uiListMode = uiListMode.value,
-                movies = movies.value,
+                movies = movies.value.toImmutableList(),
                 connectedUser = connectedUser.value,
                 listUiState = listUiState.value,
                 windowsWidthSizeClass = windowsWidthSizeClass,
-                onNavigate = { navItem ->
-                    activeDestination = navItem
-                    movieListViewModel.updateMovieList(navItem.route)
-                }
         )
     }
 }
@@ -120,11 +118,10 @@ fun CinematicsAppCompact(
     navController: NavHostController,
     uiListMode: MovieListUiMode,
     viewModel: MovieListViewModel,
-    movies: List<MovieModel>,
+    movies: ImmutableList<MovieModel>,
     listUiState: UiState,
     connectedUser: FirebaseUser?,
-    windowsWidthSizeClass: WindowWidthSizeClass,
-    onNavigate: (NavItemVariant) -> Unit,
+    windowsWidthSizeClass: WindowWidthSizeClass
 ) {
 
     Scaffold(
@@ -134,7 +131,7 @@ fun CinematicsAppCompact(
                                    enter = slideInVertically(initialOffsetY = { -40 })
                 ) {
                     BottomNavScreen(activeNavItem = activeDestination,
-                                    onItemClicked = { onNavigate(it) })
+                                    onItemClicked = { navController.navigate(it.route) })
                 }
             }, floatingActionButton = {
         if (isFabViewSwitchVisible) {
@@ -174,20 +171,19 @@ fun CinematicsAppMedium(
     navController: NavHostController,
     activeDestination: NavItemVariant,
     uiListMode: MovieListUiMode,
-    movies: List<MovieModel>,
+    movies: ImmutableList<MovieModel>,
     listUiState: UiState,
     connectedUser: FirebaseUser?,
-    windowsWidthSizeClass: WindowWidthSizeClass,
-    onNavigate: (NavItemVariant) -> Unit,
+    windowsWidthSizeClass: WindowWidthSizeClass
 ) {
     Row(modifier = modifier) {
         CinematicsNavigationRail(activeNavItem = activeDestination) {
-            navController.navigate(it)
+            navController.navigate(it.route)
         }
         CinematicsNavHost(
                 navController = navController,
                 movieListUiMode = uiListMode,
-                movies = movies,
+                movies = movies.toImmutableList(),
                 listUiState = listUiState,
                 connectedUser = connectedUser,
                 windowsWidthSizeClass = windowsWidthSizeClass
@@ -219,4 +215,16 @@ private fun NavDestination.isIntListDestination(): Boolean {
     return this.route == Destination.TrendingScreen.route ||
            this.route == Destination.TopRatedScreen.route ||
            this.route == Destination.WatchListScreen.route
+}
+
+private fun NavHostController.navigateIfNotMovieList(navItem: NavItemVariant) {
+    if (!navItem.isInMovieList()) {
+        navigate(navItem.route)
+    }
+}
+
+private fun NavItemVariant.isInMovieList(): Boolean {
+    return this == NavItemVariant.Trending ||
+           this == NavItemVariant.TopRated ||
+           this == NavItemVariant.WatchList
 }

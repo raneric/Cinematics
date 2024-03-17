@@ -1,5 +1,8 @@
 package com.sgg.cinematics.ui.screen.account
 
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,7 +16,10 @@ fun NavGraphBuilder.userProfileScreen(
     navController: NavHostController,
     connectedUser: FirebaseUser?
 ) {
-    composable(route = Destination.UserProfileScreen.route) {
+    composable(route = Destination.UserProfileScreen.route,
+               enterTransition = { scaleIn() },
+               exitTransition = { fadeOut() }
+    ) {
 
         val loginViewModel = hiltViewModel<LoginViewModel>()
 
@@ -28,7 +34,10 @@ fun NavGraphBuilder.userProfileScreen(
 }
 
 fun NavGraphBuilder.createAccountScreen(navController: NavHostController) {
-    composable(route = Destination.CreateAccount.route) {
+    composable(route = Destination.CreateAccount.route,
+               enterTransition = { scaleIn() },
+               exitTransition = { scaleOut() }
+    ) {
         CreateAccountScreen(
                 onNavigateBack = {
                     navController.popBackStack()

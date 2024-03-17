@@ -38,6 +38,9 @@ import com.sgg.cinematics.ui.components.VerticalMovieCard
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.utils.MovieListUiMode
 import com.sgg.cinematics.utils.navigateToDetailsScreen
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.immutableListOf
+import kotlinx.collections.immutable.toImmutableList
 
 /**
  * Main movie list composable that display movie list depending on [MovieListUiMode] and [WindowWidthSizeClass]
@@ -54,7 +57,7 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 fun MovieListScreen(
     modifier: Modifier = Modifier,
     movieListUiMode: MovieListUiMode,
-    movieList: List<MovieModel>,
+    movieList: ImmutableList<MovieModel>,
     navController: NavHostController,
     windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
@@ -101,7 +104,7 @@ fun MovieListScreen(
  */
 @Composable
 fun VerticalMovieListScreen(
-    movieList: List<MovieModel>,
+    movieList: ImmutableList<MovieModel>,
     modifier: Modifier = Modifier,
     onItemClicked: (Int) -> Unit
 ) {
@@ -129,7 +132,7 @@ fun VerticalMovieListScreen(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun HorizontalMovieListScreen(
-    movieList: List<MovieModel>,
+    movieList: ImmutableList<MovieModel>,
     modifier: Modifier = Modifier,
     onItemClicked: (Int) -> Unit
 ) {
@@ -166,7 +169,7 @@ fun HorizontalMovieListScreen(
 
 @Composable
 fun GridMovieListScreen(
-    movieList: List<MovieModel>,
+    movieList: ImmutableList<MovieModel>,
     modifier: Modifier = Modifier,
     onItemClicked: (Int) -> Unit
 ) {
@@ -185,7 +188,7 @@ fun GridMovieListScreen(
 @Preview
 @Composable
 fun MovieListScreenPreview() {
-    VerticalMovieListScreen(movieList) {
+    VerticalMovieListScreen(movieList.toImmutableList()) {
 
     }
 }
@@ -195,7 +198,7 @@ fun MovieListScreenPreview() {
 @Composable
 fun EmptyMovieListScreenPreview() {
     CinematicsTheme {
-        VerticalMovieListScreen(emptyList()) {
+        VerticalMovieListScreen(immutableListOf()) {
 
         }
     }
@@ -205,7 +208,7 @@ fun EmptyMovieListScreenPreview() {
 @Composable
 fun HorizontalMovieListScreenPreview() {
     CinematicsTheme {
-        HorizontalMovieListScreen(movieList) {
+        HorizontalMovieListScreen(movieList.toImmutableList()) {
 
         }
     }
@@ -215,6 +218,6 @@ fun HorizontalMovieListScreenPreview() {
 @Composable
 fun GridMovieListScreenPreview() {
     CinematicsTheme {
-        GridMovieListScreen(movieList = movieList, onItemClicked = {})
+        GridMovieListScreen(movieList = movieList.toImmutableList(), onItemClicked = {})
     }
 }

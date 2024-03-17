@@ -1,5 +1,7 @@
 package com.sgg.cinematics.ui.screen.details
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +25,9 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 fun NavGraphBuilder.detailsScreen(navController: NavHostController) {
     composable(
             route = Destination.DetailScreen.route,
-            arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType })
+            arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType }),
+            enterTransition = { fadeIn() },
+            exitTransition = { fadeOut() }
     ) { navBackStackEntry ->
 
         val movieId = navBackStackEntry.arguments?.getInt(MOVIE_ID_ARGS)
