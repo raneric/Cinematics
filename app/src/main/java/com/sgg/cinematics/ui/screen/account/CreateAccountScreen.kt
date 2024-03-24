@@ -362,7 +362,7 @@ fun PasswordInputs(
             PasswordTextFieldWrapper(value = authData.password,
                                      isError = passwordError.value.haveError,
                                      errorMessage = stringResource(id = passwordError.value.messageResourceId),
-                                     placeHolder = "",
+                                     placeHolder = stringResource(id = R.string.placeholder_password),
                                      onPasswordChange = { password ->
                                          onValueChange(authData.copy(password = password))
                                          passwordError.value.haveError = !validatePassword(authData.password)
@@ -370,7 +370,7 @@ fun PasswordInputs(
             PasswordTextFieldWrapper(value = passwordConfirmation.value,
                                      isError = confirmationPasswordError.value.haveError,
                                      errorMessage = stringResource(id = confirmationPasswordError.value.messageResourceId),
-                                     placeHolder = "",
+                                     placeHolder = stringResource(id = R.string.placeholder_confirm_password),
                                      onPasswordChange = {
                                          passwordConfirmation.value = it
                                          confirmationPasswordError.value.haveError = passwordConfirmation.value != authData.password

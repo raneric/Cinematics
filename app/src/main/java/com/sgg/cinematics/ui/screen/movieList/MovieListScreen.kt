@@ -6,24 +6,34 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,6 +51,7 @@ import com.sgg.cinematics.utils.navigateToDetailsScreen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.immutableListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.launch
 
 /**
  * Main movie list composable that display movie list depending on [MovieListUiMode] and [WindowWidthSizeClass]
@@ -108,14 +119,31 @@ fun VerticalMovieListScreen(
     modifier: Modifier = Modifier,
     onItemClicked: (Int) -> Unit
 ) {
-    LazyColumn(modifier = modifier) {
-        items(movieList) {
-            MovieCad(movie = it,
-                     modifier = Modifier
-                         .testTag(stringResource(id = R.string.test_tag_card))
-                         .clickable {
-                             onItemClicked(it.id)
-                         })
+    val scrollState = rememberLazyListState()
+    val scope = rememberCoroutineScope()
+    Box {
+        LazyColumn(state = scrollState,
+                   modifier = modifier
+        ) {
+            items(movieList) {
+                MovieCad(movie = it,
+                         modifier = Modifier
+                             .testTag(stringResource(id = R.string.test_tag_card))
+                             .clickable {
+                                 onItemClicked(it.id)
+                             })
+            }
+        }
+        AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
+                           visible = scrollState.firstVisibleItemIndex != 0,
+                           enter = fadeIn() + scaleIn(),
+                           exit = fadeOut() + scaleOut()
+        ) {
+            ScrollUpButton {
+                scope.launch {
+                    scrollState.scrollToItem(0)
+                }
+            }
         }
     }
 }
@@ -173,14 +201,46 @@ fun GridMovieListScreen(
     modifier: Modifier = Modifier,
     onItemClicked: (Int) -> Unit
 ) {
-    LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 400.dp)) {
-        items(movieList) {
-            MovieCad(movie = it,
-                     modifier = Modifier
-                         .testTag(stringResource(id = R.string.test_tag_card))
-                         .clickable {
-                             onItemClicked(it.id)
-                         })
+    val scrollState = rememberLazyGridState()
+    val scope = rememberCoroutineScope()
+    Box {
+        LazyVerticalGrid(state = scrollState,
+                         columns = GridCells.Adaptive(minSize = 400.dp)
+        ) {
+            items(movieList) {
+                MovieCad(movie = it,
+                         modifier = Modifier
+                             .testTag(stringResource(id = R.string.test_tag_card))
+                             .clickable {
+                                 onItemClicked(it.id)
+                             })
+            }
+        }
+        AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
+                           visible = scrollState.firstVisibleItemIndex != 0,
+                           enter = fadeIn() + scaleIn(),
+                           exit = fadeOut() + scaleOut()
+        ) {
+            ScrollUpButton {
+                scope.launch {
+                    scrollState.scrollToItem(0)
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun ScrollUpButton(onClick: () -> Unit) {
+    Button(onClick = {
+        onClick()
+    }) {
+        Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+            Icon(painter = painterResource(id = R.drawable.icon_arrow_circle_up_24px),
+                 contentDescription = ""
+            )
+            Text(text = stringResource(id = R.string.txt_scroll_up))
         }
     }
 }

@@ -2,6 +2,7 @@
     <string name="app_name">Cinematics</string>
 
     <string name="placeholder_password">Password...</string>
+    <string name="placeholder_confirm_password">Confirm password...</string>
     <string name="placeholder_mail">example@example.com</string>
 
     <string name="title_activity_main">Cinematics</string>
@@ -27,6 +28,7 @@
     <string name="txt_cancel">Cancel</string>
     <string name="txt_camera_option">Take from camera</string>
     <string name="txt_upload_option">Upload from device</string>
+    <string name="txt_scroll_up">Scroll up</string>
 
     <string name="txt_overview_preview_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper.

@@ -104,7 +104,7 @@ fun PasswordTextFieldWrapper(
                         Text(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 style = MaterialTheme.typography.bodyLarge,
-                                text = stringResource(id = R.string.placeholder_password)
+                                text = placeHolder
                         )
                     },
                     trailingIcon = {
