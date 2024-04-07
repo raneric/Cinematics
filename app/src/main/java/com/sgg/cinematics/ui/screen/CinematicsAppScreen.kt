@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -31,13 +32,11 @@ import com.sgg.cinematics.utils.MovieListUiMode
 import com.sgg.cinematics.utils.UiState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
 fun CinematicsAppScreen(
-    windowsWidthSizeClass: WindowWidthSizeClass
+        windowsWidthSizeClass: WindowWidthSizeClass
 ) {
     val mainViewModel = hiltViewModel<MainViewModel>()
     val movieListViewModel = hiltViewModel<MovieListViewModel>()
@@ -111,19 +110,19 @@ fun CinematicsAppScreen(
  */
 @Composable
 fun CinematicsAppCompact(
-    modifier: Modifier = Modifier,
-    isBottomNavVisible: Boolean,
-    isFabViewSwitchVisible: Boolean,
-    activeDestination: NavItemVariant,
-    navController: NavHostController,
-    uiListMode: MovieListUiMode,
-    viewModel: MovieListViewModel,
-    movies: ImmutableList<MovieModel>,
-    listUiState: UiState,
-    connectedUser: FirebaseUser?,
-    windowsWidthSizeClass: WindowWidthSizeClass
+        modifier: Modifier = Modifier,
+        isBottomNavVisible: Boolean,
+        isFabViewSwitchVisible: Boolean,
+        activeDestination: NavItemVariant,
+        navController: NavHostController,
+        uiListMode: MovieListUiMode,
+        viewModel: MovieListViewModel,
+        movies: ImmutableList<MovieModel>,
+        listUiState: UiState,
+        connectedUser: FirebaseUser?,
+        windowsWidthSizeClass: WindowWidthSizeClass
 ) {
-
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
             modifier = modifier,
             bottomBar = {
@@ -136,7 +135,7 @@ fun CinematicsAppCompact(
             }, floatingActionButton = {
         if (isFabViewSwitchVisible) {
             MovieDisplaySwitchFab(uiListMode.fabIcon) {
-                CoroutineScope(Dispatchers.IO).launch {
+                coroutineScope.launch {
                     viewModel.switchListViewMode(uiListMode.switch())
                 }
             }
@@ -166,14 +165,14 @@ fun CinematicsAppCompact(
  */
 @Composable
 fun CinematicsAppMedium(
-    modifier: Modifier = Modifier,
-    navController: NavHostController,
-    activeDestination: NavItemVariant,
-    uiListMode: MovieListUiMode,
-    movies: ImmutableList<MovieModel>,
-    listUiState: UiState,
-    connectedUser: FirebaseUser?,
-    windowsWidthSizeClass: WindowWidthSizeClass
+        modifier: Modifier = Modifier,
+        navController: NavHostController,
+        activeDestination: NavItemVariant,
+        uiListMode: MovieListUiMode,
+        movies: ImmutableList<MovieModel>,
+        listUiState: UiState,
+        connectedUser: FirebaseUser?,
+        windowsWidthSizeClass: WindowWidthSizeClass
 ) {
     Row(modifier = modifier) {
         CinematicsNavigationRail(activeNavItem = activeDestination) {
