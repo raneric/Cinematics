@@ -25,7 +25,7 @@ class UserProfileViewModel @Inject constructor(
     var authData by mutableStateOf(AuthData())
         private set
 
-    var profilePictureUri by mutableStateOf<Uri?>(null)
+    var profilePictureUri by mutableStateOf<Uri>(Uri.EMPTY)
         private set
 
     fun updateUserInfo(user: UserModel) {

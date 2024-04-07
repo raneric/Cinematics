@@ -10,5 +10,4 @@ fun validatePassword(password: String): Boolean {
         .matches(password)
 }
 
-//TODO
 const val PASSWORD_PATTERN = "^(?=.*[A-Za-z])(?=.*[\\d])(?=.*[\\W_])[A-Za-z\\d\\W_]{8,}\$"

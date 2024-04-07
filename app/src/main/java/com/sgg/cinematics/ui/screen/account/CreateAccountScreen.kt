@@ -1,6 +1,10 @@
 package com.sgg.cinematics.ui.screen.account
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -41,16 +45,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.sgg.cinematics.BuildConfig
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.model.UserModel
@@ -66,6 +74,10 @@ import com.sgg.cinematics.utils.InputError
 import com.sgg.cinematics.utils.millisToLocalDate
 import com.sgg.cinematics.utils.validateEmail
 import com.sgg.cinematics.utils.validatePassword
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Objects
 
 @Composable
 fun CreateAccountScreen(
@@ -82,6 +94,8 @@ fun CreateAccountScreen(
 
     val authData = viewModel.authData
 
+    val photoUri = viewModel.profilePictureUri
+
     Box {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp),
                horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,11 +104,10 @@ fun CreateAccountScreen(
                    .padding(16.dp)
                    .verticalScroll(scrollState)
         ) {
-            ProfilePicture(onPictureSelected = { uri ->
-                uri?.let {
-                    viewModel.updateProfilePictureUri(it)
-                }
-            })
+            ProfilePicture(photoUri = photoUri,
+                           onPictureUpdated = { uri ->
+                               viewModel.updateProfilePictureUri(uri)
+                           })
 
             UserFullName(userInfo = user,
                          onValueChange = { user ->
@@ -143,7 +156,6 @@ fun CreateAccountScreen(
             }
         }
         BackNavigationFab(onNavigateBack = onNavigateBack)
-
     }
 }
 
@@ -152,26 +164,44 @@ fun CreateAccountScreen(
  *
  * @param modifier: A modifier with default value [Modifier]
  * @param picture
- * @param onPictureSelected
+ * @param onPictureUpdated
  */
 @Composable
 fun ProfilePicture(
     modifier: Modifier = Modifier,
-    picture: Painter = painterResource(id = R.drawable.default_user_profile),
-    onPictureSelected: (Uri?) -> Unit
+    photoUri: Uri,
+    onPictureUpdated: (Uri) -> Unit
 ) {
+    val context = LocalContext.current
+
+    val photoFileUri: Uri = createFileUri(LocalContext.current)
 
     var pickPhotoDialogIsVisible by rememberSaveable {
         mutableStateOf(false)
     }
 
-    var selectedImage by remember {
-        mutableStateOf<Uri?>(null)
+    val photoPickerLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri ->
+        uri?.let {
+            onPictureUpdated(it)
+        }
     }
 
-    val photoPickerLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri ->
-        selectedImage = uri
-        onPictureSelected(uri)
+    val cameraLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicture()) { approved ->
+        if (approved) {
+            onPictureUpdated(photoFileUri)
+        }
+    }
+
+    val permissionLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) { approved ->
+        if (approved) {
+            cameraLauncher.launch(photoFileUri)
+        } else {
+            Toast.makeText(context,
+                           context.resources.getString(R.string.txt_error_permission),
+                           Toast.LENGTH_SHORT
+            )
+                .show()
+        }
     }
 
     Box(modifier = modifier.padding(8.dp)) {
@@ -181,10 +211,13 @@ fun ProfilePicture(
             .border(BorderStroke(4.dp, MaterialTheme.colorScheme.outline), CircleShape)
             .padding(4.dp)
             .align(alignment = Alignment.Center),
-                   model = selectedImage,
+                   model = ImageRequest.Builder(LocalContext.current)
+                       .crossfade(true)
+                       .placeholder(R.drawable.default_user_profile)
+                       .data(photoUri)
+                       .build(),
                    contentScale = ContentScale.Crop,
-                   contentDescription = "",
-                   placeholder = painterResource(id = R.drawable.default_user_profile)
+                   contentDescription = ""
         )
         IconButton(modifier = Modifier.align(alignment = Alignment.BottomEnd),
                    onClick = { pickPhotoDialogIsVisible = true }) {
@@ -202,7 +235,18 @@ fun ProfilePicture(
                     ) {
                         OutlinedButton(modifier = Modifier.fillMaxWidth(),
                                        shape = MaterialTheme.shapes.small,
-                                       onClick = { pickPhotoDialogIsVisible = false }
+                                       onClick = {
+                                           val permissionCheckResult =
+                                                   ContextCompat.checkSelfPermission(context,
+                                                                                     Manifest.permission.CAMERA
+                                                   )
+                                           if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+                                               cameraLauncher.launch(photoFileUri)
+                                           } else {
+                                               permissionLauncher.launch(Manifest.permission.CAMERA)
+                                           }
+                                           pickPhotoDialogIsVisible = false
+                                       }
                         ) {
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                 Icon(painter = painterResource(id = R.drawable.icon_camera_24px),
@@ -530,8 +574,26 @@ fun CreateAccountScreenPreview() {
 @Composable
 fun ProfilePicturePreview() {
     CinematicsTheme {
-        ProfilePicture() {
+        /*ProfilePicture() {
 
-        }
+                }*/
     }
+}
+
+private fun createFileUri(context: Context): Uri {
+    val file = context.createImageFile()
+    return FileProvider.getUriForFile(
+            Objects.requireNonNull(context),
+            BuildConfig.APPLICATION_ID + ".provider", file
+    )
+}
+
+fun Context.createImageFile(): File {
+    val today = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val fileName = "cinematics_$today"
+    return File.createTempFile(
+            fileName,
+            ".jpg",
+            externalCacheDir
+    )
 }

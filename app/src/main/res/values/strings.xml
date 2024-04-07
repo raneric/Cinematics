@@ -29,7 +29,7 @@
     <string name="txt_camera_option">Take from camera</string>
     <string name="txt_upload_option">Upload from device</string>
     <string name="txt_scroll_up">Scroll up</string>
-
+    <string name="txt_error_permission">Permission for camera is need to take photo</string>
     <string name="txt_overview_preview_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper.
         Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat.

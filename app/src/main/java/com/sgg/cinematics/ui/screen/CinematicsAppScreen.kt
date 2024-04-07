@@ -136,9 +136,8 @@ fun CinematicsAppCompact(
             }, floatingActionButton = {
         if (isFabViewSwitchVisible) {
             MovieDisplaySwitchFab(uiListMode.fabIcon) {
-                val nextMovieListUiMode = if (uiListMode is MovieListUiMode.ListView) MovieListUiMode.CarouselView else MovieListUiMode.ListView
                 CoroutineScope(Dispatchers.IO).launch {
-                    viewModel.switchListViewMode(nextMovieListUiMode)
+                    viewModel.switchListViewMode(uiListMode.switch())
                 }
             }
         }
