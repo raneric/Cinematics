@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -63,6 +64,7 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
+import com.sgg.cinematics.ui.commonui.CameraButton
 import com.sgg.cinematics.ui.commonui.ControlledOutlinedTextField
 import com.sgg.cinematics.ui.commonui.CustomDropdownMenu
 import com.sgg.cinematics.ui.commonui.PasswordTextFieldWrapper
@@ -81,9 +83,9 @@ import java.util.Objects
 
 @Composable
 fun CreateAccountScreen(
-    modifier: Modifier = Modifier,
-    onNavigateBack: () -> Unit,
-    onCreateAccountClick: () -> Unit
+        modifier: Modifier = Modifier,
+        onNavigateBack: () -> Unit,
+        onCreateAccountClick: () -> Unit
 ) {
 
     val scrollState = rememberScrollState()
@@ -168,9 +170,9 @@ fun CreateAccountScreen(
  */
 @Composable
 fun ProfilePicture(
-    modifier: Modifier = Modifier,
-    photoUri: Uri,
-    onPictureUpdated: (Uri) -> Unit
+        modifier: Modifier = Modifier,
+        photoUri: Uri,
+        onPictureUpdated: (Uri) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -196,10 +198,7 @@ fun ProfilePicture(
         if (approved) {
             cameraLauncher.launch(photoFileUri)
         } else {
-            Toast.makeText(context,
-                           context.resources.getString(R.string.txt_error_permission),
-                           Toast.LENGTH_SHORT
-            )
+            Toast.makeText(context, R.string.txt_error_permission, Toast.LENGTH_SHORT)
                 .show()
         }
     }
@@ -219,60 +218,64 @@ fun ProfilePicture(
                    contentScale = ContentScale.Crop,
                    contentDescription = ""
         )
-        IconButton(modifier = Modifier.align(alignment = Alignment.BottomEnd),
-                   onClick = { pickPhotoDialogIsVisible = true }) {
-            Icon(modifier = Modifier.size(32.dp),
-                 painter = painterResource(id = R.drawable.icon_photo_camera_24px),
-                 tint = MaterialTheme.colorScheme.primary,
-                 contentDescription = ""
+        CameraButton(modifier = Modifier.align(alignment = Alignment.BottomEnd),
+                     onButtonClick = { pickPhotoDialogIsVisible = true })
+        if (pickPhotoDialogIsVisible) {
+            PhotoPickerDialog(
+                    onCameraOptionClick = {
+                        launchCamera(context = context,
+                                     photoFileUri = photoFileUri,
+                                     cameraLauncher = cameraLauncher,
+                                     permissionLauncher = permissionLauncher
+                        )
+                        pickPhotoDialogIsVisible = false
+                    },
+                    onPhotoPickerOptionClick = {
+                        photoPickerLauncher.launch(
+                                PickVisualMediaRequest(
+                                        ActivityResultContracts.PickVisualMedia.ImageOnly
+                                )
+                        )
+                        pickPhotoDialogIsVisible = false
+                    },
+                    onDismissRequest = { pickPhotoDialogIsVisible = false }
             )
         }
-        if (pickPhotoDialogIsVisible) {
-            Dialog(onDismissRequest = { pickPhotoDialogIsVisible = false }) {
-                Card() {
-                    Column(modifier = Modifier.padding(8.dp),
-                           horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        OutlinedButton(modifier = Modifier.fillMaxWidth(),
-                                       shape = MaterialTheme.shapes.small,
-                                       onClick = {
-                                           val permissionCheckResult =
-                                                   ContextCompat.checkSelfPermission(context,
-                                                                                     Manifest.permission.CAMERA
-                                                   )
-                                           if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
-                                               cameraLauncher.launch(photoFileUri)
-                                           } else {
-                                               permissionLauncher.launch(Manifest.permission.CAMERA)
-                                           }
-                                           pickPhotoDialogIsVisible = false
-                                       }
-                        ) {
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Icon(painter = painterResource(id = R.drawable.icon_camera_24px),
-                                     contentDescription = ""
-                                )
-                                Text(text = stringResource(id = R.string.txt_camera_option))
-                            }
-                        }
-                        OutlinedButton(modifier = Modifier.fillMaxWidth(),
-                                       shape = MaterialTheme.shapes.small,
-                                       onClick = {
-                                           photoPickerLauncher.launch(
-                                                   PickVisualMediaRequest(
-                                                           ActivityResultContracts.PickVisualMedia.ImageOnly
-                                                   )
-                                           )
-                                           pickPhotoDialogIsVisible = false
-                                       }
-                        ) {
-                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                Icon(painter = painterResource(id = R.drawable.icon_upload_24px),
-                                     contentDescription = ""
-                                )
-                                Text(text = stringResource(id = R.string.txt_upload_option))
-                            }
-                        }
+    }
+}
+
+@Composable
+fun PhotoPickerDialog(
+        modifier: Modifier = Modifier,
+        onCameraOptionClick: () -> Unit,
+        onPhotoPickerOptionClick: () -> Unit,
+        onDismissRequest: () -> Unit,
+) {
+    Dialog(onDismissRequest = onDismissRequest) {
+        Card {
+            Column(modifier = modifier.padding(8.dp),
+                   horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedButton(modifier = Modifier.fillMaxWidth(),
+                               shape = MaterialTheme.shapes.small,
+                               onClick = onCameraOptionClick
+                ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Icon(painter = painterResource(id = R.drawable.icon_camera_24px),
+                             contentDescription = ""
+                        )
+                        Text(text = stringResource(id = R.string.txt_camera_option))
+                    }
+                }
+                OutlinedButton(modifier = Modifier.fillMaxWidth(),
+                               shape = MaterialTheme.shapes.small,
+                               onClick = onPhotoPickerOptionClick
+                ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Icon(painter = painterResource(id = R.drawable.icon_upload_24px),
+                             contentDescription = ""
+                        )
+                        Text(text = stringResource(id = R.string.txt_upload_option))
                     }
                 }
             }
@@ -289,9 +292,9 @@ fun ProfilePicture(
  */
 @Composable
 fun UserFullName(
-    modifier: Modifier = Modifier,
-    userInfo: UserModel,
-    onValueChange: (UserModel) -> Unit,
+        modifier: Modifier = Modifier,
+        userInfo: UserModel,
+        onValueChange: (UserModel) -> Unit,
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -336,10 +339,10 @@ fun UserFullName(
  */
 @Composable
 fun UserEmail(
-    modifier: Modifier = Modifier,
-    userInfo: UserModel,
-    emailValidation: (String) -> Boolean,
-    onValueChange: (UserModel) -> Unit
+        modifier: Modifier = Modifier,
+        userInfo: UserModel,
+        emailValidation: (String) -> Boolean,
+        onValueChange: (UserModel) -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -371,9 +374,9 @@ fun UserEmail(
  */
 @Composable
 fun PasswordInputs(
-    modifier: Modifier = Modifier,
-    authData: AuthData,
-    onValueChange: (AuthData) -> Unit,
+        modifier: Modifier = Modifier,
+        authData: AuthData,
+        onValueChange: (AuthData) -> Unit,
 ) {
 
     val passwordConfirmation = remember {
@@ -433,9 +436,9 @@ fun PasswordInputs(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BirthDatePicker(
-    modifier: Modifier = Modifier,
-    userInfo: UserModel,
-    onDateSelected: (UserModel) -> Unit
+        modifier: Modifier = Modifier,
+        userInfo: UserModel,
+        onDateSelected: (UserModel) -> Unit
 ) {
 
     var selectedValue by remember {
@@ -504,9 +507,9 @@ fun BirthDatePicker(
 
 @Composable
 fun GenderInput(
-    modifier: Modifier = Modifier,
-    userInfo: UserModel,
-    onValueChange: (UserModel) -> Unit
+        modifier: Modifier = Modifier,
+        userInfo: UserModel,
+        onValueChange: (UserModel) -> Unit
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -530,8 +533,8 @@ fun GenderInput(
 
 @Composable
 fun Location(
-    modifier: Modifier = Modifier,
-    onValueChange: (String) -> Unit
+        modifier: Modifier = Modifier,
+        onValueChange: (String) -> Unit
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -596,4 +599,21 @@ fun Context.createImageFile(): File {
             ".jpg",
             externalCacheDir
     )
+}
+
+private fun launchCamera(
+        context: Context,
+        photoFileUri: Uri,
+        cameraLauncher: ActivityResultLauncher<Uri>,
+        permissionLauncher: ActivityResultLauncher<String>
+) {
+    val permissionCheckResult =
+            ContextCompat.checkSelfPermission(context,
+                                              Manifest.permission.CAMERA
+            )
+    if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
+        cameraLauncher.launch(photoFileUri)
+    } else {
+        permissionLauncher.launch(Manifest.permission.CAMERA)
+    }
 }

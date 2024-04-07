@@ -21,7 +21,3 @@
 #-renamesourcefileattribute SourceFile
 -keepattributes Signature
 -keep class com.sgg.cinematics.data.model.* {*;}
--keep class com.google.firebase.** { *; }
--keepclassmembers class **.R$* {
-    public static <fields>;
-}

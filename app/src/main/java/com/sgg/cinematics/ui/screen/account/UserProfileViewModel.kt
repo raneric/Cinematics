@@ -16,8 +16,7 @@ import javax.inject.Inject
 class UserProfileViewModel @Inject constructor(
     private val repository: MovieRepository,
     private val authService: AuthService,
-) :
-        MainViewModel(repository, authService) {
+) : MainViewModel(repository, authService) {
 
     var userInfo by mutableStateOf(UserModel())
         private set

@@ -39,12 +39,12 @@ fun MovieCad(
         ConstraintLayout(modifier = Modifier.offset(x = dimensionResource(id = R.dimen.low_dp))) {
             val (tittle, movieInfo, genre, rating) = createRefs()
             Text(
-                text = movie.title,
-                style = MaterialTheme.typography.titleLarge,
-                color = md_theme_light_onPrimary,
-                modifier = Modifier.constrainAs(tittle) {
-                    top.linkTo(anchor = parent.top, margin = 76.dp)
-                }
+                    text = movie.title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = md_theme_light_onPrimary,
+                    modifier = Modifier.constrainAs(tittle) {
+                        top.linkTo(anchor = parent.top, margin = 76.dp)
+                    }
             )
             MovieInfo(year = movie.year,
                       duration = movie.displayedDuration,
@@ -79,8 +79,8 @@ fun MovieCadRoundedBorder(
         modifier: Modifier = Modifier
 ) {
     MovieCad(
-        movie = movie,
-        modifier = modifier
+            movie = movie,
+            modifier = modifier
                 .clip(MaterialTheme.shapes.small)
     )
 }
@@ -91,19 +91,20 @@ fun MovieCadRoundedBorderCompact(
         modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier
+            modifier = modifier
                 .size(width = 348.dp, height = 210.dp)
-                .clip(MaterialTheme.shapes.small)) {
+                .clip(MaterialTheme.shapes.small)
+    ) {
         Poster(movie.picture)
         ConstraintLayout(modifier = Modifier.offset(x = 12.dp)) {
             val (tittle, movieInfo, genre, rating) = createRefs()
             Text(
-                text = movie.title,
-                style = MaterialTheme.typography.titleLarge,
-                color = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.constrainAs(tittle) {
-                    top.linkTo(anchor = parent.top, margin = 50.dp)
-                }
+                    text = movie.title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = md_theme_light_onPrimary,
+                    modifier = Modifier.constrainAs(tittle) {
+                        top.linkTo(anchor = parent.top, margin = 50.dp)
+                    }
             )
             MovieInfo(year = movie.year,
                       duration = movie.displayedDuration,
@@ -138,13 +139,15 @@ fun Poster(
         modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier
-                .height(263.dp)) {
+            modifier = modifier
+                .height(263.dp)
+    ) {
         AsyncImage(
-            model = pictureUrl,
-            alignment = Alignment.Center,
-            contentScale = ContentScale.Crop,
-            contentDescription = "", modifier = Modifier.matchParentSize())
+                model = pictureUrl,
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Crop,
+                contentDescription = "", modifier = Modifier.matchParentSize()
+        )
         GradientForeground(color = Color.Black, modifier = Modifier.height(263.dp))
     }
 }
