@@ -3,6 +3,7 @@ package com.sgg.cinematics.service.impl
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.service.AuthService
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -25,10 +26,20 @@ class AuthServiceImpl @Inject constructor(private val firebaseAuth: FirebaseAuth
             password: String
     ) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener {
-                    Log.d("LOGIN_DEBUG", "LOGIN SUCCESS with ${it.user?.email}")
-                }
-                .await()
+            .addOnSuccessListener {
+                Log.d("LOGIN_DEBUG", "LOGIN SUCCESS with ${it.user?.email}")
+            }
+            .await()
+    }
+
+    override suspend fun createUser(authData: AuthData): FirebaseUser? {
+        var authResult = firebaseAuth.createUserWithEmailAndPassword(authData.email,
+                                                                     authData.password)
+            .addOnFailureListener {
+                throw AuthException("Failed to create user with email ${authData.email}")
+            }
+            .await()
+        return authResult.user
     }
 
     override fun signOut() {
@@ -36,3 +47,5 @@ class AuthServiceImpl @Inject constructor(private val firebaseAuth: FirebaseAuth
     }
 
 }
+
+class AuthException(override val message: String) : Exception(message)

@@ -13,8 +13,8 @@ import com.sgg.cinematics.ui.screen.login.LoginViewModel
 import com.sgg.cinematics.utils.Destination
 
 fun NavGraphBuilder.userProfileScreen(
-    navController: NavHostController,
-    connectedUser: FirebaseUser?
+        navController: NavHostController,
+        connectedUser: FirebaseUser?
 ) {
     composable(route = Destination.UserProfileScreen.route,
                enterTransition = { scaleIn() },
@@ -41,8 +41,7 @@ fun NavGraphBuilder.createAccountScreen(navController: NavHostController) {
         CreateAccountScreen(
                 onNavigateBack = {
                     navController.popBackStack()
-                }, onCreateAccountClick = {
-
-        })
+                }
+        )
     }
 }

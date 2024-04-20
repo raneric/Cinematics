@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 const val MOVIE_COLLECTION = "movies"
 
-class MovieDataSourceImpl @Inject constructor(private val firestore: FirebaseFirestore) :
+class RemoteMovieDataSource @Inject constructor(private val firestore: FirebaseFirestore) :
         MovieDataSource {
     override fun getAllMovies(): Flow<List<MovieModel>> {
         return firestore.collection(MOVIE_COLLECTION)
