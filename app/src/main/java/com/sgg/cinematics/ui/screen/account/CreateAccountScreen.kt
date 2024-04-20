@@ -84,15 +84,14 @@ import java.util.Objects
 @Composable
 fun CreateAccountScreen(
         modifier: Modifier = Modifier,
-        onNavigateBack: () -> Unit,
-        onCreateAccountClick: () -> Unit
+        onNavigateBack: () -> Unit
 ) {
 
     val scrollState = rememberScrollState()
 
     val viewModel = hiltViewModel<UserProfileViewModel>()
 
-    val user = viewModel.userInfo
+    val userInfo = viewModel.userInfo
 
     val authData = viewModel.authData
 
@@ -111,12 +110,12 @@ fun CreateAccountScreen(
                                viewModel.updateProfilePictureUri(uri)
                            })
 
-            UserFullName(userInfo = user,
+            UserFullName(userInfo = userInfo,
                          onValueChange = { user ->
                              viewModel.updateUserInfo(user)
                          })
 
-            UserEmail(userInfo = user,
+            UserEmail(userInfo = userInfo,
                       emailValidation = {
                           validateEmail(it)
                       },
@@ -131,12 +130,12 @@ fun CreateAccountScreen(
                            })
 
             BirthDatePicker(modifier = Modifier.fillMaxWidth(),
-                            userInfo = user,
+                            userInfo = userInfo,
                             onDateSelected = { userInfo ->
                                 viewModel.updateUserInfo(userInfo)
                             })
 
-            GenderInput(userInfo = user,
+            GenderInput(userInfo = userInfo,
                         onValueChange = { user ->
                             viewModel.updateUserInfo(user)
                         })
@@ -145,7 +144,7 @@ fun CreateAccountScreen(
 
             Row {
                 Spacer(modifier = Modifier.size(32.dp))
-                Button(onClick = onCreateAccountClick,
+                Button(onClick = { viewModel.createAccount() },
                        colors = ButtonDefaults.buttonColors(md_theme_light_secondary),
                        shape = MaterialTheme.shapes.small,
                        modifier = Modifier.fillMaxWidth()
@@ -313,7 +312,7 @@ fun UserFullName(
                                   )
                               },
                               onValueChange = { firstName ->
-                                  onValueChange(userInfo.copy(lastName = firstName))
+                                  onValueChange(userInfo.copy(firstName = firstName))
                               })
             OutlinedTextField(value = userInfo.lastName,
                               modifier = Modifier.fillMaxWidth(),
@@ -569,7 +568,7 @@ fun Location(
 @Composable
 fun CreateAccountScreenPreview() {
     CinematicsTheme {
-        CreateAccountScreen(onNavigateBack = {}, onCreateAccountClick = {})
+        CreateAccountScreen(onNavigateBack = {})
     }
 }
 
@@ -607,10 +606,9 @@ private fun launchCamera(
         cameraLauncher: ActivityResultLauncher<Uri>,
         permissionLauncher: ActivityResultLauncher<String>
 ) {
-    val permissionCheckResult =
-            ContextCompat.checkSelfPermission(context,
-                                              Manifest.permission.CAMERA
-            )
+    val permissionCheckResult = ContextCompat.checkSelfPermission(context,
+                                                                  Manifest.permission.CAMERA
+    )
     if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
         cameraLauncher.launch(photoFileUri)
     } else {

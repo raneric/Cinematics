@@ -1,22 +1,23 @@
 package com.sgg.cinematics.ui.screen.account
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.model.UserModel
-import com.sgg.cinematics.data.repository.MovieRepository
-import com.sgg.cinematics.service.AuthService
-import com.sgg.cinematics.ui.MainViewModel
+import com.sgg.cinematics.domain.CreateAccountUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserProfileViewModel @Inject constructor(
-    private val repository: MovieRepository,
-    private val authService: AuthService,
-) : MainViewModel(repository, authService) {
+class UserProfileViewModel @Inject constructor(private val createAccountUseCase: CreateAccountUseCase) :
+        ViewModel() {
 
     var userInfo by mutableStateOf(UserModel())
         private set
@@ -37,5 +38,16 @@ class UserProfileViewModel @Inject constructor(
 
     fun updateProfilePictureUri(uri: Uri) {
         profilePictureUri = uri
+    }
+
+    fun createAccount() {
+        val exeptionHandler = CoroutineExceptionHandler { _, _ ->
+            Log.d("ERROR_HANDLER", "coroutines error handler")
+        }
+        viewModelScope.launch(exeptionHandler) {
+            createAccountUseCase(userInfo = userInfo,
+                                 authData = authData,
+                                 pictureProfileUri = profilePictureUri)
+        }
     }
 }
