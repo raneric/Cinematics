@@ -1,26 +1,20 @@
-package com.sgg.cinematics.data.repository.impl
+package com.sgg.cinematics.service.impl
 
 import com.sgg.cinematics.data.model.UserModel
-import com.sgg.cinematics.data.repository.UserInfoRepository
-import com.sgg.cinematics.di.RemoteDataSource
 import com.sgg.cinematics.di.RoomDataSource
 import com.sgg.cinematics.service.UserInfoDataSource
 import javax.inject.Inject
 
-const val USER_COLLECTION = "userInfo"
+//TODO caching user info data to local database
+@RoomDataSource
+class RoomUserInfoDataSource @Inject constructor() : UserInfoDataSource {
 
-
-class UserInfoRepositoryImpl @Inject constructor(
-        @RemoteDataSource private val remoteDataSource: UserInfoDataSource,
-        @RoomDataSource private val localDataSource: UserInfoDataSource
-) : UserInfoRepository {
     override fun getUserInfo(uid: String) {
         TODO("Not yet implemented")
     }
 
-    //FIXE dada upload
     override fun addUserInfo(userInfo: UserModel) {
-        remoteDataSource.addUserInfo(userInfo)
+        TODO("Not yet implemented")
     }
 
     override fun updateUserInfo(userInfo: UserModel) {

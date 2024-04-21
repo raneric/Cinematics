@@ -13,3 +13,7 @@ val LocalDate.formattedStringDate: String
 fun Long.millisToLocalDate(): LocalDate {
     return LocalDate.ofEpochDay(this / 1000 / 60 / 60 / 24)
 }
+
+fun LocalDate.toMillis(): Long {
+    return this.toEpochDay() * 1000 * 60 * 60 * 24
+}

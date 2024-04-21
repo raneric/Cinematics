@@ -4,6 +4,7 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.model.UserRatingModel
+import com.sgg.cinematics.utils.toMillis
 import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
 
@@ -153,7 +154,8 @@ val userModelLists = persistentListOf(
                 email = "kate@gmail.com",
                 location = "Antsirabe - Madagascar",
                 bio = "Hacktoberfest is a month-long celebration of open source projects, their maintainers, and the entire community of contributors. Each October, open source maintainers give new contributors extra attention as they guide developers through their first pull requests on GitHub.",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil1
         ),
         UserModel(
@@ -162,7 +164,8 @@ val userModelLists = persistentListOf(
                 lastName = "Lee",
                 email = "hong@gmail.com",
                 location = "Majunga - Madagascar",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil2
         ),
         UserModel(
@@ -171,7 +174,8 @@ val userModelLists = persistentListOf(
                 lastName = "Rose",
                 email = "jack@gmail.com",
                 location = "Antananarivo - Madagascar",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil4
         ),
         UserModel(
@@ -180,7 +184,8 @@ val userModelLists = persistentListOf(
                 lastName = "Knowles",
                 email = "cath@gmail.com",
                 location = "Toliara - Madagascar",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil3
         ),
         UserModel(
@@ -189,7 +194,8 @@ val userModelLists = persistentListOf(
                 lastName = "Marks",
                 email = "marks@gmail.com",
                 location = "Fianarantsoa - Madagascar",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil5
         ),
         UserModel(
@@ -198,7 +204,8 @@ val userModelLists = persistentListOf(
                 lastName = "Oneal",
                 email = "lola@gmail.com",
                 location = "Antananarivo - Madagascar",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil6
         ),
         UserModel(
@@ -207,7 +214,8 @@ val userModelLists = persistentListOf(
                 lastName = "Nelson",
                 email = "ollie@gmail.com",
                 location = "Antananarivo - Madagascar",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil7
         ),
         UserModel(
@@ -216,7 +224,8 @@ val userModelLists = persistentListOf(
                 lastName = "Brock",
                 email = "bianca@gmail.com",
                 location = "Antananarivo - Madagascar",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil8
         ),
         UserModel(
@@ -225,7 +234,8 @@ val userModelLists = persistentListOf(
                 lastName = "Lowe",
                 email = "lew@gmail.com",
                 location = "Antananrivo - Madagascar",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil9
         ),
         UserModel(
@@ -234,7 +244,8 @@ val userModelLists = persistentListOf(
                 lastName = "Bush",
                 email = "asia@gmail.com",
                 location = "Antananrivo - Madagascar",
-                birthDate = LocalDate.of(1989, 8, 23),
+                birthDate = LocalDate.of(1989, 8, 23)
+                    .toMillis(),
                 picture = R.drawable.profil10
         )
 )
