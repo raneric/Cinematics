@@ -41,8 +41,8 @@ class UserProfileViewModel @Inject constructor(private val createAccountUseCase:
     }
 
     fun createAccount() {
-        val exeptionHandler = CoroutineExceptionHandler { _, _ ->
-            Log.d("ERROR_HANDLER", "coroutines error handler")
+        val exeptionHandler = CoroutineExceptionHandler { _, t ->
+            Log.d(UserProfileViewModel::class.simpleName, "coroutines error handler t.${t.message}")
         }
         viewModelScope.launch(exeptionHandler) {
             createAccountUseCase(userInfo = userInfo,

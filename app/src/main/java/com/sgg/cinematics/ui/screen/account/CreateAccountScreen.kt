@@ -454,7 +454,9 @@ fun BirthDatePicker(
         selectedValue = it
     }
 
-    val displayedDate = if (userInfo.birthDate == null) "" else userInfo.birthDate.toString()
+    val displayedDate = if (userInfo.birthDate == null) "" else userInfo.birthDate.millisToLocalDate()
+        .toString()
+        .toString()
 
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -488,7 +490,7 @@ fun BirthDatePicker(
                              confirmButton = {
                                  TextButton(onClick = {
                                      datePickerDialogIsVisible = false
-                                     onDateSelected(userInfo.copy(birthDate = selectedValue.millisToLocalDate()))
+                                     onDateSelected(userInfo.copy(birthDate = selectedValue))
                                  }) {
                                      Text(text = stringResource(id = R.string.txt_ok))
                                  }

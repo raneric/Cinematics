@@ -1,7 +1,6 @@
 package com.sgg.cinematics.domain
 
 import android.net.Uri
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.storage.FirebaseStorage
 import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.model.UserModel
@@ -29,7 +28,7 @@ class CreateAccountUseCase @Inject constructor(
         authService.createUser(authData)
             ?.let {
                 val url = uploadAndGetUrl(pictureProfileUri, it.uid)
-                val fullUserData = userInfo.copy(id = it.uid, pictureUrl = url)
+                var fullUserData = userInfo.copy(id = it.uid, pictureUrl = url)
                 userInfoRepository.addUserInfo(fullUserData)
             }
     }
@@ -37,20 +36,20 @@ class CreateAccountUseCase @Inject constructor(
     private suspend fun uploadAndGetUrl(
             pictureUri: Uri,
             uid: String
-    ): String {
-        val ref = firebaseStorage.reference.child("$USER_FILES_ROOT_FOLDER/$uid/${
-            LocalDateTime.now()
-                .currentDateAsString()
-        }")
-        ref.putFile(pictureUri)
-            .await()
-        val downloadUrl = ref.downloadUrl.await()
-        return downloadUrl.toString()
+    ): String? {
+        var url: String? = null
+        if (pictureUri != Uri.EMPTY) {
+            val ref = firebaseStorage.reference.child("$USER_FILES_ROOT_FOLDER/$uid/${
+                LocalDateTime.now()
+                    .currentDateAsString()
+            }")
+            ref.putFile(pictureUri)
+                .await()
+            url = ref.downloadUrl.await()
+                .toString()
+        }
+        return url
     }
-}
-
-private fun FirebaseUser.combineWithUserModel(userModel: UserModel): UserModel {
-    return userModel.copy(id = uid)
 }
 
 private fun LocalDateTime.currentDateAsString(): String {
