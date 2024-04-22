@@ -6,6 +6,7 @@ import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.repository.UserInfoRepository
 import com.sgg.cinematics.service.AuthService
+import com.sgg.cinematics.utils.currentDateAsString
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -52,6 +53,3 @@ class CreateAccountUseCase @Inject constructor(
     }
 }
 
-private fun LocalDateTime.currentDateAsString(): String {
-    return "${this.dayOfMonth}${this.monthValue}${this.year}${this.hour}${this.minute}${this.second}"
-}

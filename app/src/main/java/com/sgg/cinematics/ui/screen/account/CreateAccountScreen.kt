@@ -73,11 +73,11 @@ import com.sgg.cinematics.ui.ui.theme.md_theme_light_onSecondary
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_secondary
 import com.sgg.cinematics.utils.DarkAndLightPreview
 import com.sgg.cinematics.utils.InputError
+import com.sgg.cinematics.utils.currentDateAsString
 import com.sgg.cinematics.utils.validateEmail
 import com.sgg.cinematics.utils.validatePassword
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
+import java.time.LocalDateTime
 import java.util.Objects
 
 @Composable
@@ -174,7 +174,7 @@ fun ProfilePicture(
 ) {
     val context = LocalContext.current
 
-    val photoFileUri: Uri = createFileUri(LocalContext.current)
+    val photoFileUri: Uri = remember { createFileUri(context) }
 
     var pickPhotoDialogIsVisible by rememberSaveable {
         mutableStateOf(false)
@@ -189,6 +189,9 @@ fun ProfilePicture(
     val cameraLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicture()) { approved ->
         if (approved) {
             onPictureUpdated(photoFileUri)
+        } else {
+            Toast.makeText(context, R.string.txt_error_permission, Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
@@ -590,8 +593,10 @@ private fun createFileUri(context: Context): Uri {
 }
 
 fun Context.createImageFile(): File {
-    val today = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-    val fileName = "cinematics_$today"
+    val fileName = "cinematics_${
+        LocalDateTime.now()
+            .currentDateAsString()
+    }"
     return File.createTempFile(
             fileName,
             ".jpg",
