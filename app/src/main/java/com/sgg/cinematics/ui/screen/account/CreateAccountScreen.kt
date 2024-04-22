@@ -73,7 +73,6 @@ import com.sgg.cinematics.ui.ui.theme.md_theme_light_onSecondary
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_secondary
 import com.sgg.cinematics.utils.DarkAndLightPreview
 import com.sgg.cinematics.utils.InputError
-import com.sgg.cinematics.utils.millisToLocalDate
 import com.sgg.cinematics.utils.validateEmail
 import com.sgg.cinematics.utils.validatePassword
 import java.io.File
@@ -454,9 +453,7 @@ fun BirthDatePicker(
         selectedValue = it
     }
 
-    val displayedDate = if (userInfo.birthDate == null) "" else userInfo.birthDate.millisToLocalDate()
-        .toString()
-        .toString()
+    val displayedDate = if (userInfo.birthDate == null) "" else userInfo.displayedBirthDate
 
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,

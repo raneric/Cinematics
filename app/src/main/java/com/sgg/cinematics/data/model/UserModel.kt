@@ -1,6 +1,7 @@
 package com.sgg.cinematics.data.model
 
 import androidx.annotation.DrawableRes
+import com.sgg.cinematics.utils.millisToLocalDate
 
 data class UserModel(
         val id: String? = null,
@@ -17,6 +18,10 @@ data class UserModel(
 ) {
     val fullName
         get() = "$firstName $lastName"
+
+    val displayedBirthDate
+        get() = birthDate?.millisToLocalDate()
+            .toString()
 }
 
 data class AuthData(
