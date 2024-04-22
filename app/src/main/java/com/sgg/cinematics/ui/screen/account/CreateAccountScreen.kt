@@ -174,7 +174,7 @@ fun ProfilePicture(
 ) {
     val context = LocalContext.current
 
-    val photoFileUri: Uri = remember { createFileUri(context) }
+    var photoFileUri by remember { mutableStateOf(Uri.EMPTY) }
 
     var pickPhotoDialogIsVisible by rememberSaveable {
         mutableStateOf(false)
@@ -224,6 +224,7 @@ fun ProfilePicture(
         if (pickPhotoDialogIsVisible) {
             PhotoPickerDialog(
                     onCameraOptionClick = {
+                        photoFileUri = createFileUri(context)
                         launchCamera(context = context,
                                      photoFileUri = photoFileUri,
                                      cameraLauncher = cameraLauncher,
