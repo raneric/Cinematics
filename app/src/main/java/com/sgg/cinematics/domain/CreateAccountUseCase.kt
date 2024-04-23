@@ -40,11 +40,11 @@ class CreateAccountUseCase @Inject constructor(
     ): String? {
         var url: String? = null
         if (pictureUri != Uri.EMPTY) {
-            val ref = firebaseStorage.reference.child("$USER_FILES_ROOT_FOLDER/$uid/${
-                LocalDateTime.now()
-                    .currentDateAsString()
-            }")
+            val ref = firebaseStorage.reference.child(makeUserFilePath(uid))
             ref.putFile(pictureUri)
+                .addOnFailureListener {
+                    throw Exception("Failed to upload profile picture")
+                }
                 .await()
             url = ref.downloadUrl.await()
                 .toString()
@@ -53,3 +53,9 @@ class CreateAccountUseCase @Inject constructor(
     }
 }
 
+private fun makeUserFilePath(uid: String): String {
+    return "$USER_FILES_ROOT_FOLDER/$uid/${
+        LocalDateTime.now()
+            .currentDateAsString()
+    }"
+}

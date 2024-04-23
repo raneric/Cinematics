@@ -10,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,6 +47,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -67,12 +69,14 @@ import com.sgg.cinematics.ui.commonui.BackNavigationFab
 import com.sgg.cinematics.ui.commonui.CameraButton
 import com.sgg.cinematics.ui.commonui.ControlledOutlinedTextField
 import com.sgg.cinematics.ui.commonui.CustomDropdownMenu
+import com.sgg.cinematics.ui.commonui.LoadingScreen
 import com.sgg.cinematics.ui.commonui.PasswordTextFieldWrapper
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_onSecondary
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_secondary
 import com.sgg.cinematics.utils.DarkAndLightPreview
 import com.sgg.cinematics.utils.InputError
+import com.sgg.cinematics.utils.UiState
 import com.sgg.cinematics.utils.currentDateAsString
 import com.sgg.cinematics.utils.validateEmail
 import com.sgg.cinematics.utils.validatePassword
@@ -95,6 +99,8 @@ fun CreateAccountScreen(
     val authData = viewModel.authData
 
     val photoUri = viewModel.profilePictureUri
+
+    val uiState = viewModel.uiState
 
     Box {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -156,6 +162,9 @@ fun CreateAccountScreen(
             }
         }
         BackNavigationFab(onNavigateBack = onNavigateBack)
+        if (uiState.value is UiState.Loading) {
+            LoadingScreen(modifier = Modifier.background(color = Color.Black.copy(alpha = 0.6f)))
+        }
     }
 }
 

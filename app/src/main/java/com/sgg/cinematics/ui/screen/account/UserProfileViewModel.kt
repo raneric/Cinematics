@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.domain.CreateAccountUseCase
+import com.sgg.cinematics.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -18,6 +19,9 @@ import javax.inject.Inject
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(private val createAccountUseCase: CreateAccountUseCase) :
         ViewModel() {
+
+    var uiState = mutableStateOf<UiState>(UiState.Success)
+        private set
 
     var userInfo by mutableStateOf(UserModel())
         private set
@@ -41,13 +45,16 @@ class UserProfileViewModel @Inject constructor(private val createAccountUseCase:
     }
 
     fun createAccount() {
+        uiState.value = UiState.Loading
         val exeptionHandler = CoroutineExceptionHandler { _, t ->
-            Log.d(UserProfileViewModel::class.simpleName, "coroutines error handler t.${t.message}")
+            Log.e(UserProfileViewModel::class.simpleName, "coroutines error handler t.${t.message}")
+            uiState.value = UiState.Error(t.message.toString())
         }
         viewModelScope.launch(exeptionHandler) {
             createAccountUseCase(userInfo = userInfo,
                                  authData = authData,
                                  pictureProfileUri = profilePictureUri)
+            uiState.value = UiState.Success
         }
     }
 }
