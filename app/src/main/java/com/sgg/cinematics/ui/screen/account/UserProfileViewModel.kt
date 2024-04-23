@@ -20,7 +20,7 @@ import javax.inject.Inject
 class UserProfileViewModel @Inject constructor(private val createAccountUseCase: CreateAccountUseCase) :
         ViewModel() {
 
-    var uiState = mutableStateOf<UiState>(UiState.Success)
+    var uiState = mutableStateOf<UiState>(UiState.Init)
         private set
 
     var userInfo by mutableStateOf(UserModel())

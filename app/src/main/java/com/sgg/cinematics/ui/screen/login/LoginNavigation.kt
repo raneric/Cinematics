@@ -6,8 +6,9 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -28,14 +29,29 @@ fun NavGraphBuilder.loginScreen(navController: NavHostController) {
         val userData = loginViewModel.userLoginData.collectAsStateWithLifecycle()
         val loadingState = loginViewModel.loginUiState.collectAsStateWithLifecycle()
 
+        LaunchedEffect(key1 = loadingState.value) {
+            if (loadingState.value is UiState.Success) {
+                navController.navigate(Destination.UserProfileScreen.route)
+            }
+        }
+
         LoginScreen(userData = userData.value,
                     isEmailValid = { validateEmail(it) },
                     updateEmail = { loginViewModel.updateEmail(it) },
                     updatePassword = { loginViewModel.updatePassword(it) },
-                    login = { loginViewModel.login(navController) },
+                    login = { loginViewModel.login() },
                     onNavigateBack = { navController.navigate(Destination.TrendingScreen.route) },
                     onCreateAccountClick = { navController.navigate(Destination.CreateAccount.route) })
 
+        AnimatedVisibility(
+                visible = loadingState.value is UiState.Loading, enter = fadeIn()
+        ) {
+            LoadingScreen(
+                    modifier = Modifier.background(
+                            color = Color.Black.copy(alpha = 0.6f)
+                    )
+            )
+        }
         if (loadingState.value is UiState.Error) {
             Toast.makeText(
                     LocalContext.current,
@@ -45,14 +61,5 @@ fun NavGraphBuilder.loginScreen(navController: NavHostController) {
                 .show()
         }
 
-        AnimatedVisibility(
-                visible = loadingState.value is UiState.Loading, enter = fadeIn()
-        ) {
-            LoadingScreen(
-                    modifier = Modifier.background(
-                            color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.3f)
-                    )
-            )
-        }
     }
 }

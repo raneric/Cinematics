@@ -1,12 +1,10 @@
 package com.sgg.cinematics.ui.screen.login
 
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavHostController
 import com.sgg.cinematics.data.model.AuthData
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
-import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: MovieRepository,
-    private val authService: AuthService
+        private val repository: MovieRepository,
+        private val authService: AuthService
 ) : MainViewModel(repository, authService) {
 
     private var _loginUiState = MutableStateFlow<UiState?>(null)
@@ -41,7 +39,7 @@ class LoginViewModel @Inject constructor(
         _userLoginData.value = autUser
     }
 
-    fun login(navController: NavHostController) {
+    fun login() {
         _loginUiState.value = UiState.Loading
         userLoginData.value?.let { user ->
             viewModelScope.launch {
@@ -50,8 +48,7 @@ class LoginViewModel @Inject constructor(
                             email = user.email,
                             password = user.password
                     )
-                    UiState.Success
-                    navController.navigate(Destination.UserProfileScreen.route)
+                    _loginUiState.value = UiState.Success
                 } catch (e: Exception) {
                     _loginUiState.value = UiState.Error(e.message.toString())
                 }

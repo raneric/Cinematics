@@ -9,6 +9,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -87,7 +91,8 @@ import java.util.Objects
 @Composable
 fun CreateAccountScreen(
         modifier: Modifier = Modifier,
-        onNavigateBack: () -> Unit
+        onNavigateBack: () -> Unit,
+        navigateToUserProfile: () -> Unit
 ) {
 
     val scrollState = rememberScrollState()
@@ -101,6 +106,12 @@ fun CreateAccountScreen(
     val photoUri = viewModel.profilePictureUri
 
     val uiState = viewModel.uiState
+
+    LaunchedEffect(key1 = uiState.value) {
+        if (uiState.value is UiState.Success) {
+            navigateToUserProfile()
+        }
+    }
 
     Box {
         Column(verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -162,7 +173,9 @@ fun CreateAccountScreen(
             }
         }
         BackNavigationFab(onNavigateBack = onNavigateBack)
-        if (uiState.value is UiState.Loading) {
+        AnimatedVisibility(visible = uiState.value is UiState.Loading,
+                           enter = fadeIn(),
+                           exit = fadeOut()) {
             LoadingScreen(modifier = Modifier.background(color = Color.Black.copy(alpha = 0.6f)))
         }
     }
@@ -580,7 +593,7 @@ fun Location(
 @Composable
 fun CreateAccountScreenPreview() {
     CinematicsTheme {
-        CreateAccountScreen(onNavigateBack = {})
+        CreateAccountScreen(onNavigateBack = {}, navigateToUserProfile = {})
     }
 }
 

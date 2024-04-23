@@ -41,6 +41,9 @@ fun NavGraphBuilder.createAccountScreen(navController: NavHostController) {
         CreateAccountScreen(
                 onNavigateBack = {
                     navController.popBackStack()
+                },
+                navigateToUserProfile = {
+                    navController.navigate(Destination.UserProfileScreen.route)
                 }
         )
     }
