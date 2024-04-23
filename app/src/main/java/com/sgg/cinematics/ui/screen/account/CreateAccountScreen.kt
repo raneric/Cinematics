@@ -97,7 +97,7 @@ fun CreateAccountScreen(
 
     val scrollState = rememberScrollState()
 
-    val viewModel = hiltViewModel<UserProfileViewModel>()
+    val viewModel = hiltViewModel<CreatAccountViewModel>()
 
     val userInfo = viewModel.userInfo
 

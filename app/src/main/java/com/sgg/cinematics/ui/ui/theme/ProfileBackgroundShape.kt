@@ -38,9 +38,8 @@ class ProfileBackgroundShape(
     ): Outline {
 
         return when (cutPosition) {
-            ShapeCutPosition.TOP_RIGHT -> createTopRightCut(size)
-
-            else                       -> createBottomRightCut(size)
+            ShapeCutPosition.TOP_RIGHT    -> createTopRightCut(size)
+            ShapeCutPosition.BOTTOM_RIGHT -> createBottomRightCut(size)
         }
     }
 
@@ -54,12 +53,12 @@ class ProfileBackgroundShape(
             lineTo(size.width, 0f)
             lineTo(size.width, size.height)
             arcTo(
-                rect = Rect(
-                    offset = Offset(arcOffsetX.toFloat(), arcOffsetY.toFloat()),
-                    size = Size(fabSize, fabSize)),
-                startAngleDegrees = -50f,
-                sweepAngleDegrees = -115f,
-                forceMoveTo = false)
+                    rect = Rect(
+                            offset = Offset(arcOffsetX.toFloat(), arcOffsetY.toFloat()),
+                            size = Size(fabSize, fabSize)),
+                    startAngleDegrees = -50f,
+                    sweepAngleDegrees = -115f,
+                    forceMoveTo = false)
             lineTo(0f, size.height)
             close()
         })
@@ -74,12 +73,12 @@ class ProfileBackgroundShape(
             reset()
             lineTo(size.width, 0f)
             arcTo(
-                rect = Rect(
-                    offset = Offset(arcOffsetX.toFloat(), -arcOffsetY.toFloat()),
-                    size = Size(fabSize, fabSize)),
-                startAngleDegrees = 165f,
-                sweepAngleDegrees = -115f,
-                forceMoveTo = false)
+                    rect = Rect(
+                            offset = Offset(arcOffsetX.toFloat(), -arcOffsetY.toFloat()),
+                            size = Size(fabSize, fabSize)),
+                    startAngleDegrees = 165f,
+                    sweepAngleDegrees = -115f,
+                    forceMoveTo = false)
             lineTo(size.width, size.height)
             lineTo(0f, size.height)
             close()
@@ -88,5 +87,5 @@ class ProfileBackgroundShape(
 }
 
 enum class ShapeCutPosition {
-    TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT
+    TOP_RIGHT, BOTTOM_RIGHT
 }

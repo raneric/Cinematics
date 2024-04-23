@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.screen.account
+package com.sgg.cinematics.ui.screen.profile
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.Animatable
@@ -58,9 +58,9 @@ import com.sgg.cinematics.utils.DarkAndLightPreview
 
 @Composable
 fun UserProfileScreen(
-    user: UserModel,
-    modifier: Modifier = Modifier,
-    logout: () -> Unit
+        user: UserModel,
+        modifier: Modifier = Modifier,
+        logout: () -> Unit
 ) {
     val fabSize = with(LocalDensity.current) { 64.dp.toPx() }
     val scrollState = rememberScrollState()
@@ -73,7 +73,7 @@ fun UserProfileScreen(
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect {
             when (it) {
-                is PressInteraction.Press -> fabScale.animateTo(targetValue = 0.8f)
+                is PressInteraction.Press   -> fabScale.animateTo(targetValue = 0.8f)
                 is PressInteraction.Release -> fabScale.animateTo(targetValue = 1f)
             }
         }
@@ -84,7 +84,9 @@ fun UserProfileScreen(
         .background(MaterialTheme.colorScheme.surface)
         .verticalScroll(scrollState),
                       pictureSection = {
-                          ProfilePictureSection(user = user, logout = logout, fabSize = fabSize)
+                          ProfilePictureSection(user = user,
+                                                logout = logout,
+                                                fabSize = fabSize)
                       },
                       fab = {
                           FloatingActionButton(
@@ -113,10 +115,10 @@ fun UserProfileScreen(
 
 @Composable
 fun UserProfileLayout(
-    pictureSection: @Composable () -> Unit,
-    fab: @Composable () -> Unit,
-    userInfo: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+        pictureSection: @Composable () -> Unit,
+        fab: @Composable () -> Unit,
+        userInfo: @Composable () -> Unit,
+        modifier: Modifier = Modifier
 ) {
 
     Layout(
@@ -140,7 +142,7 @@ fun UserProfileLayout(
         val layoutWidth = picturePlaceable.width + (fabOverflow * 2)
         val layoutHeight = (picturePlaceable.height + sectionMargin + userInfoPlaceable.height).toInt()
 
-        val fabY = +picturePlaceable.height + (sectionMargin / 2).toInt() - (fabPlaceable.height / 2)
+        val fabY = picturePlaceable.height + (sectionMargin / 2).toInt() - (fabPlaceable.height / 2)
         val fabX = picturePlaceable.width - fabPlaceable.width + (fabOverflow * 2)
 
         layout(width = layoutWidth, height = layoutHeight) {
@@ -153,10 +155,10 @@ fun UserProfileLayout(
 
 @Composable
 fun ProfilePictureSection(
-    user: UserModel,
-    fabSize: Float,
-    logout: () -> Unit,
-    modifier: Modifier = Modifier
+        user: UserModel,
+        fabSize: Float,
+        logout: () -> Unit,
+        modifier: Modifier = Modifier
 ) {
     Box {
         Column(
@@ -194,9 +196,9 @@ fun ProfilePictureSection(
 
 @Composable
 fun UserInfoSection(
-    user: UserModel,
-    fabSize: Float,
-    modifier: Modifier = Modifier
+        user: UserModel,
+        fabSize: Float,
+        modifier: Modifier = Modifier
 ) {
     Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -220,8 +222,8 @@ fun UserInfoSection(
 
 @Composable
 fun Bio(
-    text: String,
-    modifier: Modifier = Modifier
+        text: String,
+        modifier: Modifier = Modifier
 ) {
     BioLayout(tittle = {
         Text(
@@ -249,9 +251,9 @@ fun Bio(
 
 @Composable
 fun BioLayout(
-    tittle: @Composable () -> Unit,
-    textBio: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+        tittle: @Composable () -> Unit,
+        textBio: @Composable () -> Unit,
+        modifier: Modifier = Modifier
 ) {
     Layout(
             contents = listOf(tittle, textBio),
@@ -284,9 +286,9 @@ fun UserProfileScreenPreview() {
 
 @Composable
 fun UserInfoItem(
-    text: String,
-    @DrawableRes icon: Int,
-    modifier: Modifier = Modifier
+        text: String,
+        @DrawableRes icon: Int,
+        modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = modifier) {
         Image(

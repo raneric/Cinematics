@@ -17,8 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserProfileViewModel @Inject constructor(private val createAccountUseCase: CreateAccountUseCase) :
-        ViewModel() {
+class CreatAccountViewModel @Inject constructor(
+        private val createAccountUseCase: CreateAccountUseCase
+) : ViewModel() {
 
     var uiState = mutableStateOf<UiState>(UiState.Init)
         private set
@@ -47,7 +48,8 @@ class UserProfileViewModel @Inject constructor(private val createAccountUseCase:
     fun createAccount() {
         uiState.value = UiState.Loading
         val exeptionHandler = CoroutineExceptionHandler { _, t ->
-            Log.e(UserProfileViewModel::class.simpleName, "coroutines error handler t.${t.message}")
+            Log.e(CreatAccountViewModel::class.simpleName,
+                  "coroutines error handler t.${t.message}")
             uiState.value = UiState.Error(t.message.toString())
         }
         viewModelScope.launch(exeptionHandler) {
