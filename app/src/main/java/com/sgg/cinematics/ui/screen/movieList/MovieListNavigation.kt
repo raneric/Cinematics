@@ -17,11 +17,11 @@ import com.sgg.cinematics.utils.UiState
 import kotlinx.collections.immutable.ImmutableList
 
 fun NavGraphBuilder.trendingListScreen(
-    navController: NavHostController,
-    movies: ImmutableList<MovieModel>,
-    movieListUiMode: MovieListUiMode,
-    listUiState: UiState,
-    windowsWidthSizeClass: WindowWidthSizeClass,
+        navController: NavHostController,
+        movies: ImmutableList<MovieModel>,
+        movieListUiMode: MovieListUiMode,
+        listUiState: UiState,
+        windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
     composable(route = Destination.TrendingScreen.route,
                enterTransition = { scaleIn() },
@@ -39,20 +39,22 @@ fun NavGraphBuilder.trendingListScreen(
 }
 
 fun NavGraphBuilder.watchListScreen(
-    navController: NavHostController,
-    movies: ImmutableList<MovieModel>,
-    movieListUiMode: MovieListUiMode,
-    listUiState: UiState,
-    windowsWidthSizeClass: WindowWidthSizeClass,
+        navController: NavHostController,
+        movies: ImmutableList<MovieModel>,
+        movieListUiMode: MovieListUiMode,
+        listUiState: UiState,
+        windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
     composable(route = Destination.WatchListScreen.route,
                exitTransition = { fadeOut() }) {
-        MovieListScreen(movieListUiMode = movieListUiMode,
-                        movieList = movies,
-                        navController = navController,
-                        windowsWidthSizeClass = windowsWidthSizeClass,
-                        modifier = Modifier.semantics {
-                            contentDescription = Destination.WatchListScreen.testTag
-                        })
+        ScreenWrapper(uiState = listUiState, componentOnSuccess = {
+            MovieListScreen(movieListUiMode = movieListUiMode,
+                            movieList = movies,
+                            navController = navController,
+                            windowsWidthSizeClass = windowsWidthSizeClass,
+                            modifier = Modifier.semantics {
+                                contentDescription = Destination.WatchListScreen.testTag
+                            })
+        }, componentOnError = { /*TODO*/ })
     }
 }

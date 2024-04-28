@@ -43,6 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.userModelLists
@@ -160,7 +161,7 @@ fun ProfilePictureSection(
         logout: () -> Unit,
         modifier: Modifier = Modifier
 ) {
-    Box {
+    Box(modifier = modifier) {
         Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround,
@@ -172,7 +173,7 @@ fun ProfilePictureSection(
                     .background(profile_background_color)
         ) {
             Image(
-                    painter = painterResource(id = user.picture),
+                    painter = rememberAsyncImagePainter(model = user.pictureUrl),
                     contentDescription = "",
                     alignment = Alignment.Center,
                     contentScale = ContentScale.Crop,
@@ -211,7 +212,7 @@ fun UserInfoSection(
     ) {
         Text(text = stringResource(id = R.string.txt_user_info_tittle), style = userProfileTitle)
         Divider(color = Color(0xFFD1D1D1))
-        UserInfoItem(text = user.birthDate.toString(), R.drawable.icon_birthday_date)
+        UserInfoItem(text = user.displayedBirthDate, R.drawable.icon_birthday_date)
         Divider(color = Color(0xFFE1E1E1))
         UserInfoItem(text = user.email ?: "N/A", R.drawable.icon_email)
         Divider(color = Color(0xFFE1E1E1))
