@@ -7,8 +7,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseUser
-import com.sgg.cinematics.data.userModelLists
-import com.sgg.cinematics.ui.screen.login.LoginViewModel
 import com.sgg.cinematics.utils.Destination
 
 fun NavGraphBuilder.userProfileScreen(
@@ -20,13 +18,14 @@ fun NavGraphBuilder.userProfileScreen(
                exitTransition = { fadeOut() }
     ) {
 
-        val loginViewModel = hiltViewModel<LoginViewModel>()
-
+        val viewModel = hiltViewModel<UserProfileViewModel>()
+        val user = viewModel.user
         if (connectedUser == null) {
             navController.navigate(Destination.LoginScreen.route)
         } else {
-            UserProfileScreen(user = userModelLists[0]) {
-                loginViewModel.logout()
+            viewModel.refreshUserInfo(connectedUser.uid)
+            UserProfileScreen(user = user) {
+                viewModel.logout()
             }
         }
     }

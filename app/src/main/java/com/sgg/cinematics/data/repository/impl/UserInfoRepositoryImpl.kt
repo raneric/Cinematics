@@ -1,26 +1,38 @@
 package com.sgg.cinematics.data.repository.impl
 
+import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.repository.UserInfoRepository
-import com.sgg.cinematics.di.RemoteDataSource
-import com.sgg.cinematics.di.RoomDataSource
-import com.sgg.cinematics.service.UserInfoDataSource
+import com.sgg.cinematics.utils.TAG_USER_CREATION_FLOW
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 const val USER_COLLECTION = "userInfo"
 
 
 class UserInfoRepositoryImpl @Inject constructor(
-        @RemoteDataSource private val remoteDataSource: UserInfoDataSource,
-        @RoomDataSource private val localDataSource: UserInfoDataSource
+        private val firestore: FirebaseFirestore
 ) : UserInfoRepository {
-    override fun getUserInfo(uid: String) {
-        TODO("Not yet implemented")
+    override suspend fun getUserInfo(uid: String): UserModel {
+        return firestore.collection(USER_COLLECTION)
+            .whereEqualTo("id", uid)
+            .get()
+            .await()
+            .first()
+            .toObject<UserModel>()
     }
 
-    //FIXE dada upload
     override fun addUserInfo(userInfo: UserModel) {
-        remoteDataSource.addUserInfo(userInfo)
+        firestore.collection(USER_COLLECTION)
+            .add(userInfo)
+            .addOnFailureListener {
+                Log.d(TAG_USER_CREATION_FLOW, it.message.toString())
+            }
+            .addOnCanceledListener {
+                Log.d(TAG_USER_CREATION_FLOW, "add user canceled")
+            }
     }
 
     override fun updateUserInfo(userInfo: UserModel) {

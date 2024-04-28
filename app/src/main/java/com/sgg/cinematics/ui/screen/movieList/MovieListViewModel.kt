@@ -19,10 +19,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class MovieListViewModel @Inject constructor(
-    private val repository: MovieRepository,
-    private val authService: AuthService,
-    private val uiStateRepository: PreferenceRepository
-) : MainViewModel(repository, authService) {
+        private val repository: MovieRepository,
+        private val uiStateRepository: PreferenceRepository,
+        authService: AuthService
+) : MainViewModel(authService) {
 
     val uiListMode: Flow<MovieListUiMode> = uiStateRepository.movieListUiModeFlow
 

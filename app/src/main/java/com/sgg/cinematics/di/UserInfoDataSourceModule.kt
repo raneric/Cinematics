@@ -1,15 +1,6 @@
 package com.sgg.cinematics.di
 
-import com.google.firebase.firestore.FirebaseFirestore
-import com.sgg.cinematics.service.UserInfoDataSource
-import com.sgg.cinematics.service.impl.RemoteUserInfoDataSource
-import com.sgg.cinematics.service.impl.RoomUserInfoDataSource
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Qualifier
-
+/*
 @Qualifier
 @Retention(AnnotationRetention.RUNTIME)
 annotation class RemoteDataSource
@@ -25,7 +16,7 @@ class RemoteDataSourceModule {
     @Provides
     @RemoteDataSource
     fun provideUserInfoDataSource(firestore: FirebaseFirestore): UserInfoDataSource {
-        return RemoteUserInfoDataSource(firestore)
+        return RemoteUserInfoDataSource()
     }
 }
 
@@ -38,4 +29,4 @@ class RoomDataSourceModule {
     fun provideUserInfoDataSource(): UserInfoDataSource {
         return RoomUserInfoDataSource()
     }
-}
+}*/

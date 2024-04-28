@@ -4,7 +4,7 @@ import com.sgg.cinematics.data.model.UserModel
 
 interface UserInfoRepository {
 
-    fun getUserInfo(uid: String)
+    suspend fun getUserInfo(uid: String): UserModel
 
     fun addUserInfo(userInfo: UserModel)
 

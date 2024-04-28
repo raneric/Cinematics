@@ -13,8 +13,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
         private val repository: MovieRepository,
-        private val authService: AuthService
-) : MainViewModel(repository, authService) {
+        authService: AuthService
+) : MainViewModel(authService) {
 
     private var _detailsUiState = MutableStateFlow<UiState>(UiState.Loading)
     val detailsUiState

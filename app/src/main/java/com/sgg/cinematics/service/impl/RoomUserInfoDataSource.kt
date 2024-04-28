@@ -1,15 +1,12 @@
 package com.sgg.cinematics.service.impl
 
 import com.sgg.cinematics.data.model.UserModel
-import com.sgg.cinematics.di.RoomDataSource
 import com.sgg.cinematics.service.UserInfoDataSource
-import javax.inject.Inject
 
 //TODO caching user info data to local database
-@RoomDataSource
-class RoomUserInfoDataSource @Inject constructor() : UserInfoDataSource {
+class RoomUserInfoDataSource constructor() : UserInfoDataSource {
 
-    override fun getUserInfo(uid: String) {
+    override fun getUserInfo(uid: String): UserModel {
         TODO("Not yet implemented")
     }
 

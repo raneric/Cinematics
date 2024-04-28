@@ -2,7 +2,6 @@ package com.sgg.cinematics.ui.screen.login
 
 import androidx.lifecycle.viewModelScope
 import com.sgg.cinematics.data.model.AuthData
-import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.UiState
@@ -14,9 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-        private val repository: MovieRepository,
         private val authService: AuthService
-) : MainViewModel(repository, authService) {
+) : MainViewModel(authService) {
 
     private var _loginUiState = MutableStateFlow<UiState?>(null)
     val loginUiState = _loginUiState
@@ -56,7 +54,4 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun logout() {
-        authService.signOut()
-    }
 }
