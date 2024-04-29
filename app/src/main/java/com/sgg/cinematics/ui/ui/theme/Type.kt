@@ -78,11 +78,11 @@ val userRatingText = TextStyle(
 
 val userProfileTitle = TextStyle(
         fontFamily = FontFamily(Font(R.font.roboto_medium)),
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         color = user_profile_txt_color,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
-        letterSpacing = 0.5.sp
+        fontSize = 18.sp,
+        lineHeight = 28.sp,
+        letterSpacing = 0.sp
 )
 
 val userProfileContent = TextStyle(

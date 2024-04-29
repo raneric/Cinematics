@@ -2,6 +2,7 @@ package com.sgg.cinematics.ui.screen.profile
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -53,7 +55,8 @@ import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.ProfileBackgroundShape
 import com.sgg.cinematics.ui.ui.theme.ShapeCutPosition
 import com.sgg.cinematics.ui.ui.theme.custom_green_btn_color
-import com.sgg.cinematics.ui.ui.theme.profile_background_color
+import com.sgg.cinematics.ui.ui.theme.thick_divider_color
+import com.sgg.cinematics.ui.ui.theme.thin_divider_color
 import com.sgg.cinematics.ui.ui.theme.userBioText
 import com.sgg.cinematics.ui.ui.theme.userProfileContent
 import com.sgg.cinematics.ui.ui.theme.userProfileTitle
@@ -65,19 +68,22 @@ fun UserProfileScreen(
         modifier: Modifier = Modifier,
         logout: () -> Unit
 ) {
-    val fabSize = with(LocalDensity.current) { 64.dp.toPx() }
+    val fabSize = with(LocalDensity.current) { 86.dp.toPx() }
     val scrollState = rememberScrollState()
     val interactionSource = remember { MutableInteractionSource() }
 
     val fabScale = remember {
-        Animatable(1f)
+        Animatable(initialValue = 1f)
     }
 
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect {
             when (it) {
                 is PressInteraction.Press   -> fabScale.animateTo(targetValue = 0.8f)
-                is PressInteraction.Release -> fabScale.animateTo(targetValue = 1f)
+                is PressInteraction.Release -> fabScale.animateTo(targetValue = 1f,
+                                                                  animationSpec = spring(
+                                                                          stiffness = 600f,
+                                                                          dampingRatio = 0.2f))
             }
         }
     }
@@ -95,8 +101,9 @@ fun UserProfileScreen(
                           FloatingActionButton(
                                   onClick = {},
                                   modifier = Modifier
+                                      .size(80.dp)
                                       .graphicsLayer {
-                                          scaleY = fabScale.value
+                                          scaleX = fabScale.value
                                           scaleY = fabScale.value
                                       },
                                   interactionSource = interactionSource,
@@ -105,9 +112,9 @@ fun UserProfileScreen(
                                   contentColor = MaterialTheme.colorScheme.onPrimary,
                                   shape = CircleShape
                           ) {
-                              Icon(
-                                      painter = painterResource(id = R.drawable.icon_edit_32),
-                                      contentDescription = stringResource(id = R.string.content_descrip_back_fab)
+                              Icon(modifier = Modifier.size(32.dp),
+                                   painter = painterResource(id = R.drawable.icon_edit_32),
+                                   contentDescription = stringResource(id = R.string.content_descrip_back_fab)
                               )
                           }
                       },
@@ -166,13 +173,13 @@ fun ProfilePictureSection(
     Box(modifier = modifier) {
         Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceAround,
+                verticalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(275.dp)
+                    .height(320.dp)
                     .clip(MaterialTheme.shapes.medium)
                     .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.BOTTOM_RIGHT))
-                    .background(profile_background_color)
+                    .background(MaterialTheme.colorScheme.onSurface)
         ) {
             AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
@@ -184,7 +191,7 @@ fun ProfilePictureSection(
                     alignment = Alignment.Center,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .size(200.dp)
+                        .size(240.dp)
                         .clip(CircleShape)
                         .border(2.dp, custom_green_btn_color, CircleShape),
             )
@@ -208,23 +215,51 @@ fun UserInfoSection(
         fabSize: Float,
         modifier: Modifier = Modifier
 ) {
+    val spacerSize = 4.dp
+    val defaultText = stringResource(id = R.string.txt_not_available)
+
+    val genderIcon = if (user.gender == "Male") R.drawable.icon_male_24px else R.drawable.icon_female_24px
+
     Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = modifier
                 .fillMaxWidth()
                 .clip(MaterialTheme.shapes.medium)
                 .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.TOP_RIGHT))
-                .background(profile_background_color)
+                .background(MaterialTheme.colorScheme.onSurface)
                 .padding(10.dp)
     ) {
-        Text(text = stringResource(id = R.string.txt_user_info_tittle), style = userProfileTitle)
-        Divider(color = Color(0xFFD1D1D1))
-        UserInfoItem(text = user.displayedBirthDate, R.drawable.icon_birthday_date)
-        Divider(color = Color(0xFFE1E1E1))
-        UserInfoItem(text = user.email ?: "N/A", R.drawable.icon_email)
-        Divider(color = Color(0xFFE1E1E1))
-        UserInfoItem(text = user.location ?: "N/A", R.drawable.icon_location)
-        Bio(text = user.bio ?: "N/A")
+        Text(text = stringResource(id = R.string.txt_user_info_tittle),
+             style = userProfileTitle)
+        Divider(color = thick_divider_color)
+        Spacer(modifier = Modifier.size(spacerSize))
+
+        UserInfoItem(text = stringResource(id = R.string.txt_birth_date, user.displayedBirthDate),
+                     R.drawable.icon_birthday_date)
+        Divider(color = thin_divider_color)
+        Spacer(modifier = Modifier.size(spacerSize))
+
+        UserInfoItem(text = stringResource(id = R.string.txt_gender,
+                                           user.gender ?: defaultText),
+                     icon = genderIcon)
+
+        Divider(color = thin_divider_color)
+
+        Spacer(modifier = Modifier.size(spacerSize))
+
+        UserInfoItem(text = stringResource(id = R.string.txt_email,
+                                           user.email ?: defaultText),
+                     R.drawable.icon_email)
+        Divider(color = thin_divider_color)
+        Spacer(modifier = Modifier.size(spacerSize))
+
+        UserInfoItem(text = stringResource(id = R.string.txt_location,
+                                           user.location ?: defaultText),
+                     R.drawable.icon_location)
+        Divider(color = thin_divider_color)
+        Spacer(modifier = Modifier.size(spacerSize))
+
+        Bio(text = user.bio ?: defaultText)
     }
 }
 
@@ -239,7 +274,7 @@ fun Bio(
                 style = userProfileTitle,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .background(color = profile_background_color)
+                    .background(color = MaterialTheme.colorScheme.onSurface)
                     .widthIn(min = 30.dp)
         )
     }, textBio = {
@@ -249,7 +284,7 @@ fun Bio(
                 modifier = Modifier
                     .fillMaxWidth()
                     .border(
-                            BorderStroke(1.dp, Color(0xFFE1E1E1)),
+                            BorderStroke(1.dp, thin_divider_color),
                             shape = MaterialTheme.shapes.small
                     )
                     .padding(horizontal = 8.dp, vertical = 12.dp)
@@ -308,7 +343,7 @@ fun UserInfoItem(
     }
 }
 
-@Preview(showBackground = true)
+@DarkAndLightPreview
 @Composable
 fun UserInfoSectionPreview() {
     val fabSize = with(LocalDensity.current) { 60.dp.toPx() }
