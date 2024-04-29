@@ -1,20 +1,29 @@
 package com.sgg.cinematics.data.repository.impl
 
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.dataObjects
+import com.google.firebase.firestore.toObject
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.data.watchList
-import com.sgg.cinematics.service.MovieDataSource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class MovieRepositoryImpl @Inject constructor(private val dataSource: MovieDataSource) :
+const val MOVIE_COLLECTION = "movies"
+
+class MovieRepositoryImpl @Inject constructor(private val firestore: FirebaseFirestore) :
         MovieRepository {
     override fun getTrending(): Flow<List<MovieModel>> {
-        return dataSource.getAllMovies()
+        return firestore.collection(MOVIE_COLLECTION)
+            .dataObjects()
     }
 
     override fun getTopRated(): Flow<List<MovieModel>> {
-        return dataSource.getTopRatedMovies()
+        return firestore.collection(MOVIE_COLLECTION)
+            .orderBy("ratingNote", Query.Direction.DESCENDING)
+            .dataObjects()
     }
 
     override fun getWatchList(): List<MovieModel> = watchList
@@ -32,6 +41,11 @@ class MovieRepositoryImpl @Inject constructor(private val dataSource: MovieDataS
     }
 
     override suspend fun getMovie(id: Int): MovieModel? {
-        return dataSource.getMovie(id)
+        return firestore.collection(MOVIE_COLLECTION)
+            .whereEqualTo("id", id)
+            .get()
+            .await()
+            .first()
+            .toObject<MovieModel>()
     }
 }
