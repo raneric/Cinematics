@@ -10,6 +10,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.BorderStroke
@@ -22,6 +25,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -51,6 +55,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -84,6 +89,7 @@ import com.sgg.cinematics.utils.UiState
 import com.sgg.cinematics.utils.currentDateAsString
 import com.sgg.cinematics.utils.validateEmail
 import com.sgg.cinematics.utils.validatePassword
+import kotlinx.coroutines.launch
 import java.io.File
 import java.time.LocalDateTime
 import java.util.Objects
@@ -107,9 +113,37 @@ fun CreateAccountScreen(
 
     val uiState = viewModel.uiState
 
+    val pictureAnimatable = remember {
+        Animatable(0f)
+    }
+
+    val leftOffsetAnimatable = remember {
+        Animatable(-2500f)
+    }
+
+    val rightOffsetAnimatable = remember {
+        Animatable(2500f)
+    }
+
     LaunchedEffect(key1 = uiState.value) {
         if (uiState.value is UiState.Success) {
             navigateToUserProfile()
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        launch {
+            pictureAnimatable.animateTo(targetValue = 1f,
+                                        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy))
+        }
+        launch {
+            leftOffsetAnimatable.animateTo(targetValue = 0f,
+                                           animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy))
+
+        }
+        launch {
+            rightOffsetAnimatable.animateTo(targetValue = 0f,
+                                            animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy))
         }
     }
 
@@ -121,17 +155,20 @@ fun CreateAccountScreen(
                    .padding(16.dp)
                    .verticalScroll(scrollState)
         ) {
-            ProfilePicture(photoUri = photoUri,
+            ProfilePicture(modifier = Modifier.scale(pictureAnimatable.value),
+                           photoUri = photoUri,
                            onPictureUpdated = { uri ->
                                viewModel.updateProfilePictureUri(uri)
                            })
 
-            UserFullName(userInfo = userInfo,
+            UserFullName(modifier = Modifier.offset(x = leftOffsetAnimatable.value.dp),
+                         userInfo = userInfo,
                          onValueChange = { user ->
                              viewModel.updateUserInfo(user)
                          })
 
-            UserEmail(userInfo = userInfo,
+            UserEmail(modifier = Modifier.offset(x = rightOffsetAnimatable.value.dp),
+                      userInfo = userInfo,
                       emailValidation = {
                           validateEmail(it)
                       },
@@ -140,25 +177,30 @@ fun CreateAccountScreen(
                           viewModel.updateAuthData(authData.copy(email = user.email ?: ""))
                       })
 
-            PasswordInputs(authData = authData,
+            PasswordInputs(modifier = Modifier.offset(x = leftOffsetAnimatable.value.dp),
+                           authData = authData,
                            onValueChange = { authData ->
                                viewModel.updateAuthData(authData)
                            })
 
-            BirthDatePicker(modifier = Modifier.fillMaxWidth(),
+            BirthDatePicker(modifier = Modifier
+                .fillMaxWidth()
+                .offset(x = rightOffsetAnimatable.value.dp),
                             userInfo = userInfo,
                             onDateSelected = { userInfo ->
                                 viewModel.updateUserInfo(userInfo)
                             })
 
-            GenderInput(userInfo = userInfo,
+            GenderInput(modifier = Modifier.offset(x = leftOffsetAnimatable.value.dp),
+                        userInfo = userInfo,
                         onValueChange = { user ->
                             viewModel.updateUserInfo(user)
                         })
 
-            Location(onValueChange = {})
+            Location(modifier = Modifier.offset(x = rightOffsetAnimatable.value.dp),
+                     onValueChange = {})
 
-            Row {
+            Row(modifier = Modifier.offset(x = leftOffsetAnimatable.value.dp)) {
                 Spacer(modifier = Modifier.size(32.dp))
                 Button(onClick = { viewModel.createAccount() },
                        colors = ButtonDefaults.buttonColors(md_theme_light_secondary),
@@ -332,8 +374,9 @@ fun UserFullName(
             OutlinedTextField(value = userInfo.firstName,
                               modifier = Modifier.fillMaxWidth(),
                               label = {
-                                  Text(text = stringResource(id = R.string.label_first_name),
-                                       style = MaterialTheme.typography.bodySmall
+                                  Text(
+                                          text = stringResource(id = R.string.label_first_name),
+                                          style = MaterialTheme.typography.bodyLarge
                                   )
                               },
                               onValueChange = { firstName ->
@@ -342,8 +385,9 @@ fun UserFullName(
             OutlinedTextField(value = userInfo.lastName,
                               modifier = Modifier.fillMaxWidth(),
                               label = {
-                                  Text(text = stringResource(id = R.string.label_last_name),
-                                       style = MaterialTheme.typography.bodySmall
+                                  Text(
+                                          text = stringResource(id = R.string.label_last_name),
+                                          style = MaterialTheme.typography.bodyLarge
                                   )
                               },
                               onValueChange = { lastName ->
@@ -368,7 +412,8 @@ fun UserEmail(
         emailValidation: (String) -> Boolean,
         onValueChange: (UserModel) -> Unit
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically,
+    Row(modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Icon(tint = MaterialTheme.colorScheme.onSurface,
@@ -377,7 +422,7 @@ fun UserEmail(
         )
         ControlledOutlinedTextField(value = userInfo.email,
                                     iconResId = R.drawable.icon_mail_24px,
-                                    placeholderResId = R.string.placeholder_mail,
+                                    placeholderResId = R.string.label_user_mail,
                                     iconContentDescripResId = R.string.content_descrip_mail_icon,
                                     isValidData = { emailValidation(it) },
                                     onValueChange = { email ->
@@ -493,7 +538,7 @@ fun BirthDatePicker(
         OutlinedTextField(modifier = Modifier.weight(0.9f),
                           label = {
                               Text(text = stringResource(id = R.string.label_birth_date),
-                                   style = MaterialTheme.typography.bodySmall
+                                   style = MaterialTheme.typography.bodyLarge
                               )
                           },
                           value = displayedDate,
@@ -572,7 +617,7 @@ fun Location(
                           modifier = Modifier.fillMaxWidth(),
                           label = {
                               Text(text = stringResource(id = R.string.label_location),
-                                   style = MaterialTheme.typography.bodySmall
+                                   style = MaterialTheme.typography.bodyLarge
                               )
                           },
                           trailingIcon = {

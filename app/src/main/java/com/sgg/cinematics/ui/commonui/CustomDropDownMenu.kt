@@ -4,6 +4,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,24 +32,27 @@ fun CustomDropdownMenu(
     }
 
     ExposedDropdownMenuBox(
-        modifier = modifier,
-        expanded = isExpanded,
-        onExpandedChange = { isExpanded = it }) {
+            modifier = modifier,
+            expanded = isExpanded,
+            onExpandedChange = { isExpanded = it }) {
         OutlinedTextField(
-            modifier = Modifier.menuAnchor(),
-            value = selectedValue,
-            label = { Text(text = textLabel) },
-            readOnly = true,
-            onValueChange = {},
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
-            }
+                modifier = Modifier.menuAnchor(),
+                value = selectedValue,
+                label = {
+                    Text(text = textLabel,
+                         style = MaterialTheme.typography.bodyLarge)
+                },
+                readOnly = true,
+                onValueChange = {},
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+                }
         )
         ExposedDropdownMenu(
-            expanded = isExpanded,
-            onDismissRequest = {
-                isExpanded = false
-            }) {
+                expanded = isExpanded,
+                onDismissRequest = {
+                    isExpanded = false
+                }) {
             optionList.forEach { value ->
                 DropdownMenuItem(text = { Text(text = value) },
                                  onClick = {

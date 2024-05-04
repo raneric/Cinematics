@@ -1,7 +1,6 @@
 package com.sgg.cinematics.ui.screen.account
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -48,8 +47,6 @@ class CreatAccountViewModel @Inject constructor(
     fun createAccount() {
         uiState.value = UiState.Loading
         val exeptionHandler = CoroutineExceptionHandler { _, t ->
-            Log.e(CreatAccountViewModel::class.simpleName,
-                  "coroutines error handler t.${t.message}")
             uiState.value = UiState.Error(t.message.toString())
         }
         viewModelScope.launch(exeptionHandler) {

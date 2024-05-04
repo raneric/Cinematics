@@ -16,7 +16,7 @@ class LoginViewModel @Inject constructor(
         private val authService: AuthService
 ) : MainViewModel(authService) {
 
-    private var _loginUiState = MutableStateFlow<UiState?>(null)
+    private var _loginUiState = MutableStateFlow<UiState>(UiState.Init)
     val loginUiState = _loginUiState
 
     private var _userLoginData = MutableStateFlow(AuthData())

@@ -1,7 +1,7 @@
 package com.sgg.cinematics.ui.screen
 
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -35,8 +35,8 @@ fun CinematicsNavHost(
             navController = navController,
             startDestination = Destination.TrendingScreen.route,
             modifier = modifier,
-            enterTransition = { slideInVertically() },
-            exitTransition = { slideOutVertically() }
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None }
     ) {
 
         trendingListScreen(
