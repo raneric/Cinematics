@@ -43,7 +43,7 @@ fun CinematicsAppScreen(
 
     val navController = rememberNavController()
 
-    val connectedUser = mainViewModel.connectedUser.collectAsStateWithLifecycle(initialValue = null)
+    val connectedUser by mainViewModel.connectedUser.collectAsStateWithLifecycle(initialValue = null)
 
     var isBottomNavVisible: Boolean by rememberSaveable {
         mutableStateOf(true)
@@ -57,11 +57,11 @@ fun CinematicsAppScreen(
         mutableStateOf(NavItemVariant.Trending)
     }
 
-    val movies = movieListViewModel.movies.collectAsStateWithLifecycle()
+    val movies by movieListViewModel.movies.collectAsStateWithLifecycle()
 
-    val listUiState = movieListViewModel.listUiState.collectAsStateWithLifecycle()
+    val listUiState by movieListViewModel.listUiState.collectAsStateWithLifecycle()
 
-    val uiListMode = movieListViewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
+    val uiListMode by movieListViewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
 
     navController.addOnDestinationChangedListener { _, navDestination, _ ->
         activeDestination = navDestination.activeNavItem()
@@ -78,10 +78,10 @@ fun CinematicsAppScreen(
                 isFabViewSwitchVisible = isFabViewSwitchVisible,
                 activeDestination = activeDestination,
                 navController = navController,
-                uiListMode = uiListMode.value,
-                movies = movies.value.toImmutableList(),
-                connectedUser = connectedUser.value,
-                listUiState = listUiState.value,
+                uiListMode = uiListMode,
+                movies = movies.toImmutableList(),
+                connectedUser = connectedUser,
+                listUiState = listUiState,
                 windowsWidthSizeClass = windowsWidthSizeClass,
                 viewModel = movieListViewModel
         )
@@ -89,10 +89,10 @@ fun CinematicsAppScreen(
         CinematicsAppMedium(
                 navController = navController,
                 activeDestination = activeDestination,
-                uiListMode = uiListMode.value,
-                movies = movies.value.toImmutableList(),
-                connectedUser = connectedUser.value,
-                listUiState = listUiState.value,
+                uiListMode = uiListMode,
+                movies = movies.toImmutableList(),
+                connectedUser = connectedUser,
+                listUiState = listUiState,
                 windowsWidthSizeClass = windowsWidthSizeClass,
         )
     }
