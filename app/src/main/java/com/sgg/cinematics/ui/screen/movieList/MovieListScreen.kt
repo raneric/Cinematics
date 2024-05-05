@@ -66,11 +66,11 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieListScreen(
-    modifier: Modifier = Modifier,
-    movieListUiMode: MovieListUiMode,
-    movieList: ImmutableList<MovieModel>,
-    navController: NavHostController,
-    windowsWidthSizeClass: WindowWidthSizeClass,
+        modifier: Modifier = Modifier,
+        movieListUiMode: MovieListUiMode,
+        movieList: ImmutableList<MovieModel>,
+        navController: NavHostController,
+        windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
         AnimatedVisibility(
@@ -115,9 +115,9 @@ fun MovieListScreen(
  */
 @Composable
 fun VerticalMovieListScreen(
-    movieList: ImmutableList<MovieModel>,
-    modifier: Modifier = Modifier,
-    onItemClicked: (Int) -> Unit
+        movieList: ImmutableList<MovieModel>,
+        modifier: Modifier = Modifier,
+        onItemClicked: (Int) -> Unit
 ) {
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -141,7 +141,7 @@ fun VerticalMovieListScreen(
         ) {
             ScrollUpButton {
                 scope.launch {
-                    scrollState.scrollToItem(0)
+                    scrollState.animateScrollToItem(0)
                 }
             }
         }
@@ -160,9 +160,9 @@ fun VerticalMovieListScreen(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun HorizontalMovieListScreen(
-    movieList: ImmutableList<MovieModel>,
-    modifier: Modifier = Modifier,
-    onItemClicked: (Int) -> Unit
+        movieList: ImmutableList<MovieModel>,
+        modifier: Modifier = Modifier,
+        onItemClicked: (Int) -> Unit
 ) {
 
     val pageSate = rememberPagerState(pageCount = { movieList.size })
@@ -197,9 +197,9 @@ fun HorizontalMovieListScreen(
 
 @Composable
 fun GridMovieListScreen(
-    movieList: ImmutableList<MovieModel>,
-    modifier: Modifier = Modifier,
-    onItemClicked: (Int) -> Unit
+        movieList: ImmutableList<MovieModel>,
+        modifier: Modifier = Modifier,
+        onItemClicked: (Int) -> Unit
 ) {
     val scrollState = rememberLazyGridState()
     val scope = rememberCoroutineScope()
