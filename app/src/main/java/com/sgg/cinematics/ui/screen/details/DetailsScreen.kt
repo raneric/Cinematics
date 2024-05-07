@@ -49,12 +49,12 @@ import kotlinx.collections.immutable.ImmutableList
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
-    movie: MovieModel,
-    isInWatchList: Boolean,
-    addOrRemoveToWatchList: () -> Unit,
-    onRecommendationItemClicked: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    onNavigateBack: () -> Unit
+        movie: MovieModel,
+        isInWatchList: Boolean,
+        addOrRemoveToWatchList: () -> Unit,
+        onRecommendationItemClicked: (Int) -> Unit,
+        modifier: Modifier = Modifier,
+        onNavigateBack: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     Box {
@@ -85,17 +85,16 @@ fun DetailsScreen(
  */
 @Composable
 fun DetailsLayout(
-    moviePicture: @Composable () -> Unit,
-    content: @Composable () -> Unit,
-    modifier: Modifier = Modifier
+        moviePicture: @Composable () -> Unit,
+        content: @Composable () -> Unit,
+        modifier: Modifier = Modifier
 ) {
 
-    Layout(
-            contents = listOf(
-                    moviePicture,
-                    content
-            ),
-            modifier = modifier
+    Layout(contents = listOf(
+            moviePicture,
+            content
+    ),
+           modifier = modifier
     ) { (moviePictureMeasurable, contentMeasurable), constraint ->
 
         val moviePicturePlaceable = moviePictureMeasurable.first()
@@ -124,17 +123,16 @@ fun DetailsLayout(
  */
 @Composable
 fun DetailsContent(
-    movie: MovieModel,
-    isInWatchList: Boolean,
-    addOrRemoveWatchList: () -> Unit,
-    onRecommendationItemClicked: (Int) -> Unit,
-    modifier: Modifier = Modifier
+        movie: MovieModel,
+        isInWatchList: Boolean,
+        addOrRemoveWatchList: () -> Unit,
+        onRecommendationItemClicked: (Int) -> Unit,
+        modifier: Modifier = Modifier
 ) {
 
     Surface(modifier = modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
-        ConstraintLayout(
-                modifier = Modifier
-                    .padding(horizontal = dimensionResource(id = R.dimen.low_dp))
+        ConstraintLayout(modifier = Modifier
+            .padding(horizontal = dimensionResource(id = R.dimen.low_dp))
         ) {
             val (movieInfo, genre, overview, cast, rating, userRatings, recommendation, button) = createRefs()
 
@@ -206,17 +204,15 @@ fun DetailsContent(
 
 @Composable
 fun MovieInfoSection(
-    movie: MovieModel,
-    modifier: Modifier = Modifier
+        movie: MovieModel,
+        modifier: Modifier = Modifier
 ) {
-    Column(
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.low_dp)),
-            modifier = modifier
+    Column(verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.low_dp)),
+           modifier = modifier
     ) {
-        Text(
-                text = movie.title,
-                modifier = Modifier.widthIn(max = 200.dp),
-                style = MaterialTheme.typography.titleLarge
+        Text(text = movie.title,
+             modifier = Modifier.widthIn(max = 200.dp),
+             style = MaterialTheme.typography.titleLarge
         )
         MovieInfoDetails(
                 year = movie.year,
@@ -229,8 +225,8 @@ fun MovieInfoSection(
 
 @Composable
 fun OverviewSection(
-    text: String,
-    modifier: Modifier = Modifier
+        text: String,
+        modifier: Modifier = Modifier
 ) {
     DetailsSection(
             title = stringResource(id = R.string.txt_overview_section),
@@ -242,8 +238,8 @@ fun OverviewSection(
 
 @Composable
 fun CastSection(
-    userModelList: ImmutableList<UserModel>,
-    modifier: Modifier = Modifier
+        userModelList: ImmutableList<UserModel>,
+        modifier: Modifier = Modifier
 ) {
     DetailsSection(
             title = stringResource(id = R.string.txt_cast_section),
@@ -261,15 +257,14 @@ fun CastSection(
  */
 @Composable
 fun DetailsSection(
-    title: String,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+        title: String,
+        modifier: Modifier = Modifier,
+        content: @Composable () -> Unit
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text(
-                text = title,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier.widthIn(max = 200.dp)
+        Text(text = title,
+             style = MaterialTheme.typography.titleMedium,
+             modifier = Modifier.widthIn(max = 200.dp)
         )
         content()
     }
@@ -277,9 +272,9 @@ fun DetailsSection(
 
 @Composable
 fun RecommendationSection(
-    movieList: List<MovieModel>,
-    onRecommendationItemClicked: (Int) -> Unit,
-    modifier: Modifier = Modifier
+        movieList: List<MovieModel>,
+        onRecommendationItemClicked: (Int) -> Unit,
+        modifier: Modifier = Modifier
 ) {
     DetailsSection(
             title = stringResource(id = R.string.txt_recomendation_section),

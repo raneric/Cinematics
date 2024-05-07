@@ -23,11 +23,10 @@ import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.navigateToDetailsScreen
 
 fun NavGraphBuilder.detailsScreen(navController: NavHostController) {
-    composable(
-            route = Destination.DetailScreen.route,
-            arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType }),
-            enterTransition = { fadeIn() },
-            exitTransition = { fadeOut() }
+    composable(route = Destination.DetailScreen.route,
+               arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType }),
+               enterTransition = { fadeIn() },
+               exitTransition = { fadeOut() }
     ) { navBackStackEntry ->
 
         val movieId = navBackStackEntry.arguments?.getInt(MOVIE_ID_ARGS)
@@ -44,24 +43,23 @@ fun NavGraphBuilder.detailsScreen(navController: NavHostController) {
             }
         }
 
-        ScreenWrapper(
-                uiState = detailsUiState.value,
-                componentOnSuccess = {
-                    DetailsScreen(
-                            movie = uiData.value!!,
-                            addOrRemoveToWatchList = { TODO() },
-                            onRecommendationItemClicked = { movieId ->
-                                navigateToDetailsScreen(
-                                        movieId = movieId, navController = navController
-                                )
-                            },
-                            modifier = Modifier.semantics {
-                                contentDescription = Destination.DetailScreen.testTag
-                            },
-                            isInWatchList = movieIsInWatchList
-                    ) {
-                        navController.navigateUp()
-                    }
-                }, componentOnError = { })
+        ScreenWrapper(uiState = detailsUiState.value,
+                      componentOnSuccess = {
+                          DetailsScreen(
+                                  movie = uiData.value!!,
+                                  addOrRemoveToWatchList = { TODO() },
+                                  onRecommendationItemClicked = { movieId ->
+                                      navigateToDetailsScreen(
+                                              movieId = movieId, navController = navController
+                                      )
+                                  },
+                                  modifier = Modifier.semantics {
+                                      contentDescription = Destination.DetailScreen.testTag
+                                  },
+                                  isInWatchList = movieIsInWatchList
+                          ) {
+                              navController.navigateUp()
+                          }
+                      }, componentOnError = { })
     }
 }

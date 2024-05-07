@@ -14,9 +14,11 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 
 @Composable
-fun MovieDisplaySwitchFab(@DrawableRes fabIcon: Int,
-                          modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_fab_view_switch)),
-                          onViewSwitched: () -> Unit) {
+fun MovieDisplaySwitchFab(
+        modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_fab_view_switch)),
+        @DrawableRes fabIcon: Int,
+        onViewSwitched: () -> Unit
+) {
     FloatingActionButton(modifier = modifier, onClick = onViewSwitched) {
         Icon(painter = painterResource(id = fabIcon),
              tint = MaterialTheme.colorScheme.onPrimaryContainer,

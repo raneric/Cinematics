@@ -9,10 +9,11 @@ import com.sgg.cinematics.utils.UiState
 
 @Stable
 class CinematicAppState(
-    val navController: NavHostController,
-    val movieListUiMode: MovieListUiMode,
-    val windowWidthSizeClass: WindowWidthSizeClass,
-    val listUiState: UiState,
-    val activeDestination: NavItemVariant,
+        val navController: NavHostController,
+        val movieListUiMode: MovieListUiMode,
+        val windowWidthSizeClass: WindowWidthSizeClass,
+        val isNavigationVisible: Boolean,
+        val listUiState: UiState,
+        val activeDestination: NavItemVariant,
 ) {
 }

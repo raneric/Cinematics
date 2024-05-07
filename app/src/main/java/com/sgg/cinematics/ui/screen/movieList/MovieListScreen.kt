@@ -3,6 +3,8 @@ package com.sgg.cinematics.ui.screen.movieList
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -29,6 +32,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,11 +43,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.movieList
 import com.sgg.cinematics.ui.commonui.BackDrop
+import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
 import com.sgg.cinematics.ui.components.EmptyListScreen
 import com.sgg.cinematics.ui.components.MovieCad
 import com.sgg.cinematics.ui.components.VerticalMovieCard
@@ -72,29 +81,48 @@ fun MovieListScreen(
         navController: NavHostController,
         windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val viewModel = hiltViewModel<MovieListViewModel>()
+    val uiListMode by viewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
+
     if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
-        AnimatedVisibility(
-                visible = movieListUiMode is MovieListUiMode.ListView,
-                enter = scaleIn(),
-                exit = fadeOut()
-        ) {
-            VerticalMovieListScreen(
-                    movieList = movieList,
-                    modifier = modifier.testTag(movieListUiMode.testTag)
-            ) { movieId ->
-                navigateToDetailsScreen(movieId = movieId, navController = navController)
+        Box {
+            AnimatedVisibility(
+                    visible = movieListUiMode is MovieListUiMode.ListView,
+                    enter = scaleIn(),
+                    exit = fadeOut()
+            ) {
+                VerticalMovieListScreen(
+                        movieList = movieList,
+                        modifier = modifier.testTag(movieListUiMode.testTag)
+                ) { movieId ->
+                    navigateToDetailsScreen(movieId = movieId, navController = navController)
+                }
             }
-        }
-        AnimatedVisibility(
-                visible = movieListUiMode is MovieListUiMode.CarouselView,
-                enter = scaleIn(),
-                exit = fadeOut()
-        ) {
-            HorizontalMovieListScreen(
-                    movieList = movieList,
-                    modifier = modifier.testTag(movieListUiMode.testTag)
-            ) { movieId ->
-                navigateToDetailsScreen(movieId = movieId, navController = navController)
+            AnimatedVisibility(
+                    visible = movieListUiMode is MovieListUiMode.CarouselView,
+                    enter = scaleIn(),
+                    exit = fadeOut()
+            ) {
+                HorizontalMovieListScreen(
+                        movieList = movieList,
+                        modifier = modifier.testTag(movieListUiMode.testTag)
+                ) { movieId ->
+                    navigateToDetailsScreen(movieId = movieId, navController = navController)
+                }
+            }
+            AnimatedVisibility(modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp),
+                               visible = movieList.isNotEmpty(),
+                               enter = scaleIn(animationSpec = spring(dampingRatio =
+                                                                      Spring.DampingRatioMediumBouncy))) {
+                MovieDisplaySwitchFab(
+                        fabIcon = uiListMode.fabIcon) {
+                    coroutineScope.launch {
+                        viewModel.switchListViewMode(uiListMode.switch())
+                    }
+                }
             }
         }
     } else {
@@ -121,6 +149,11 @@ fun VerticalMovieListScreen(
 ) {
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+    val showScrollButton by remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemIndex != 0
+        }
+    }
     Box {
         LazyColumn(state = scrollState,
                    modifier = modifier
@@ -135,7 +168,7 @@ fun VerticalMovieListScreen(
             }
         }
         AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
-                           visible = scrollState.firstVisibleItemIndex != 0,
+                           visible = showScrollButton,
                            enter = fadeIn() + scaleIn(),
                            exit = fadeOut() + scaleOut()
         ) {

@@ -454,15 +454,13 @@ fun PasswordInputs(
 
     val passwordError = remember {
         mutableStateOf(InputError(haveError = false,
-                                  messageResourceId = R.string.password_pattern_error
-        )
+                                  messageResourceId = R.string.password_pattern_error)
         )
     }
 
     val confirmationPasswordError = remember {
         mutableStateOf(InputError(haveError = false,
-                                  messageResourceId = R.string.password_confirmation_error
-        )
+                                  messageResourceId = R.string.password_confirmation_error)
         )
     }
 
@@ -646,9 +644,9 @@ fun CreateAccountScreenPreview() {
 @Composable
 fun ProfilePicturePreview() {
     CinematicsTheme {
-        /*ProfilePicture() {
+        ProfilePicture(photoUri = Uri.EMPTY) {
 
-                }*/
+        }
     }
 }
 
@@ -660,7 +658,7 @@ private fun createFileUri(context: Context): Uri {
     )
 }
 
-fun Context.createImageFile(): File {
+private fun Context.createImageFile(): File {
     val fileName = "cinematics_${
         LocalDateTime.now()
             .currentDateAsString()

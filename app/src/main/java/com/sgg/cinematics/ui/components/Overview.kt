@@ -30,6 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sgg.cinematics.R
+import com.sgg.cinematics.ui.components.OverviewState.Collapsed
+import com.sgg.cinematics.ui.components.OverviewState.Expanded
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 
 val OVERVIEW_HEIGHT = 100.dp
@@ -42,8 +44,10 @@ val OVERVIEW_HEIGHT = 100.dp
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun Overview(text: String,
-             modifier: Modifier = Modifier) {
+fun Overview(
+        text: String,
+        modifier: Modifier = Modifier
+) {
 
     var overviewSate: OverviewState by remember {
         mutableStateOf(OverviewState.Collapsed)
@@ -52,21 +56,20 @@ fun Overview(text: String,
     var textHeight by remember { mutableStateOf(0) }
 
     Box(modifier = modifier
-            .testTag(stringResource(id = R.string.test_tag_overview))
-            .fillMaxWidth()
-            .then(overviewSate.boxModifier)) {
-        Text(
-            style = MaterialTheme.typography.bodyMedium,
-            text = text,
-            modifier = Modifier
-                    .then(overviewSate.textModifier)
-                    .onGloballyPositioned { textHeight = it.size.height }
-                    .animateContentSize(
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioMediumBouncy,
-                            stiffness = Spring.StiffnessMedium
-                        )
-                    ))
+        .testTag(stringResource(id = R.string.test_tag_overview))
+        .fillMaxWidth()
+        .then(overviewSate.boxModifier)) {
+        Text(style = MaterialTheme.typography.bodyMedium,
+             text = text,
+             modifier = Modifier
+                 .then(overviewSate.textModifier)
+                 .onGloballyPositioned { textHeight = it.size.height }
+                 .animateContentSize(
+                         animationSpec = spring(
+                                 dampingRatio = Spring.DampingRatioMediumBouncy,
+                                 stiffness = Spring.StiffnessMedium
+                         )
+                 ))
         OverviewHider(overviewSate = overviewSate,
                       modifier = Modifier.align(Alignment.BottomCenter)) {
             overviewSate = overviewSate.reverseState()
@@ -81,13 +84,15 @@ fun Overview(text: String,
  * @param expand : a lambda expression that handle the onclick event from the button to update overviewSate param
  */
 @Composable
-fun OverviewHider(overviewSate: OverviewState,
-                  modifier: Modifier = Modifier,
-                  expand: () -> Unit) {
+fun OverviewHider(
+        overviewSate: OverviewState,
+        modifier: Modifier = Modifier,
+        expand: () -> Unit
+) {
     AnimatedVisibility(
-        visible = overviewSate.isCollapsed(),
-        enter = fadeIn(),
-        exit = fadeOut()) {
+            visible = overviewSate.isCollapsed(),
+            enter = fadeIn(),
+            exit = fadeOut()) {
         GradientForeground(color = MaterialTheme.colorScheme.surface,
                            modifier = Modifier.height(OVERVIEW_HEIGHT))
     }
@@ -108,9 +113,11 @@ fun OverviewHider(overviewSate: OverviewState,
  *  @param boxModifier : modifier for the Box composable
  *  @param textModifier : modifier for the Text composable
  */
-sealed class OverviewState(@DrawableRes val buttonIcon: Int,
-                           val boxModifier: Modifier,
-                           val textModifier: Modifier = Modifier) {
+sealed class OverviewState(
+        @DrawableRes val buttonIcon: Int,
+        val boxModifier: Modifier,
+        val textModifier: Modifier = Modifier
+) {
 
     abstract fun reverseState(): OverviewState
 

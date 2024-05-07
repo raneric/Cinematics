@@ -20,6 +20,7 @@ fun NavGraphBuilder.userProfileScreen(
 
         val viewModel = hiltViewModel<UserProfileViewModel>()
         val user = viewModel.user
+        
         if (connectedUser == null) {
             navController.navigate(Destination.LoginScreen.route)
         } else {

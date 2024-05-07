@@ -70,7 +70,10 @@ fun UserProfileScreen(
 ) {
     val fabSize = with(LocalDensity.current) { 86.dp.toPx() }
     val scrollState = rememberScrollState()
-    val interactionSource = remember { MutableInteractionSource() }
+
+    val interactionSource = remember {
+        MutableInteractionSource()
+    }
 
     val fabScale = remember {
         Animatable(initialValue = 1f)
@@ -134,7 +137,8 @@ fun UserProfileLayout(
     Layout(
             contents = listOf(pictureSection, fab, userInfo),
             modifier = modifier
-    ) { (pictureSectionMeasurable, fabMeasurable, userInfoMeasurable), constraint ->
+    ) { (pictureSectionMeasurable, fabMeasurable, userInfoMeasurable),
+        constraint ->
 
         val sectionMargin = 24.dp.toPx()
 

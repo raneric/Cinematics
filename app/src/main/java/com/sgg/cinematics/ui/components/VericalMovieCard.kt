@@ -24,12 +24,14 @@ import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_tertiary
 
 @Composable
-fun VerticalMovieCard(movie: MovieModel,
-                      modifier: Modifier = Modifier) {
+fun VerticalMovieCard(
+        movie: MovieModel,
+        modifier: Modifier = Modifier
+) {
     Surface(shape = MaterialTheme.shapes.large,
             modifier = modifier
-                    .width(280.dp)
-                    .height(600.dp)) {
+                .width(280.dp)
+                .height(600.dp)) {
         Column(horizontalAlignment = Alignment.CenterHorizontally,
                verticalArrangement = Arrangement.spacedBy(16.dp),
                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp
@@ -37,12 +39,11 @@ fun VerticalMovieCard(movie: MovieModel,
             AsyncImage(model = movie.picture,
                        contentDescription = stringResource(id = R.string.content_descrip_movie_image),
                        modifier = Modifier
-                               .clip(MaterialTheme.shapes.medium))
-            Text(
-                text = movie.title,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center
+                           .clip(MaterialTheme.shapes.medium))
+            Text(text = movie.title,
+                 style = MaterialTheme.typography.titleMedium,
+                 color = MaterialTheme.colorScheme.onSurface,
+                 textAlign = TextAlign.Center
             )
             MovieInfo(year = movie.year,
                       duration = movie.displayedDuration,

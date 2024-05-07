@@ -10,15 +10,22 @@ import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.utils.Destination
+import com.sgg.cinematics.utils.activeNavItem
+import com.sgg.cinematics.utils.isIntListDestination
 
 
 private val navItemList = listOf(
@@ -37,10 +44,18 @@ private val navItemList = listOf(
  */
 @Composable
 fun BottomNavScreen(
-    activeNavItem: NavItemVariant,
-    modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_bottom_nav)),
-    onItemClicked: (NavItemVariant) -> Unit
+        modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_bottom_nav)),
+        onDestinationChange: (Boolean) -> Unit,
+        navController: NavHostController
 ) {
+    var activeNavItem by remember {
+        mutableStateOf<NavItemVariant>(NavItemVariant.Trending)
+    }
+
+    navController.addOnDestinationChangedListener { _, destination, _ ->
+        activeNavItem = destination.activeNavItem()
+        onDestinationChange(destination.isIntListDestination())
+    }
 
     NavigationBar(modifier = modifier, tonalElevation = 5.dp) {
         navItemList.take(5)
@@ -53,16 +68,16 @@ fun BottomNavScreen(
                                       )
                                   },
                                   label = { Text(text = stringResource(id = navItem.textId)) },
-                                  onClick = { onItemClicked(navItem) })
+                                  onClick = { navController.navigate(navItem.route) })
             }
     }
 }
 
 @Composable
 fun CinematicsNavigationRail(
-    activeNavItem: NavItemVariant,
-    modifier: Modifier = Modifier,
-    onItemClicked: (NavItemVariant) -> Unit
+        activeNavItem: NavItemVariant,
+        modifier: Modifier = Modifier,
+        onItemClicked: (NavItemVariant) -> Unit
 ) {
     NavigationRail(modifier = modifier.padding(vertical = 50.dp)) {
         navItemList.forEach { navItem ->
@@ -89,10 +104,10 @@ fun CinematicsNavigationRail(
  * @param route: String rout for the navigation destination
  */
 sealed class NavItemVariant(
-    @StringRes val textId: Int,
-    @StringRes val iconContentDescription: Int,
-    @DrawableRes val iconId: Int,
-    val route: String
+        @StringRes val textId: Int,
+        @StringRes val iconContentDescription: Int,
+        @DrawableRes val iconId: Int,
+        val route: String
 ) {
     object Trending : NavItemVariant(
             textId = R.string.txt_trending,
@@ -128,9 +143,9 @@ sealed class NavItemVariant(
 @Composable
 fun BottomNavScreenPreview() {
     CinematicsTheme {
-        BottomNavScreen(NavItemVariant.Trending) {
+        /*   BottomNavScreen(NavItemVariant.Trending) {
 
-        }
+           }*/
     }
 }
 
