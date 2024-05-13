@@ -25,7 +25,6 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.utils.Destination
 import com.sgg.cinematics.utils.activeNavItem
-import com.sgg.cinematics.utils.isIntListDestination
 
 
 private val navItemList = listOf(
@@ -45,8 +44,8 @@ private val navItemList = listOf(
 @Composable
 fun BottomNavScreen(
         modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_bottom_nav)),
-        onDestinationChange: (Boolean) -> Unit,
-        navController: NavHostController
+        navController: NavHostController,
+        onDestinationChanged: (Destination) -> Unit,
 ) {
     var activeNavItem by remember {
         mutableStateOf<NavItemVariant>(NavItemVariant.Trending)
@@ -54,7 +53,6 @@ fun BottomNavScreen(
 
     navController.addOnDestinationChangedListener { _, destination, _ ->
         activeNavItem = destination.activeNavItem()
-        onDestinationChange(destination.isIntListDestination())
     }
 
     NavigationBar(modifier = modifier, tonalElevation = 5.dp) {
@@ -68,22 +66,27 @@ fun BottomNavScreen(
                                       )
                                   },
                                   label = { Text(text = stringResource(id = navItem.textId)) },
-                                  onClick = { navController.navigate(navItem.route) })
+                                  onClick = {
+                                      navController.navigate(navItem.destination.route)
+                                      onDestinationChanged(navItem.destination)
+                                  })
             }
     }
 }
 
 @Composable
 fun CinematicsNavigationRail(
-        activeNavItem: NavItemVariant,
         modifier: Modifier = Modifier,
-        onItemClicked: (NavItemVariant) -> Unit
+        activeNavItem: NavItemVariant,
+        onDestinationChanged: (Destination) -> Unit,
 ) {
     NavigationRail(modifier = modifier.padding(vertical = 50.dp)) {
         navItemList.forEach { navItem ->
             NavigationRailItem(
                     selected = navItem == activeNavItem,
-                    onClick = { onItemClicked(navItem) },
+                    onClick = {
+                        onDestinationChanged(navItem.destination)
+                    },
                     icon = {
                         Icon(
                                 painter = painterResource(id = navItem.iconId),
@@ -107,34 +110,27 @@ sealed class NavItemVariant(
         @StringRes val textId: Int,
         @StringRes val iconContentDescription: Int,
         @DrawableRes val iconId: Int,
-        val route: String
+        val destination: Destination
 ) {
     object Trending : NavItemVariant(
             textId = R.string.txt_trending,
             iconContentDescription = R.string.content_descrip_trending,
             iconId = R.drawable.icon_trending_24,
-            route = Destination.TrendingScreen.route
-    )
-
-    object TopRated : NavItemVariant(
-            textId = R.string.txt_top_rated,
-            iconContentDescription = R.string.content_descrip_top_rated,
-            iconId = R.drawable.icon_top_rated_24,
-            route = Destination.TopRatedScreen.route
+            destination = Destination.TrendingScreen
     )
 
     object WatchList : NavItemVariant(
             textId = R.string.txt_watch_list,
             iconContentDescription = R.string.content_descrip_watch_list,
             iconId = R.drawable.icon_watch_list_24,
-            route = Destination.WatchListScreen.route
+            destination = Destination.WatchListScreen
     )
 
     object UserProfile : NavItemVariant(
             textId = R.string.txt_user_profile,
             iconContentDescription = R.string.content_descrip_user_profile,
             iconId = R.drawable.icon_profile_24,
-            route = Destination.UserProfileScreen.route
+            destination = Destination.UserProfileScreen
     )
 }
 
@@ -155,6 +151,6 @@ fun CinematicsNavigationRailPreview() {
     CinematicsTheme {
         CinematicsNavigationRail(
                 activeNavItem = navItemList[0],
-                onItemClicked = { })
+                onDestinationChanged = {})
     }
 }

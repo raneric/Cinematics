@@ -5,6 +5,7 @@ import androidx.compose.animation.scaleIn
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.utils.Destination
@@ -17,11 +18,11 @@ fun NavGraphBuilder.userProfileScreen(
                enterTransition = { scaleIn() },
                exitTransition = { fadeOut() }
     ) {
-
         val viewModel = hiltViewModel<UserProfileViewModel>()
         val user = viewModel.user
-        
+
         if (connectedUser == null) {
+            navController.popBackStack()
             navController.navigate(Destination.LoginScreen.route)
         } else {
             viewModel.refreshUserInfo(connectedUser.uid)
@@ -30,4 +31,8 @@ fun NavGraphBuilder.userProfileScreen(
             }
         }
     }
+}
+
+fun NavHostController.navigateToUserProfileScreen(navOption: NavOptions) {
+    navigate(Destination.UserProfileScreen.route, navOption)
 }

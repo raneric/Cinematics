@@ -51,12 +51,13 @@ import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.movieList
 import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
+import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.ui.components.EmptyListScreen
 import com.sgg.cinematics.ui.components.MovieCad
 import com.sgg.cinematics.ui.components.VerticalMovieCard
+import com.sgg.cinematics.ui.screen.details.navigateToDetailsScreen
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.utils.MovieListUiMode
-import com.sgg.cinematics.utils.navigateToDetailsScreen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.immutableListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -76,60 +77,59 @@ import kotlinx.coroutines.launch
 @Composable
 fun MovieListScreen(
         modifier: Modifier = Modifier,
-        movieListUiMode: MovieListUiMode,
-        movieList: ImmutableList<MovieModel>,
         navController: NavHostController,
         windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val viewModel = hiltViewModel<MovieListViewModel>()
-    val uiListMode by viewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
+    val movieListUiMode by viewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
+    val movieList by viewModel.movies.collectAsStateWithLifecycle()
+    val listUiState by viewModel.listUiState.collectAsStateWithLifecycle()
 
-    if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
-        Box {
-            AnimatedVisibility(
-                    visible = movieListUiMode is MovieListUiMode.ListView,
-                    enter = scaleIn(),
-                    exit = fadeOut()
-            ) {
-                VerticalMovieListScreen(
-                        movieList = movieList,
-                        modifier = modifier.testTag(movieListUiMode.testTag)
-                ) { movieId ->
-                    navigateToDetailsScreen(movieId = movieId, navController = navController)
-                }
-            }
-            AnimatedVisibility(
-                    visible = movieListUiMode is MovieListUiMode.CarouselView,
-                    enter = scaleIn(),
-                    exit = fadeOut()
-            ) {
-                HorizontalMovieListScreen(
-                        movieList = movieList,
-                        modifier = modifier.testTag(movieListUiMode.testTag)
-                ) { movieId ->
-                    navigateToDetailsScreen(movieId = movieId, navController = navController)
-                }
-            }
-            AnimatedVisibility(modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp),
-                               visible = movieList.isNotEmpty(),
-                               enter = scaleIn(animationSpec = spring(dampingRatio =
-                                                                      Spring.DampingRatioMediumBouncy))) {
-                MovieDisplaySwitchFab(
-                        fabIcon = uiListMode.fabIcon) {
-                    coroutineScope.launch {
-                        viewModel.switchListViewMode(uiListMode.switch())
-                    }
-                }
-            }
-        }
-    } else {
-        GridMovieListScreen(movieList = movieList) { movieId ->
-            navigateToDetailsScreen(movieId = movieId, navController = navController)
-        }
-    }
+    ScreenWrapper(uiState = listUiState,
+                  componentOnSuccess = {
+                      if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
+                          Box {
+                              if (movieListUiMode is MovieListUiMode.ListView) {
+                                  VerticalMovieListScreen(
+                                          movieList = movieList.toImmutableList(),
+                                          modifier = modifier.testTag(movieListUiMode.testTag)
+                                  ) { movieId ->
+                                      navigateToDetailsScreen(movieId = movieId,
+                                                              navController = navController)
+                                  }
+                              }
+                              if (movieListUiMode is MovieListUiMode.CarouselView) {
+                                  HorizontalMovieListScreen(
+                                          movieList = movieList.toImmutableList(),
+                                          modifier = modifier.testTag(movieListUiMode.testTag)
+                                  ) { movieId ->
+                                      navigateToDetailsScreen(movieId = movieId,
+                                                              navController = navController)
+                                  }
+                              }
+                              AnimatedVisibility(modifier = Modifier
+                                  .align(Alignment.BottomEnd)
+                                  .padding(16.dp),
+                                                 visible = movieList.isNotEmpty(),
+                                                 enter = scaleIn(animationSpec = spring(dampingRatio =
+                                                                                        Spring.DampingRatioMediumBouncy))) {
+                                  MovieDisplaySwitchFab(
+                                          fabIcon = movieListUiMode.fabIcon) {
+                                      coroutineScope.launch {
+                                          viewModel.switchListViewMode(movieListUiMode.switch())
+                                      }
+                                  }
+                              }
+                          }
+                      } else {
+                          GridMovieListScreen(movieList = movieList.toImmutableList()) { movieId ->
+                              navigateToDetailsScreen(movieId = movieId,
+                                                      navController = navController)
+                          }
+                      }
+                  },
+                  componentOnError = { /*TODO*/ })
 }
 
 

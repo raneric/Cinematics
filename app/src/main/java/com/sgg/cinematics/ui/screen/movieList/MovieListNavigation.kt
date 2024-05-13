@@ -8,53 +8,45 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.sgg.cinematics.data.model.MovieModel
-import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.utils.Destination
-import com.sgg.cinematics.utils.MovieListUiMode
-import com.sgg.cinematics.utils.UiState
-import kotlinx.collections.immutable.ImmutableList
 
 fun NavGraphBuilder.trendingListScreen(
         navController: NavHostController,
-        movies: ImmutableList<MovieModel>,
-        movieListUiMode: MovieListUiMode,
-        listUiState: UiState,
         windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
     composable(route = Destination.TrendingScreen.route,
                enterTransition = { scaleIn() },
                exitTransition = { fadeOut() }) {
-        ScreenWrapper(uiState = listUiState, componentOnSuccess = {
-            MovieListScreen(movieListUiMode = movieListUiMode,
-                            movieList = movies,
-                            navController = navController,
-                            windowsWidthSizeClass = windowsWidthSizeClass,
-                            modifier = Modifier.semantics {
-                                contentDescription = Destination.TrendingScreen.testTag
-                            })
-        }, componentOnError = { /*TODO*/ })
+        MovieListScreen(
+                navController = navController,
+                windowsWidthSizeClass = windowsWidthSizeClass,
+                modifier = Modifier.semantics {
+                    contentDescription = Destination.TrendingScreen.testTag
+                })
     }
 }
 
 fun NavGraphBuilder.watchListScreen(
         navController: NavHostController,
-        movies: ImmutableList<MovieModel>,
-        movieListUiMode: MovieListUiMode,
-        listUiState: UiState,
         windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
     composable(route = Destination.WatchListScreen.route,
                exitTransition = { fadeOut() }) {
-        ScreenWrapper(uiState = listUiState, componentOnSuccess = {
-            MovieListScreen(movieListUiMode = movieListUiMode,
-                            movieList = movies,
-                            navController = navController,
-                            windowsWidthSizeClass = windowsWidthSizeClass,
-                            modifier = Modifier.semantics {
-                                contentDescription = Destination.WatchListScreen.testTag
-                            })
-        }, componentOnError = { /*TODO*/ })
+        MovieListScreen(
+                navController = navController,
+                windowsWidthSizeClass = windowsWidthSizeClass,
+                modifier = Modifier.semantics {
+                    contentDescription = Destination.WatchListScreen.testTag
+                })
     }
+}
+
+fun NavHostController.navigateToMovieListScreen(navOption: NavOptions) {
+    navigate(Destination.TrendingScreen.route, navOption)
+}
+
+fun NavHostController.navigateToWatchListScreen(navOption: NavOptions) {
+    navigate(Destination.WatchListScreen.route, navOption)
 }

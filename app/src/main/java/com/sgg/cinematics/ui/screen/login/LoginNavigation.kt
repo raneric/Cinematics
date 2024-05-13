@@ -40,7 +40,11 @@ fun NavGraphBuilder.loginScreen(navController: NavHostController) {
                     updateEmail = { loginViewModel.updateEmail(it) },
                     updatePassword = { loginViewModel.updatePassword(it) },
                     login = { loginViewModel.login() },
-                    onNavigateBack = { navController.navigate(Destination.TrendingScreen.route) },
+                    onNavigateBack = {
+                        navController.popBackStack(
+                                route = Destination.TrendingScreen.route,
+                                inclusive = false)
+                    },
                     onCreateAccountClick = { navController.navigate(Destination.CreateAccount.route) })
 
         AnimatedVisibility(

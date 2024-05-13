@@ -20,7 +20,6 @@ import androidx.navigation.navArgument
 import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.ui.screen.MOVIE_ID_ARGS
 import com.sgg.cinematics.utils.Destination
-import com.sgg.cinematics.utils.navigateToDetailsScreen
 
 fun NavGraphBuilder.detailsScreen(navController: NavHostController) {
     composable(route = Destination.DetailScreen.route,
@@ -62,4 +61,16 @@ fun NavGraphBuilder.detailsScreen(navController: NavHostController) {
                           }
                       }, componentOnError = { })
     }
+}
+
+fun navigateToDetailsScreen(
+        movieId: Int,
+        navController: NavHostController
+) {
+    navController.navigate(route = Destination.DetailScreen.route.addIdArgs(
+            movieId))
+}
+
+private fun String.addIdArgs(id: Int): String {
+    return this.replace("{movieId}", id.toString())
 }

@@ -26,9 +26,9 @@ open class MovieListViewModel @Inject constructor(
 
     val uiListMode: Flow<MovieListUiMode> = uiStateRepository.movieListUiModeFlow
 
-    private var _movieList: Flow<List<MovieModel>> = repository.getTrending()
-    val movieList: Flow<List<MovieModel>>
-        get() = _movieList
+    private var _watchList: Flow<List<MovieModel>> = MutableStateFlow(emptyList())
+    val watchList: Flow<List<MovieModel>>
+        get() = _watchList
 
     private var _listUiState = MutableStateFlow<UiState>(UiState.Loading)
     val listUiState = _listUiState.asStateFlow()
@@ -44,14 +44,6 @@ open class MovieListViewModel @Inject constructor(
     fun updateMovieList(destinationRoute: String) {
         _listUiState.value = UiState.Loading
         when (destinationRoute) {
-            Destination.TopRatedScreen.route  -> {
-                viewModelScope.launch {
-                    repository.getTopRated()
-                        .collectLatest {
-                            _movies.emit(it)
-                        }
-                }
-            }
 
             Destination.TrendingScreen.route  -> {
                 viewModelScope.launch {

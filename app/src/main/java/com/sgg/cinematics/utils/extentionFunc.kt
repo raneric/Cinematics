@@ -33,7 +33,6 @@ fun LocalDate.toMillis(): Long {
  */
 fun NavDestination.activeNavItem(): NavItemVariant {
     return when (this.route) {
-        Destination.TopRatedScreen.route    -> NavItemVariant.TopRated
         Destination.WatchListScreen.route   -> NavItemVariant.WatchList
         Destination.UserProfileScreen.route -> NavItemVariant.UserProfile
         else                                -> NavItemVariant.Trending
@@ -42,25 +41,22 @@ fun NavDestination.activeNavItem(): NavItemVariant {
 
 fun NavDestination.isInBottomNavDestination(): Boolean {
     return this.route == Destination.TrendingScreen.route ||
-           this.route == Destination.TopRatedScreen.route ||
            this.route == Destination.WatchListScreen.route ||
            this.route == Destination.UserProfileScreen.route
 }
 
 fun NavDestination.isIntListDestination(): Boolean {
     return this.route == Destination.TrendingScreen.route ||
-           this.route == Destination.TopRatedScreen.route ||
            this.route == Destination.WatchListScreen.route
 }
 
 fun NavHostController.navigateIfNotMovieList(navItem: NavItemVariant) {
     if (!navItem.isInMovieList()) {
-        navigate(navItem.route)
+        navigate(navItem.destination.route)
     }
 }
 
 fun NavItemVariant.isInMovieList(): Boolean {
     return this == NavItemVariant.Trending ||
-           this == NavItemVariant.TopRated ||
            this == NavItemVariant.WatchList
 }
