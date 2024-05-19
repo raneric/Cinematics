@@ -55,9 +55,7 @@ open class MovieListViewModel @Inject constructor(
             }
 
             Destination.WatchListScreen.route -> {
-                viewModelScope.launch {
-                    _movies.emit(repository.getWatchList())
-                }
+                TODO()
             }
         }
         _listUiState.value = UiState.Success

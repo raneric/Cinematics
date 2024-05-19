@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-        private val authService: AuthService
+        authService: AuthService
 ) : MainViewModel(authService) {
 
     private var _loginUiState = MutableStateFlow<UiState>(UiState.Init)
@@ -53,5 +53,4 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
 }

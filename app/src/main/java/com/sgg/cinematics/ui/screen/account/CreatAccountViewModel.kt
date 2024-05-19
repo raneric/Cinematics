@@ -46,8 +46,8 @@ class CreatAccountViewModel @Inject constructor(
 
     fun createAccount() {
         uiState.value = UiState.Loading
-        val exeptionHandler = CoroutineExceptionHandler { _, t ->
-            uiState.value = UiState.Error(t.message.toString())
+        val exeptionHandler = CoroutineExceptionHandler { _, throwable ->
+            uiState.value = UiState.Error(throwable.message.toString())
         }
         viewModelScope.launch(exeptionHandler) {
             createAccountUseCase(userInfo = userInfo,

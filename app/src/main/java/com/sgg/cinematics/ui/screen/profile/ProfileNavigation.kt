@@ -22,10 +22,13 @@ fun NavGraphBuilder.userProfileScreen(
         val user = viewModel.user
 
         if (connectedUser == null) {
-            navController.popBackStack()
-            navController.navigate(Destination.LoginScreen.route)
+            navController.navigate(Destination.LoginScreen.route) {
+                popUpTo(Destination.UserProfileScreen.route) {
+                    inclusive = true
+                }
+            }
         } else {
-            viewModel.refreshUserInfo(connectedUser.uid)
+            viewModel.refreshUserInfo(connectedUser.uid!!)
             UserProfileScreen(user = user) {
                 viewModel.logout()
             }

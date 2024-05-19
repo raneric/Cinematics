@@ -9,12 +9,5 @@ interface MovieRepository {
 
     fun getTopRated(): Flow<List<MovieModel>>
 
-    fun getWatchList(): List<MovieModel>
-    fun addToWatchList(movie: MovieModel)
-
-    fun removeToWatchList(movie: MovieModel)
-
-    fun findInWatchList(movie: MovieModel): Boolean
-
     suspend fun getMovie(id: Int): MovieModel?
 }

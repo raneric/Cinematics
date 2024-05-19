@@ -31,7 +31,11 @@ fun NavGraphBuilder.loginScreen(navController: NavHostController) {
 
         LaunchedEffect(key1 = loadingState.value) {
             if (loadingState.value is UiState.Success) {
-                navController.navigate(Destination.UserProfileScreen.route)
+                navController.navigate(Destination.UserProfileScreen.route) {
+                    popUpTo(Destination.LoginScreen.route) {
+                        inclusive = true
+                    }
+                }
             }
         }
 

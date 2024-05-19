@@ -26,12 +26,17 @@ class CreateAccountUseCase @Inject constructor(
             authData: AuthData,
             pictureProfileUri: Uri
     ) {
-        authService.createUser(authData)
-            ?.let {
-                val url = uploadAndGetUrl(pictureProfileUri, it.uid)
-                var fullUserData = userInfo.copy(id = it.uid, pictureUrl = url)
-                userInfoRepository.addUserInfo(fullUserData)
+        when (val createdUser = authService.createUser(authData)) {
+            null -> {
+                throw Exception("Failed to create user")
             }
+
+            else -> {
+                val url = uploadAndGetUrl(pictureProfileUri, createdUser.uid)
+                var fullUserData = userInfo.copy(id = createdUser.uid, pictureUrl = url)
+                userInfoRepository.addOrUpdateUserInfo(fullUserData)
+            }
+        }
     }
 
     private suspend fun uploadAndGetUrl(
@@ -40,14 +45,15 @@ class CreateAccountUseCase @Inject constructor(
     ): String? {
         var url: String? = null
         if (pictureUri != Uri.EMPTY) {
-            val ref = firebaseStorage.reference.child(makeUserFilePath(uid))
-            ref.putFile(pictureUri)
-                .addOnFailureListener {
-                    throw Exception("Failed to upload profile picture")
-                }
-                .await()
-            url = ref.downloadUrl.await()
-                .toString()
+            try {
+                val ref = firebaseStorage.reference.child(makeUserFilePath(uid))
+                ref.putFile(pictureUri)
+                    .await()
+                url = ref.downloadUrl.await()
+                    .toString()
+            } catch (e: Exception) {
+                throw Exception("Failed to upload profile picture")
+            }
         }
         return url
     }

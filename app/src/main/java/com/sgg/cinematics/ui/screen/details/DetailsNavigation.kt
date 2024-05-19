@@ -17,11 +17,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.ui.screen.MOVIE_ID_ARGS
 import com.sgg.cinematics.utils.Destination
 
-fun NavGraphBuilder.detailsScreen(navController: NavHostController) {
+fun NavGraphBuilder.detailsScreen(
+        navController: NavHostController,
+        connectedUser: FirebaseUser?
+) {
     composable(route = Destination.DetailScreen.route,
                arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType }),
                enterTransition = { fadeIn() },
@@ -46,7 +50,9 @@ fun NavGraphBuilder.detailsScreen(navController: NavHostController) {
                       componentOnSuccess = {
                           DetailsScreen(
                                   movie = uiData.value!!,
-                                  addOrRemoveToWatchList = { TODO() },
+                                  addOrRemoveToWatchList = {
+                                      detailsViewModel.addOrRemoveToWatchList(connectedUser?.uid)
+                                  },
                                   onRecommendationItemClicked = { movieId ->
                                       navigateToDetailsScreen(
                                               movieId = movieId, navController = navController

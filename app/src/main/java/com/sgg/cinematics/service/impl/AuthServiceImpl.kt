@@ -45,7 +45,6 @@ class AuthServiceImpl @Inject constructor(private val firebaseAuth: FirebaseAuth
     override fun signOut() {
         firebaseAuth.signOut()
     }
-
 }
 
 class AuthException(override val message: String) : Exception(message)

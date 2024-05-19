@@ -13,7 +13,7 @@ data class UserModel(
         val bio: String? = null,
         val gender: String? = null,
         val pictureUrl: String? = null,
-        val watchLitId: List<String> = emptyList(),
+        val watchList: List<MovieModel> = emptyList(),
         @DrawableRes
         val picture: Int = 0,
 ) {

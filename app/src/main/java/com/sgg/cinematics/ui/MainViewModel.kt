@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class MainViewModel @Inject constructor(
-        private val authService: AuthService
+        protected val authService: AuthService
 ) : ViewModel() {
 
     val connectedUser = authService.connectedUser

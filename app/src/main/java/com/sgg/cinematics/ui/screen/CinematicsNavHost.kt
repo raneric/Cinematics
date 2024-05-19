@@ -40,7 +40,8 @@ fun CinematicsNavHost(
                 windowsWidthSizeClass = cinematicsAppState.windowWidthSizeClass,
         )
 
-        detailsScreen(cinematicsAppState.navController)
+        detailsScreen(navController = cinematicsAppState.navController,
+                      connectedUser = connectedUser)
 
         userProfileScreen(navController = cinematicsAppState.navController,
                           connectedUser = connectedUser)
