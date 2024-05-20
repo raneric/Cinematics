@@ -20,17 +20,17 @@ fun BackNavigationFab(
         onNavigateBack: () -> Unit
 ) {
     FloatingActionButton(
-        onClick = onNavigateBack,
-        elevation = FloatingActionButtonDefaults.elevation(12.dp),
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        shape = CircleShape,
-        modifier = modifier.offset(
-            x = dimensionResource(id = R.dimen.low_dp),
-            y = dimensionResource(
-                id = R.dimen.high_dp))) {
+            onClick = onNavigateBack,
+            elevation = FloatingActionButtonDefaults.elevation(12.dp),
+            containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f),
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            shape = CircleShape,
+            modifier = modifier.offset(
+                    x = dimensionResource(id = R.dimen.low_dp),
+                    y = dimensionResource(
+                            id = R.dimen.low_dp))) {
         Icon(
-            painter = painterResource(id = R.drawable.arrow_back_24),
-            contentDescription = stringResource(id = R.string.content_descrip_back_fab))
+                painter = painterResource(id = R.drawable.arrow_back_24),
+                contentDescription = stringResource(id = R.string.content_descrip_back_fab))
     }
 }

@@ -1,5 +1,8 @@
 package com.sgg.cinematics.ui.screen.details
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,6 +19,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.testTag
@@ -32,6 +38,7 @@ import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.data.userRatingModelLists
 import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
+import com.sgg.cinematics.ui.commonui.BackNavigationTopBar
 import com.sgg.cinematics.ui.commonui.CustomButton
 import com.sgg.cinematics.ui.components.AverageDetailRating
 import com.sgg.cinematics.ui.components.Cast
@@ -57,6 +64,9 @@ fun DetailsScreen(
         onNavigateBack: () -> Unit
 ) {
     val scrollState = rememberScrollState()
+    val shouldShowFab by remember {
+        derivedStateOf { scrollState.value < 200 }
+    }
     Box {
         BackDrop(imageUrl = movie.picture)
         DetailsLayout(
@@ -72,7 +82,18 @@ fun DetailsScreen(
                 modifier = modifier
                     .verticalScroll(scrollState)
         )
-        BackNavigationFab(onNavigateBack = onNavigateBack)
+        
+        AnimatedVisibility(visible = shouldShowFab,
+                           enter = fadeIn(),
+                           exit = fadeOut()) {
+            BackNavigationFab(onNavigateBack = onNavigateBack)
+        }
+
+        AnimatedVisibility(visible = !shouldShowFab,
+                           enter = fadeIn(),
+                           exit = fadeOut()) {
+            BackNavigationTopBar(onNavigateBack = onNavigateBack)
+        }
     }
 }
 
