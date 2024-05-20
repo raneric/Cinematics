@@ -1,5 +1,7 @@
 package com.sgg.cinematics.ui.screen.details
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
@@ -25,26 +27,25 @@ class DetailsViewModel @Inject constructor(
     val detailsUiState
         get() = _detailsUiState.asStateFlow()
 
-    private var _isInWatchList: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isInWatchList
-        get() = _isInWatchList
+    var isInWatchList: MutableState<Boolean> = mutableStateOf(false)
+        private set
 
     private var _selectedMovie = MutableStateFlow<MovieModel?>(null)
     val selectedMovie
         get() = _selectedMovie.asStateFlow()
 
     fun addToWatchList(movie: MovieModel) {
-        _isInWatchList.value = true
+        isInWatchList.value = true
     }
 
     fun removeToWatchList(movie: MovieModel) {
-        _isInWatchList.value = false
+        isInWatchList.value = false
     }
 
-    suspend fun updateUiState(id: Int) {
+    suspend fun loadMovieInfo(movieId: Int) {
         _detailsUiState.value = UiState.Loading
         try {
-            val result = movieRepository.getMovie(id)
+            val result = movieRepository.getMovie(movieId)
             _selectedMovie.value = result
             _detailsUiState.value = UiState.Success
         } catch (e: Exception) {
@@ -52,23 +53,36 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
+    suspend fun loadIfInWatchList(
+            uid: String?
+    ) {
+        if (uid != null && _selectedMovie.value != null) {
+            isInWatchList.value = userInfoRepository.isInWatchList(uid, _selectedMovie.value!!)
+        }
+    }
+
     fun addOrRemoveToWatchList(uid: String?) {
-        val exeptionHandler = CoroutineExceptionHandler { _, throwable ->
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
             _detailsUiState.value = UiState.Error(throwable.message.toString())
         }
         when (uid) {
             null -> {
-                TODO()
+                TODO("Shown snack bar if uid if null")
             }
 
             else -> {
-                viewModelScope.launch(exeptionHandler) {
+                viewModelScope.launch(exceptionHandler) {
                     val user = userInfoRepository.getUserInfo(uid)
                     user?.apply {
                         val currentList = this.watchList.toMutableList()
-                        currentList.add(selectedMovie.value!!)
+                        if (isInWatchList.value) {
+                            currentList.remove(selectedMovie.value!!)
+                        } else {
+                            currentList.add(selectedMovie.value!!)
+                        }
                         val newUserInfo = this.copy(watchList = currentList)
                         userInfoRepository.addOrUpdateUserInfo(newUserInfo)
+                        isInWatchList.value = !isInWatchList.value
                     }
                 }
             }

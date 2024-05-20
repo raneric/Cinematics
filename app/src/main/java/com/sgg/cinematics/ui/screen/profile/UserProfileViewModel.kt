@@ -22,14 +22,14 @@ class UserProfileViewModel @Inject constructor(
     var uiState by mutableStateOf<UiState>(UiState.Init)
         private set
 
-    var user by mutableStateOf<UserModel>(UserModel())
+    var user by mutableStateOf(UserModel())
         private set
 
     fun refreshUserInfo(uid: String) {
         uiState = UiState.Loading
         viewModelScope.launch() {
             user = userInfoRepository.getUserInfo(uid)
-            uiState = if (user == null) UiState.Error("Failed to fetch use") else UiState.Success
+            uiState = if (user == null) UiState.Error("Failed to fetch user Info") else UiState.Success
         }
     }
 }

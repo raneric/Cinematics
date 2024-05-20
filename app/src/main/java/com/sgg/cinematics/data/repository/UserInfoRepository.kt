@@ -12,7 +12,12 @@ interface UserInfoRepository {
 
     fun deleteUserInfo(uid: String)
 
-    suspend fun getWatchList(): Flow<List<MovieModel>>
+    suspend fun getAllWatchList(): Flow<List<MovieModel>>
 
     fun addToWatchList(movieModel: MovieModel)
+
+    suspend fun isInWatchList(
+            uid: String,
+            movieModel: MovieModel
+    ): Boolean
 }

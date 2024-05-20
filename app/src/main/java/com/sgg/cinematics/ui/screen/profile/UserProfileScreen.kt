@@ -65,8 +65,9 @@ import com.sgg.cinematics.utils.DarkAndLightPreview
 @Composable
 fun UserProfileScreen(
         user: UserModel,
+        logout: () -> Unit,
+        onEditClicked: () -> Unit,
         modifier: Modifier = Modifier,
-        logout: () -> Unit
 ) {
     val fabSize = with(LocalDensity.current) { 86.dp.toPx() }
     val scrollState = rememberScrollState()
@@ -102,7 +103,7 @@ fun UserProfileScreen(
                       },
                       fab = {
                           FloatingActionButton(
-                                  onClick = {},
+                                  onClick = onEditClicked,
                                   modifier = Modifier
                                       .size(80.dp)
                                       .graphicsLayer {
@@ -325,9 +326,9 @@ fun BioLayout(
 @Composable
 fun UserProfileScreenPreview() {
     CinematicsTheme {
-        UserProfileScreen(user = userModelLists[0]) {
-
-        }
+        UserProfileScreen(user = userModelLists[0],
+                          logout = {},
+                          onEditClicked = {})
     }
 }
 

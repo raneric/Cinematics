@@ -45,7 +45,7 @@ class UserInfoRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getWatchList(): Flow<List<MovieModel>> {
+    override suspend fun getAllWatchList(): Flow<List<MovieModel>> {
         TODO("Not yet implemented")
     }
 
@@ -53,4 +53,11 @@ class UserInfoRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun isInWatchList(
+            uid: String,
+            movieModel: MovieModel
+    ): Boolean {
+        val userInfo = getUserInfo(uid)
+        return userInfo.watchList.contains(movieModel)
+    }
 }

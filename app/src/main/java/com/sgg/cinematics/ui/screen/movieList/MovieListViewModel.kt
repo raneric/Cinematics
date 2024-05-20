@@ -1,9 +1,12 @@
 package com.sgg.cinematics.ui.screen.movieList
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.data.repository.PreferenceRepository
+import com.sgg.cinematics.data.repository.UserInfoRepository
 import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.Destination
@@ -19,16 +22,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class MovieListViewModel @Inject constructor(
-        private val repository: MovieRepository,
+        private val movieRepository: MovieRepository,
+        private val userInfoRepository: UserInfoRepository,
         private val uiStateRepository: PreferenceRepository,
         authService: AuthService
 ) : MainViewModel(authService) {
 
     val uiListMode: Flow<MovieListUiMode> = uiStateRepository.movieListUiModeFlow
 
-    private var _watchList: Flow<List<MovieModel>> = MutableStateFlow(emptyList())
-    val watchList: Flow<List<MovieModel>>
-        get() = _watchList
+    var watchList: MutableState<List<MovieModel>> = mutableStateOf(emptyList())
+        private set
 
     private var _listUiState = MutableStateFlow<UiState>(UiState.Loading)
     val listUiState = _listUiState.asStateFlow()
@@ -41,13 +44,14 @@ open class MovieListViewModel @Inject constructor(
         updateMovieList(Destination.TrendingScreen.route)
     }
 
+    //TODO : refactoring to handle filter not destination route
     fun updateMovieList(destinationRoute: String) {
         _listUiState.value = UiState.Loading
         when (destinationRoute) {
 
             Destination.TrendingScreen.route  -> {
                 viewModelScope.launch {
-                    repository.getTrending()
+                    movieRepository.getTrending()
                         .collectLatest {
                             _movies.emit(it)
                         }
@@ -59,6 +63,12 @@ open class MovieListViewModel @Inject constructor(
             }
         }
         _listUiState.value = UiState.Success
+    }
+
+    fun loadWatchList(uid: String) {
+        viewModelScope.launch {
+            watchList.value = userInfoRepository.getUserInfo(uid).watchList
+        }
     }
 
     suspend fun switchListViewMode(movieListUiMode: MovieListUiMode) {
