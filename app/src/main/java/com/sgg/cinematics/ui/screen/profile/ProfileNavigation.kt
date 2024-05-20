@@ -29,9 +29,11 @@ fun NavGraphBuilder.userProfileScreen(
             }
         } else {
             viewModel.refreshUserInfo(connectedUser.uid!!)
-            UserProfileScreen(user = user) {
-                viewModel.logout()
-            }
+            UserProfileScreen(user = user,
+                              logout = {
+                                  viewModel.logout()
+                              },
+                              onEditClicked = { })
         }
     }
 }

@@ -23,8 +23,8 @@ fun rememberCinematicsAppState(
         windowWidthSizeClass: WindowWidthSizeClass
 ) =
         remember(navController, windowWidthSizeClass) {
-            CinematicsAppState(navController,
-                               windowWidthSizeClass)
+            CinematicsAppState(navController = navController,
+                               windowWidthSizeClass = windowWidthSizeClass)
         }
 
 @Stable

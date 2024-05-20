@@ -3,10 +3,6 @@ package com.sgg.cinematics.ui.screen.details
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -24,7 +20,7 @@ import com.sgg.cinematics.utils.Destination
 
 fun NavGraphBuilder.detailsScreen(
         navController: NavHostController,
-        connectedUser: FirebaseUser?
+        connectedUser: FirebaseUser?,
 ) {
     composable(route = Destination.DetailScreen.route,
                arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType }),
@@ -35,14 +31,15 @@ fun NavGraphBuilder.detailsScreen(
         val movieId = navBackStackEntry.arguments?.getInt(MOVIE_ID_ARGS)
 
         val detailsViewModel = hiltViewModel<DetailsViewModel>()
-        //TODO implementation of add to watchList
-        var movieIsInWatchList by remember { mutableStateOf(false) }
+
+        var movieIsInWatchList = detailsViewModel.isInWatchList
         val detailsUiState = detailsViewModel.detailsUiState.collectAsStateWithLifecycle()
         val uiData = detailsViewModel.selectedMovie.collectAsStateWithLifecycle()
 
         LaunchedEffect(Unit) {
             movieId?.let { movieId ->
-                detailsViewModel.updateUiState(movieId)
+                detailsViewModel.loadMovieInfo(movieId = movieId)
+                detailsViewModel.loadIfInWatchList(uid = connectedUser?.uid)
             }
         }
 
@@ -61,7 +58,7 @@ fun NavGraphBuilder.detailsScreen(
                                   modifier = Modifier.semantics {
                                       contentDescription = Destination.DetailScreen.testTag
                                   },
-                                  isInWatchList = movieIsInWatchList
+                                  isInWatchList = movieIsInWatchList.value
                           ) {
                               navController.navigateUp()
                           }
