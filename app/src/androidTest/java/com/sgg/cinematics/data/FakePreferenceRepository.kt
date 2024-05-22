@@ -15,7 +15,7 @@ class FakePreferenceRepository @Inject constructor() : PreferenceRepository {
 
     override val movieListUiModeFlow: Flow<MovieListUiMode> = fakeDateStore
 
-    override suspend fun updateUiState(movieListUiMode: MovieListUiMode) {
+    override suspend fun updateListUiMode(movieListUiMode: MovieListUiMode) {
         fakeDateStore.emit(movieListUiMode)
     }
 

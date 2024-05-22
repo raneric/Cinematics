@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class TestMovieRepository @Inject constructor() : MovieRepository {
 
-    override fun getTrending() = flowOf(testMovieList)
+    override fun getAllMovies() = flowOf(testMovieList)
 
     override fun getTopRated(): Flow<List<MovieModel>> {
         val sortedList = testMovieList.sortedByDescending { it.ratingNote }

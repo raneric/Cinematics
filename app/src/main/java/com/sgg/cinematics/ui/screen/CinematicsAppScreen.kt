@@ -17,6 +17,8 @@ import com.sgg.cinematics.ui.CinematicsAppState
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.components.BottomNavScreen
 import com.sgg.cinematics.ui.components.CinematicsNavigationRail
+import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun CinematicsAppScreen(
@@ -24,8 +26,18 @@ fun CinematicsAppScreen(
         cinematicsAppState: CinematicsAppState
 ) {
     val mainViewModel = hiltViewModel<MainViewModel>()
+    val movieListViewModel = hiltViewModel<MovieListViewModel>()
+
     val connectedUser by mainViewModel.connectedUser.collectAsStateWithLifecycle(initialValue = null)
     val snackbarHostState = remember { SnackbarHostState() }
+    val movieList by movieListViewModel.movies.collectAsStateWithLifecycle()
+
+    cinematicsAppState.navController.addOnDestinationChangedListener { _, destination, _ ->
+        destination.route?.let {
+            movieListViewModel.updateMovieList(it)
+        }
+    }
+
     Scaffold(
             modifier = modifier,
             snackbarHost = {
@@ -36,6 +48,7 @@ fun CinematicsAppScreen(
                                    enter = slideInVertically(initialOffsetY = { -40 })
                 ) {
                     BottomNavScreen(
+                            activeNavItem = cinematicsAppState.activeDestination,
                             onDestinationChanged = cinematicsAppState::navigateTo,
                             navController = cinematicsAppState.navController)
                 }
@@ -49,7 +62,8 @@ fun CinematicsAppScreen(
             CinematicsNavHost(
                     cinematicsAppState = cinematicsAppState,
                     connectedUser = connectedUser,
-                    modifier = Modifier.padding(paddingValue)
+                    modifier = Modifier.padding(paddingValue),
+                    movieList = movieList.toImmutableList()
             )
         }
     }

@@ -6,6 +6,7 @@ import com.google.firebase.firestore.dataObjects
 import com.google.firebase.firestore.toObject
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
+import com.sgg.cinematics.utils.MovieListFilter
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -14,16 +15,14 @@ const val MOVIE_COLLECTION = "movies"
 
 class MovieRepositoryImpl @Inject constructor(private val firestore: FirebaseFirestore) :
         MovieRepository {
-    override fun getTrending(): Flow<List<MovieModel>> {
-        return firestore.collection(MOVIE_COLLECTION)
-            .dataObjects()
+    override fun getAllMovies(movieListFilter: MovieListFilter): Flow<List<MovieModel>> {
+        return when (movieListFilter) {
+            MovieListFilter.TRENDING  -> getTrending()
+            MovieListFilter.TOP_RATED -> getTopRated()
+            MovieListFilter.LATEST    -> getLatest()
+        }
     }
 
-    override fun getTopRated(): Flow<List<MovieModel>> {
-        return firestore.collection(MOVIE_COLLECTION)
-            .orderBy("ratingNote", Query.Direction.DESCENDING)
-            .dataObjects()
-    }
 
     override suspend fun getMovie(id: Int): MovieModel? {
         return firestore.collection(MOVIE_COLLECTION)
@@ -32,5 +31,21 @@ class MovieRepositoryImpl @Inject constructor(private val firestore: FirebaseFir
             .await()
             .first()
             .toObject<MovieModel>()
+    }
+
+
+    private fun getTopRated(): Flow<List<MovieModel>> {
+        return firestore.collection(MOVIE_COLLECTION)
+            .orderBy("ratingNote", Query.Direction.DESCENDING)
+            .dataObjects()
+    }
+
+    private fun getTrending(): Flow<List<MovieModel>> {
+        return firestore.collection(MOVIE_COLLECTION)
+            .dataObjects()
+    }
+
+    private fun getLatest(): Flow<List<MovieModel>> {
+        TODO()
     }
 }

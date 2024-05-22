@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -78,22 +79,22 @@ import kotlinx.coroutines.launch
 fun MovieListScreen(
         modifier: Modifier = Modifier,
         navController: NavHostController,
+        movieList: ImmutableList<MovieModel>,
         windowsWidthSizeClass: WindowWidthSizeClass,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val viewModel = hiltViewModel<MovieListViewModel>()
     val movieListUiMode by viewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
-    val movieList by viewModel.movies.collectAsStateWithLifecycle()
     val listUiState by viewModel.listUiState.collectAsStateWithLifecycle()
 
     ScreenWrapper(uiState = listUiState,
                   componentOnSuccess = {
                       if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
-                          Box {
+                          Box(modifier = modifier.fillMaxHeight()) {
                               if (movieListUiMode is MovieListUiMode.ListView) {
                                   VerticalMovieListScreen(
                                           movieList = movieList.toImmutableList(),
-                                          modifier = modifier.testTag(movieListUiMode.testTag)
+                                          modifier = Modifier.testTag(movieListUiMode.testTag)
                                   ) { movieId ->
                                       navigateToDetailsScreen(movieId = movieId,
                                                               navController = navController)
@@ -102,7 +103,7 @@ fun MovieListScreen(
                               if (movieListUiMode is MovieListUiMode.CarouselView) {
                                   HorizontalMovieListScreen(
                                           movieList = movieList.toImmutableList(),
-                                          modifier = modifier.testTag(movieListUiMode.testTag)
+                                          modifier = Modifier.testTag(movieListUiMode.testTag)
                                   ) { movieId ->
                                       navigateToDetailsScreen(movieId = movieId,
                                                               navController = navController)

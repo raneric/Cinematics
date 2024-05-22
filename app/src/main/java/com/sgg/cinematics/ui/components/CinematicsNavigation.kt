@@ -10,10 +10,6 @@ import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -24,7 +20,6 @@ import androidx.navigation.NavHostController
 import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.utils.Destination
-import com.sgg.cinematics.utils.activeNavItem
 
 
 private val navItemList = listOf(
@@ -45,16 +40,9 @@ private val navItemList = listOf(
 fun BottomNavScreen(
         modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_bottom_nav)),
         navController: NavHostController,
+        activeNavItem: NavItemVariant,
         onDestinationChanged: (Destination) -> Unit,
 ) {
-    var activeNavItem by remember {
-        mutableStateOf<NavItemVariant>(NavItemVariant.Trending)
-    }
-
-    navController.addOnDestinationChangedListener { _, destination, _ ->
-        activeNavItem = destination.activeNavItem()
-    }
-
     NavigationBar(modifier = modifier, tonalElevation = 5.dp) {
         navItemList.take(5)
             .forEach { navItem ->

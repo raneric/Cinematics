@@ -16,6 +16,9 @@
       <SelectionState runConfigName="test_fab_view_switch_with_default_carousel()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="test_click_fab_view_switch_carousel_list_and_list_carousel()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

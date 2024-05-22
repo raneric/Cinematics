@@ -10,11 +10,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.utils.Destination
+import kotlinx.collections.immutable.ImmutableList
 
 fun NavGraphBuilder.trendingListScreen(
         navController: NavHostController,
         windowsWidthSizeClass: WindowWidthSizeClass,
+        movieList: ImmutableList<MovieModel>,
 ) {
     composable(route = Destination.TrendingScreen.route,
                enterTransition = { scaleIn() },
@@ -22,6 +25,7 @@ fun NavGraphBuilder.trendingListScreen(
         MovieListScreen(
                 navController = navController,
                 windowsWidthSizeClass = windowsWidthSizeClass,
+                movieList = movieList,
                 modifier = Modifier.semantics {
                     contentDescription = Destination.TrendingScreen.testTag
                 })
@@ -31,12 +35,14 @@ fun NavGraphBuilder.trendingListScreen(
 fun NavGraphBuilder.watchListScreen(
         navController: NavHostController,
         windowsWidthSizeClass: WindowWidthSizeClass,
+        movieList: ImmutableList<MovieModel>,
 ) {
     composable(route = Destination.WatchListScreen.route,
                exitTransition = { fadeOut() }) {
         MovieListScreen(
                 navController = navController,
                 windowsWidthSizeClass = windowsWidthSizeClass,
+                movieList = movieList,
                 modifier = Modifier.semantics {
                     contentDescription = Destination.WatchListScreen.testTag
                 })

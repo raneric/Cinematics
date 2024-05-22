@@ -30,7 +30,7 @@ class UiStatePreferencesRepositoryImpl @Inject constructor(private val dataStore
         }
 
 
-    override suspend fun updateUiState(movieListUiMode: MovieListUiMode) {
+    override suspend fun updateListUiMode(movieListUiMode: MovieListUiMode) {
         dataStore.edit { currentPref ->
             currentPref[PreferencesKeys.IS_LIST_VIEW] = movieListUiMode is MovieListUiMode.ListView
         }
