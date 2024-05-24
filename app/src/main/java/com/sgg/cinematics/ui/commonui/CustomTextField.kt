@@ -24,13 +24,13 @@ import com.sgg.cinematics.R
 
 @Composable
 fun PasswordTextFieldWrapper(
-    modifier: Modifier = Modifier,
-    value: String?,
-    textFieldVariant: TextFieldVariant = TextFieldVariant.OUTLINED,
-    isError: Boolean,
-    errorMessage: String = "",
-    placeHolder: String,
-    onPasswordChange: (String) -> Unit
+        value: String?,
+        isError: Boolean,
+        placeHolder: String,
+        onPasswordChange: (String) -> Unit,
+        modifier: Modifier = Modifier,
+        textFieldVariant: TextFieldVariant = TextFieldVariant.OUTLINED,
+        errorMessage: String = "",
 ) {
 
     var passwordVisualTransform: VisualTransformation by remember {
@@ -51,7 +51,7 @@ fun PasswordTextFieldWrapper(
                     onValueChange = { password ->
                         onPasswordChange(password)
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = modifier.fillMaxWidth(),
                     placeholder = {
                         Text(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -99,7 +99,7 @@ fun PasswordTextFieldWrapper(
                     onValueChange = { password ->
                         onPasswordChange(password)
                     },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = modifier.fillMaxWidth(),
                     placeholder = {
                         Text(
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -133,13 +133,13 @@ fun PasswordTextFieldWrapper(
 
 @Composable
 fun ControlledTextField(
-    modifier: Modifier = Modifier,
-    value: String?,
-    @DrawableRes iconResId: Int,
-    @StringRes placeholderResId: Int,
-    @StringRes iconContentDescripResId: Int,
-    isValidData: (String) -> Boolean,
-    onValueChange: (String) -> Unit
+        value: String?,
+        @DrawableRes iconResId: Int,
+        @StringRes placeholderResId: Int,
+        @StringRes iconContentDescripResId: Int,
+        isValidData: (String) -> Boolean,
+        onValueChange: (String) -> Unit,
+        modifier: Modifier = Modifier,
 ) {
     val isValidData = if (value != null) isValidData(value) else true
 
@@ -161,19 +161,19 @@ fun ControlledTextField(
                 painter = painterResource(id = iconResId),
                 contentDescription = stringResource(id = iconContentDescripResId)
         )
-    }, modifier = Modifier.fillMaxWidth()
+    }, modifier = modifier.fillMaxWidth()
     )
 }
 
 @Composable
 fun ControlledOutlinedTextField(
-    modifier: Modifier = Modifier,
-    value: String?,
-    @DrawableRes iconResId: Int,
-    @StringRes placeholderResId: Int,
-    @StringRes iconContentDescripResId: Int,
-    isValidData: (String) -> Boolean,
-    onValueChange: (String) -> Unit
+        value: String?,
+        @DrawableRes iconResId: Int,
+        @StringRes placeholderResId: Int,
+        @StringRes iconContentDescripResId: Int,
+        isValidData: (String) -> Boolean,
+        onValueChange: (String) -> Unit,
+        modifier: Modifier = Modifier,
 ) {
     val isValidData = if (value != null) isValidData(value) else true
 
@@ -193,7 +193,7 @@ fun ControlledOutlinedTextField(
                           Icon(painter = painterResource(id = iconResId),
                                contentDescription = stringResource(id = iconContentDescripResId)
                           )
-                      }, modifier = Modifier.fillMaxWidth()
+                      }, modifier = modifier.fillMaxWidth()
     )
 }
 

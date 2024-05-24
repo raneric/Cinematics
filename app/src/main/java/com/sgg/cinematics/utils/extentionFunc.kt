@@ -7,11 +7,11 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-val formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
+val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy")
 
 val LocalDate.formattedStringDate: String
     get() {
-        return this.format(formatter)
+        return this.format(dateFormatter)
     }
 
 fun LocalDateTime.currentDateAsString(): String {
@@ -28,7 +28,7 @@ fun LocalDate.toMillis(): Long {
 
 
 /**
- * Private extension function for [NavDestination] that will return a [NavItemVariant]
+ * Extension function for [NavDestination] that will return a [NavItemVariant]
  * depending on the selected destination
  */
 fun NavDestination.activeNavItem(): NavItemVariant {

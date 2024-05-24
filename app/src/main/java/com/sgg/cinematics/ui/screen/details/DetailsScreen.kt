@@ -60,8 +60,8 @@ fun DetailsScreen(
         isInWatchList: Boolean,
         addOrRemoveToWatchList: () -> Unit,
         onRecommendationItemClicked: (Int) -> Unit,
+        onNavigateBack: () -> Unit,
         modifier: Modifier = Modifier,
-        onNavigateBack: () -> Unit
 ) {
     val scrollState = rememberScrollState()
     val shouldShowFab by remember {
@@ -82,7 +82,7 @@ fun DetailsScreen(
                 modifier = modifier
                     .verticalScroll(scrollState)
         )
-        
+
         AnimatedVisibility(visible = shouldShowFab,
                            enter = fadeIn(),
                            exit = fadeOut()) {
@@ -321,10 +321,9 @@ fun DetailsScreenPreview() {
                 movie = movie,
                 addOrRemoveToWatchList = {},
                 onRecommendationItemClicked = {},
-                isInWatchList = false
-        ) {
-
-        }
+                isInWatchList = false,
+                onNavigateBack = {}
+        )
     }
 }
 

@@ -2,7 +2,6 @@ package com.sgg.cinematics.ui.screen.movieList
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -30,6 +30,7 @@ import androidx.compose.foundation.pager.PageSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -67,20 +68,18 @@ import kotlinx.coroutines.launch
 /**
  * Main movie list composable that display movie list depending on [MovieListUiMode] and [WindowWidthSizeClass]
  *
- *
  * @param movieListUiMode : display mode [MovieListUiMode.ListView] or [MovieListUiMode.CarouselView]
  * @param movieList : List of the movie to display
  * @param navController
  * @param windowsWidthSizeClass
  * @param modifier
  */
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieListScreen(
-        modifier: Modifier = Modifier,
         navController: NavHostController,
         movieList: ImmutableList<MovieModel>,
         windowsWidthSizeClass: WindowWidthSizeClass,
+        modifier: Modifier = Modifier
 ) {
     val coroutineScope = rememberCoroutineScope()
     val viewModel = hiltViewModel<MovieListViewModel>()
@@ -91,22 +90,25 @@ fun MovieListScreen(
                   componentOnSuccess = {
                       if (windowsWidthSizeClass == WindowWidthSizeClass.Compact) {
                           Box(modifier = modifier.fillMaxHeight()) {
-                              if (movieListUiMode is MovieListUiMode.ListView) {
-                                  VerticalMovieListScreen(
-                                          movieList = movieList.toImmutableList(),
-                                          modifier = Modifier.testTag(movieListUiMode.testTag)
-                                  ) { movieId ->
-                                      navigateToDetailsScreen(movieId = movieId,
-                                                              navController = navController)
+                              when (movieListUiMode) {
+                                  MovieListUiMode.ListView     -> {
+                                      VerticalMovieListScreen(
+                                              movieList = movieList.toImmutableList(),
+                                              modifier = Modifier.testTag(movieListUiMode.testTag)
+                                      ) { movieId ->
+                                          navigateToDetailsScreen(movieId = movieId,
+                                                                  navController = navController)
+                                      }
                                   }
-                              }
-                              if (movieListUiMode is MovieListUiMode.CarouselView) {
-                                  HorizontalMovieListScreen(
-                                          movieList = movieList.toImmutableList(),
-                                          modifier = Modifier.testTag(movieListUiMode.testTag)
-                                  ) { movieId ->
-                                      navigateToDetailsScreen(movieId = movieId,
-                                                              navController = navController)
+
+                                  MovieListUiMode.CarouselView -> {
+                                      HorizontalMovieListScreen(
+                                              movieList = movieList.toImmutableList(),
+                                              modifier = Modifier.testTag(movieListUiMode.testTag)
+                                      ) { movieId ->
+                                          navigateToDetailsScreen(movieId = movieId,
+                                                                  navController = navController)
+                                      }
                                   }
                               }
                               AnimatedVisibility(modifier = Modifier
@@ -121,6 +123,12 @@ fun MovieListScreen(
                                           viewModel.switchListViewMode(movieListUiMode.switch())
                                       }
                                   }
+                              }
+                              IconButton(onClick = { /*TODO*/ },
+                                         modifier = Modifier.align(Alignment.TopEnd)) {
+                                  Icon(painter = painterResource(id = R.drawable.icon_filter_list_24),
+                                       contentDescription = "",
+                                       modifier = Modifier.size(32.dp))
                               }
                           }
                       } else {
@@ -191,7 +199,7 @@ fun VerticalMovieListScreen(
  * @param onItemClicked : lambda function that will trigger the movie clicked by user and open
  * the detail screen
  */
-@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HorizontalMovieListScreen(
         movieList: ImmutableList<MovieModel>,
@@ -237,7 +245,7 @@ fun GridMovieListScreen(
 ) {
     val scrollState = rememberLazyGridState()
     val scope = rememberCoroutineScope()
-    Box {
+    Box(modifier = modifier) {
         LazyVerticalGrid(state = scrollState,
                          columns = GridCells.Adaptive(minSize = 400.dp)
         ) {

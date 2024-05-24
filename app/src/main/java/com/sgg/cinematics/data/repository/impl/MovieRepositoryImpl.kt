@@ -33,6 +33,10 @@ class MovieRepositoryImpl @Inject constructor(private val firestore: FirebaseFir
             .toObject<MovieModel>()
     }
 
+    private fun getTrending(): Flow<List<MovieModel>> {
+        return firestore.collection(MOVIE_COLLECTION)
+            .dataObjects()
+    }
 
     private fun getTopRated(): Flow<List<MovieModel>> {
         return firestore.collection(MOVIE_COLLECTION)
@@ -40,12 +44,9 @@ class MovieRepositoryImpl @Inject constructor(private val firestore: FirebaseFir
             .dataObjects()
     }
 
-    private fun getTrending(): Flow<List<MovieModel>> {
-        return firestore.collection(MOVIE_COLLECTION)
-            .dataObjects()
-    }
-
     private fun getLatest(): Flow<List<MovieModel>> {
-        TODO()
+        return firestore.collection(MOVIE_COLLECTION)
+            .orderBy("year", Query.Direction.DESCENDING)
+            .dataObjects()
     }
 }

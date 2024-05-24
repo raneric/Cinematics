@@ -14,12 +14,14 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_onPrimary
 
 @Composable
-fun MovieInfo(year: Int,
-              duration: String,
-              author: String,
-              textColor: Color = md_theme_light_onPrimary,
-              compact: Boolean = false,
-              modifier: Modifier = Modifier) {
+fun MovieInfo(
+        year: Int,
+        duration: String,
+        author: String,
+        modifier: Modifier = Modifier,
+        textColor: Color = md_theme_light_onPrimary,
+        compact: Boolean = false
+) {
 
     val textStyle = if (compact)
         MaterialTheme.typography.labelSmall
@@ -34,12 +36,14 @@ fun MovieInfo(year: Int,
 }
 
 @Composable
-fun MovieInfoDetails(year: Int,
-                     duration: String,
-                     author: String,
-                     textColor: Color = MaterialTheme.colorScheme.onPrimary,
-                     modifier: Modifier = Modifier) {
-    Column {
+fun MovieInfoDetails(
+        year: Int,
+        duration: String,
+        author: String,
+        modifier: Modifier = Modifier,
+        textColor: Color = MaterialTheme.colorScheme.onPrimary
+) {
+    Column(modifier = modifier) {
         Text(text = stringResource(id = R.string.label_movie_year, year.toString()),
              color = textColor,
              style = MaterialTheme.typography.labelMedium)

@@ -21,11 +21,11 @@ import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomDropdownMenu(
-        modifier: Modifier = Modifier,
         selectedValue: String,
         optionList: List<String>,
         textLabel: String,
         onValueChange: (String) -> Unit,
+        modifier: Modifier = Modifier,
 ) {
     var isExpanded by remember {
         mutableStateOf(false)

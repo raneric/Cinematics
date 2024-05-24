@@ -48,6 +48,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -232,9 +233,9 @@ fun CreateAccountScreen(
  */
 @Composable
 fun ProfilePicture(
-        modifier: Modifier = Modifier,
         photoUri: Uri,
-        onPictureUpdated: (Uri) -> Unit
+        onPictureUpdated: (Uri) -> Unit,
+        modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
@@ -312,10 +313,10 @@ fun ProfilePicture(
 
 @Composable
 fun PhotoPickerDialog(
-        modifier: Modifier = Modifier,
         onCameraOptionClick: () -> Unit,
         onPhotoPickerOptionClick: () -> Unit,
         onDismissRequest: () -> Unit,
+        modifier: Modifier = Modifier
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card {
@@ -358,9 +359,9 @@ fun PhotoPickerDialog(
  */
 @Composable
 fun UserFullName(
-        modifier: Modifier = Modifier,
         userInfo: UserModel,
         onValueChange: (UserModel) -> Unit,
+        modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -407,10 +408,10 @@ fun UserFullName(
  */
 @Composable
 fun UserEmail(
-        modifier: Modifier = Modifier,
         userInfo: UserModel,
         emailValidation: (String) -> Boolean,
-        onValueChange: (UserModel) -> Unit
+        onValueChange: (UserModel) -> Unit,
+        modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -443,9 +444,9 @@ fun UserEmail(
  */
 @Composable
 fun PasswordInputs(
-        modifier: Modifier = Modifier,
         authData: AuthData,
         onValueChange: (AuthData) -> Unit,
+        modifier: Modifier = Modifier
 ) {
 
     val passwordConfirmation = remember {
@@ -503,13 +504,13 @@ fun PasswordInputs(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BirthDatePicker(
-        modifier: Modifier = Modifier,
         userInfo: UserModel,
-        onDateSelected: (UserModel) -> Unit
+        onDateSelected: (UserModel) -> Unit,
+        modifier: Modifier = Modifier,
 ) {
 
     var selectedValue by remember {
-        mutableStateOf(0L)
+        mutableLongStateOf(0L)
     }
 
     val datePickerState = rememberDatePickerState()
@@ -574,9 +575,9 @@ fun BirthDatePicker(
 
 @Composable
 fun GenderInput(
-        modifier: Modifier = Modifier,
         userInfo: UserModel,
-        onValueChange: (UserModel) -> Unit
+        onValueChange: (UserModel) -> Unit,
+        modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -600,8 +601,8 @@ fun GenderInput(
 
 @Composable
 fun Location(
-        modifier: Modifier = Modifier,
-        onValueChange: (String) -> Unit
+        onValueChange: (String) -> Unit,
+        modifier: Modifier = Modifier
 ) {
     Row(modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -644,9 +645,7 @@ fun CreateAccountScreenPreview() {
 @Composable
 fun ProfilePicturePreview() {
     CinematicsTheme {
-        ProfilePicture(photoUri = Uri.EMPTY) {
-
-        }
+        ProfilePicture(photoUri = Uri.EMPTY, onPictureUpdated = {})
     }
 }
 

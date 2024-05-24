@@ -22,9 +22,9 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -236,32 +236,32 @@ fun UserInfoSection(
     ) {
         Text(text = stringResource(id = R.string.txt_user_info_tittle),
              style = userProfileTitle)
-        Divider(color = thick_divider_color)
+        HorizontalDivider(color = thick_divider_color)
         Spacer(modifier = Modifier.size(spacerSize))
 
         UserInfoItem(text = stringResource(id = R.string.txt_birth_date, user.displayedBirthDate),
                      R.drawable.icon_birthday_date)
-        Divider(color = thin_divider_color)
+        HorizontalDivider(color = thin_divider_color)
         Spacer(modifier = Modifier.size(spacerSize))
 
         UserInfoItem(text = stringResource(id = R.string.txt_gender,
                                            user.gender ?: defaultText),
                      icon = genderIcon)
 
-        Divider(color = thin_divider_color)
+        HorizontalDivider(color = thin_divider_color)
 
         Spacer(modifier = Modifier.size(spacerSize))
 
         UserInfoItem(text = stringResource(id = R.string.txt_email,
                                            user.email ?: defaultText),
                      R.drawable.icon_email)
-        Divider(color = thin_divider_color)
+        HorizontalDivider(color = thin_divider_color)
         Spacer(modifier = Modifier.size(spacerSize))
 
         UserInfoItem(text = stringResource(id = R.string.txt_location,
                                            user.location ?: defaultText),
                      R.drawable.icon_location)
-        Divider(color = thin_divider_color)
+        HorizontalDivider(color = thin_divider_color)
         Spacer(modifier = Modifier.size(spacerSize))
 
         Bio(text = user.bio ?: defaultText)
