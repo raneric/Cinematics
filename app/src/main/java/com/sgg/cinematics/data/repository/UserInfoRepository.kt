@@ -2,7 +2,7 @@ package com.sgg.cinematics.data.repository
 
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.model.UserModel
-import kotlinx.coroutines.flow.Flow
+import com.sgg.cinematics.utils.MovieListFilter
 
 interface UserInfoRepository {
 
@@ -12,7 +12,10 @@ interface UserInfoRepository {
 
     fun deleteUserInfo(uid: String)
 
-    suspend fun getAllWatchList(): Flow<List<MovieModel>>
+    suspend fun getWatchList(
+            uid: String,
+            movieListFilter: MovieListFilter
+    ): List<MovieModel>
 
     fun addToWatchList(movieModel: MovieModel)
 

@@ -649,6 +649,17 @@ fun ProfilePicturePreview() {
     }
 }
 
+@Preview
+@Composable
+private fun PhotoPickerDialogPreview() {
+    CinematicsTheme {
+        PhotoPickerDialog(onCameraOptionClick = {},
+                          onPhotoPickerOptionClick = {},
+                          onDismissRequest = {})
+
+    }
+}
+
 private fun createFileUri(context: Context): Uri {
     val file = context.createImageFile()
     return FileProvider.getUriForFile(

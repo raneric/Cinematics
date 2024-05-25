@@ -1,5 +1,6 @@
 package com.sgg.cinematics.ui.screen.movieList
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
@@ -37,20 +38,20 @@ open class MovieListViewModel @Inject constructor(
         get() = _movies.asStateFlow()
 
     init {
-        updateMovieList(Destination.TrendingScreen.route)
+        loadRequiredMovieList(Destination.AllMoviesScreen.route)
     }
 
-    //TODO : refactoring to handle filter not destination route
-    fun updateMovieList(
+    fun loadRequiredMovieList(
             destinationRoute: String,
-            filterBy: MovieListFilter = MovieListFilter.TRENDING
+            filter: MovieListFilter = MovieListFilter.TRENDING
     ) {
+        Log.d("debug_filter_update",
+              "current filter: ${filter.name} \n route is: $destinationRoute")
         _listUiState.value = UiState.Loading
         when (destinationRoute) {
-
-            Destination.TrendingScreen.route  -> {
+            Destination.AllMoviesScreen.route -> {
                 viewModelScope.launch {
-                    movieRepository.getAllMovies(filterBy)
+                    movieRepository.getAllMovies(filter)
                         .collectLatest {
                             _movies.emit(it)
                         }
@@ -59,9 +60,10 @@ open class MovieListViewModel @Inject constructor(
 
             Destination.WatchListScreen.route -> {
                 viewModelScope.launch {
-                    connectedUser.collectLatest {
-                        it?.let { user ->
-                            val toWatch = userInfoRepository.getUserInfo(user.uid).watchList
+                    connectedUser.collectLatest { firebaseUser ->
+                        firebaseUser?.let { user ->
+                            val toWatch = userInfoRepository.getWatchList(uid = user.uid,
+                                                                          movieListFilter = filter)
                             _movies.emit(toWatch)
                         }
                     }

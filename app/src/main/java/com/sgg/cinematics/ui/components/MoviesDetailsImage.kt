@@ -13,15 +13,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.sgg.cinematics.R
-import com.sgg.cinematics.data.movieList
+import com.sgg.cinematics.data.fakeMovieList
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 
 val DETAILS_IMAGE_WIDTH = 175.dp
 val DETAILS_IMAGE_HEIGHT = 221.dp
 
 @Composable
-fun MovieDetailsImage(imageUrl: String,
-                      modifier: Modifier = Modifier) {
+fun MovieDetailsImage(
+        imageUrl: String,
+        modifier: Modifier = Modifier
+) {
     Surface(shadowElevation = 8.dp,
             shape = MaterialTheme.shapes.small,
             modifier = modifier.size(width = DETAILS_IMAGE_WIDTH, height = DETAILS_IMAGE_HEIGHT)) {
@@ -30,11 +32,11 @@ fun MovieDetailsImage(imageUrl: String,
                    contentScale = ContentScale.Crop,
                    contentDescription = stringResource(id = R.string.content_descrip_movie_image),
                    modifier = Modifier
-                           .border(
+                       .border(
                                width = 5.dp,
                                color = MaterialTheme.colorScheme.surface,
                                shape = MaterialTheme.shapes.small,
-                           ))
+                       ))
     }
 }
 
@@ -42,6 +44,6 @@ fun MovieDetailsImage(imageUrl: String,
 @Composable
 fun MovieDetailsImagePreview() {
     CinematicsTheme {
-        MovieDetailsImage(movieList[0].picture)
+        MovieDetailsImage(fakeMovieList[0].picture)
     }
 }

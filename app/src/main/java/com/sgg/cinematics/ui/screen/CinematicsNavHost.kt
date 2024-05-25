@@ -11,6 +11,7 @@ import com.sgg.cinematics.ui.CinematicsAppState
 import com.sgg.cinematics.ui.screen.account.createAccountScreen
 import com.sgg.cinematics.ui.screen.details.detailsScreen
 import com.sgg.cinematics.ui.screen.login.loginScreen
+import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
 import com.sgg.cinematics.ui.screen.movieList.trendingListScreen
 import com.sgg.cinematics.ui.screen.movieList.watchListScreen
 import com.sgg.cinematics.ui.screen.profile.userProfileScreen
@@ -22,27 +23,28 @@ fun CinematicsNavHost(
         connectedUser: FirebaseUser?,
         cinematicsAppState: CinematicsAppState,
         movieList: ImmutableList<MovieModel>,
-        modifier: Modifier = Modifier
+        modifier: Modifier = Modifier,
+        movieListViewModel: MovieListViewModel
 ) {
 
     NavHost(
             navController = cinematicsAppState.navController,
-            startDestination = Destination.TrendingScreen.route,
+            startDestination = Destination.AllMoviesScreen.route,
             modifier = modifier,
             enterTransition = { EnterTransition.None },
             exitTransition = { ExitTransition.None }
     ) {
 
         trendingListScreen(
-                navController = cinematicsAppState.navController,
-                windowsWidthSizeClass = cinematicsAppState.windowWidthSizeClass,
-                movieList = movieList
+                cinematicsAppState = cinematicsAppState,
+                movieList = movieList,
+                movieListViewModel = movieListViewModel
         )
 
         watchListScreen(
-                navController = cinematicsAppState.navController,
-                windowsWidthSizeClass = cinematicsAppState.windowWidthSizeClass,
-                movieList = movieList
+                cinematicsAppState = cinematicsAppState,
+                movieList = movieList,
+                movieListViewModel = movieListViewModel
         )
 
         detailsScreen(navController = cinematicsAppState.navController,

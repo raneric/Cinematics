@@ -8,7 +8,7 @@ import com.sgg.cinematics.utils.toMillis
 import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
 
-val movieList = listOf(
+val fakeMovieList = listOf(
         MovieModel(
                 id = 0,
                 title = "Star Wars Rise Of Skywalker",

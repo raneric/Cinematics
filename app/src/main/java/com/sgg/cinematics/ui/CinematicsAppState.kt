@@ -31,7 +31,7 @@ class CinematicsAppState(
         val navController: NavHostController,
         val windowWidthSizeClass: WindowWidthSizeClass,
 ) {
-    val activeDestination: NavItemVariant
+    val activeNavItem: NavItemVariant
         @Composable get() {
             return navController.currentDestination?.activeNavItem()
                    ?: NavItemVariant.Trending
@@ -52,7 +52,7 @@ class CinematicsAppState(
         }
 
         when (destination) {
-            Destination.TrendingScreen    -> navController.navigateToMovieListScreen(navOption)
+            Destination.AllMoviesScreen   -> navController.navigateToMovieListScreen(navOption)
             Destination.WatchListScreen   -> navController.navigateToWatchListScreen(navOption)
             Destination.UserProfileScreen -> navController.navigateToUserProfileScreen(navOption)
             Destination.CreateAccount     -> TODO()

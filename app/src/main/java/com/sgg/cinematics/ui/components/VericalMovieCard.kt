@@ -18,8 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.sgg.cinematics.R
+import com.sgg.cinematics.data.fakeMovieList
 import com.sgg.cinematics.data.model.MovieModel
-import com.sgg.cinematics.data.movieList
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_tertiary
 
@@ -63,6 +63,6 @@ fun VerticalMovieCard(
 @Composable
 fun VerticalMovieCardPreview() {
     CinematicsTheme {
-        VerticalMovieCard(movieList[0])
+        VerticalMovieCard(fakeMovieList[0])
     }
 }

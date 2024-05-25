@@ -6,8 +6,8 @@ import com.google.firebase.firestore.toObject
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.repository.UserInfoRepository
+import com.sgg.cinematics.utils.MovieListFilter
 import com.sgg.cinematics.utils.TAG_USER_INFO_FLOW
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -45,8 +45,26 @@ class UserInfoRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun getAllWatchList(): Flow<List<MovieModel>> {
-        TODO("Not yet implemented")
+    override suspend fun getWatchList(
+            uid: String,
+            movieListFilter: MovieListFilter
+    ): List<MovieModel> {
+        val userInfo = getUserInfo(uid)
+        return when (movieListFilter) {
+            MovieListFilter.TOP_RATED -> {
+                userInfo.watchList.sortedByDescending {
+                    it.ratingNote
+                }
+            }
+
+            MovieListFilter.NEWEST    -> {
+                userInfo.watchList.sortedByDescending {
+                    it.year
+                }
+            }
+
+            else                      -> userInfo.watchList
+        }
     }
 
     override fun addToWatchList(movieModel: MovieModel) {

@@ -46,7 +46,7 @@ fun NavGraphBuilder.loginScreen(navController: NavHostController) {
                     login = { loginViewModel.login() },
                     onNavigateBack = {
                         navController.popBackStack(
-                                route = Destination.TrendingScreen.route,
+                                route = Destination.AllMoviesScreen.route,
                                 inclusive = false)
                     },
                     onCreateAccountClick = { navController.navigate(Destination.CreateAccount.route) })
