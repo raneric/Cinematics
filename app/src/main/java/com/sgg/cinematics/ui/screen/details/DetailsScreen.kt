@@ -32,8 +32,6 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.fakeMovieList
 import com.sgg.cinematics.data.model.MovieModel
-import com.sgg.cinematics.data.model.UserModel
-import com.sgg.cinematics.data.userModelLists
 import com.sgg.cinematics.data.userRatingModelLists
 import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
@@ -51,6 +49,7 @@ import com.sgg.cinematics.ui.components.UserRatings
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_tertiary
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun DetailsScreen(
@@ -176,7 +175,7 @@ fun DetailsContent(
                                 top.linkTo(anchor = genre.bottom, margin = SECTION_MARGIN)
                             })
 
-            CastSection(userModelList = userModelLists,
+            CastSection(userModelList = movie.cast.toImmutableList(),
                         modifier = Modifier.constrainAs(cast) {
                             top.linkTo(overview.bottom)
                         })
@@ -257,7 +256,7 @@ fun OverviewSection(
 
 @Composable
 fun CastSection(
-        userModelList: ImmutableList<UserModel>,
+        userModelList: ImmutableList<String>,
         modifier: Modifier = Modifier
 ) {
     DetailsSection(

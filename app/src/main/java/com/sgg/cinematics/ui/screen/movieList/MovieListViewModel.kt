@@ -1,6 +1,5 @@
 package com.sgg.cinematics.ui.screen.movieList
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
@@ -45,8 +44,7 @@ open class MovieListViewModel @Inject constructor(
             destinationRoute: String,
             filter: MovieListFilter = MovieListFilter.TRENDING
     ) {
-        Log.d("debug_filter_update",
-              "current filter: ${filter.name} \n route is: $destinationRoute")
+
         _listUiState.value = UiState.Loading
         when (destinationRoute) {
             Destination.AllMoviesScreen.route -> {

@@ -69,6 +69,7 @@ fun UserProfileScreen(
         onEditClicked: () -> Unit,
         modifier: Modifier = Modifier,
 ) {
+
     val fabSize = with(LocalDensity.current) { 86.dp.toPx() }
     val scrollState = rememberScrollState()
 

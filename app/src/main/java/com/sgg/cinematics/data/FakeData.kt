@@ -167,9 +167,7 @@ val userModelLists = persistentListOf(
                 location = "Antsirabe - Madagascar",
                 bio = "Hacktoberfest is a month-long celebration of open source projects, their maintainers, and the entire community of contributors. Each October, open source maintainers give new contributors extra attention as they guide developers through their first pull requests on GitHub.",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil1
-        ),
+                    .toMillis()),
         UserModel(
                 id = "2",
                 firstName = "Hong",
@@ -177,8 +175,7 @@ val userModelLists = persistentListOf(
                 email = "hong@gmail.com",
                 location = "Majunga - Madagascar",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil2
+                    .toMillis()
         ),
         UserModel(
                 id = "3",
@@ -187,8 +184,7 @@ val userModelLists = persistentListOf(
                 email = "jack@gmail.com",
                 location = "Antananarivo - Madagascar",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil4
+                    .toMillis()
         ),
         UserModel(
                 id = "4",
@@ -197,8 +193,7 @@ val userModelLists = persistentListOf(
                 email = "cath@gmail.com",
                 location = "Toliara - Madagascar",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil3
+                    .toMillis()
         ),
         UserModel(
                 id = "5",
@@ -207,8 +202,7 @@ val userModelLists = persistentListOf(
                 email = "marks@gmail.com",
                 location = "Fianarantsoa - Madagascar",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil5
+                    .toMillis()
         ),
         UserModel(
                 id = "6",
@@ -217,8 +211,7 @@ val userModelLists = persistentListOf(
                 email = "lola@gmail.com",
                 location = "Antananarivo - Madagascar",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil6
+                    .toMillis()
         ),
         UserModel(
                 id = "7",
@@ -227,8 +220,7 @@ val userModelLists = persistentListOf(
                 email = "ollie@gmail.com",
                 location = "Antananarivo - Madagascar",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil7
+                    .toMillis()
         ),
         UserModel(
                 id = "8",
@@ -237,8 +229,7 @@ val userModelLists = persistentListOf(
                 email = "bianca@gmail.com",
                 location = "Antananarivo - Madagascar",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil8
+                    .toMillis()
         ),
         UserModel(
                 id = "9",
@@ -247,8 +238,7 @@ val userModelLists = persistentListOf(
                 email = "lew@gmail.com",
                 location = "Antananrivo - Madagascar",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil9
+                    .toMillis()
         ),
         UserModel(
                 id = "10",
@@ -257,33 +247,36 @@ val userModelLists = persistentListOf(
                 email = "asia@gmail.com",
                 location = "Antananrivo - Madagascar",
                 birthDate = LocalDate.of(1989, 8, 23)
-                    .toMillis(),
-                picture = R.drawable.profil10
+                    .toMillis()
         )
 )
 
 val userRatingModelLists = persistentListOf(
         UserRatingModel(
                 id = 1,
-                userModel = userModelLists[0],
+                name = "Kitty L.",
+                userPicture = R.drawable.profil1,
                 rating = 3,
                 date = LocalDate.of(2023, 6, 11)
         ),
         UserRatingModel(
                 id = 2,
-                userModel = userModelLists[2],
+                name = "Donna Brew",
+                userPicture = R.drawable.profil2,
                 rating = 5,
                 date = LocalDate.of(2023, 6, 1)
         ),
         UserRatingModel(
                 id = 3,
-                userModel = userModelLists[3],
+                name = "Lina Nice",
+                userPicture = R.drawable.profil3,
                 rating = 3,
                 date = LocalDate.of(2023, 6, 28)
         ),
         UserRatingModel(
                 id = 4,
-                userModel = userModelLists[4],
+                name = "Rayan Bell",
+                userPicture = R.drawable.profil4,
                 rating = 4,
                 date = LocalDate.of(2023, 7, 1)
         )

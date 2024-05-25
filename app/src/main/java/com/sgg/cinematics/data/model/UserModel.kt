@@ -1,6 +1,5 @@
 package com.sgg.cinematics.data.model
 
-import androidx.annotation.DrawableRes
 import com.sgg.cinematics.utils.millisToLocalDate
 
 data class UserModel(
@@ -13,9 +12,7 @@ data class UserModel(
         val bio: String? = null,
         val gender: String? = null,
         val pictureUrl: String? = null,
-        val watchList: List<MovieModel> = emptyList(),
-        @DrawableRes
-        val picture: Int = 0,
+        val watchList: List<MovieModel> = emptyList()
 ) {
     val fullName
         get() = "$firstName $lastName"

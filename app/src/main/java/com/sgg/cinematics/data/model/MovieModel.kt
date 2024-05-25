@@ -4,17 +4,17 @@ import kotlin.reflect.full.declaredMemberProperties
 
 
 data class MovieModel(
-    val id: Int = 0,
-    val title: String = "",
-    val year: Int = 0,
-    val duration: Double = 0.0,
-    val genres: List<String> = emptyList(),
-    val ratingNote: Double = 0.0,
-    val stars: Int = 0,
-    val picture: String = "",
-    val author: String = "",
-    val overview: String = "N/A",
-    val watched: Boolean = false,
+        val id: Int = 0,
+        val title: String = "",
+        val year: Int = 0,
+        val duration: Double = 0.0,
+        val genres: List<String> = emptyList(),
+        val ratingNote: Double = 0.0,
+        val stars: Int = 0,
+        val picture: String = "",
+        val author: String = "",
+        val overview: String = "N/A",
+        val cast: List<String> = emptyList()
 ) {
     val displayedDuration: String
         get() {

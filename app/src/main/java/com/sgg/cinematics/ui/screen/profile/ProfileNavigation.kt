@@ -1,5 +1,6 @@
 package com.sgg.cinematics.ui.screen.profile
 
+import android.util.Log
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,13 +15,15 @@ fun NavGraphBuilder.userProfileScreen(
         navController: NavHostController,
         connectedUser: FirebaseUser?
 ) {
+    Log.d("UserProfileScreen", "recomposed")
+
     composable(route = Destination.UserProfileScreen.route,
                enterTransition = { scaleIn() },
                exitTransition = { fadeOut() }
     ) {
         val viewModel = hiltViewModel<UserProfileViewModel>()
         val user = viewModel.user
-
+        //  val uiState = viewModel.uiState
         if (connectedUser == null) {
             navController.navigate(Destination.LoginScreen.route) {
                 popUpTo(Destination.UserProfileScreen.route) {
@@ -30,6 +33,7 @@ fun NavGraphBuilder.userProfileScreen(
         } else {
             viewModel.refreshUserInfo(connectedUser.uid!!)
             UserProfileScreen(user = user,
+                    // uiState = uiState,
                               logout = {
                                   viewModel.logout()
                               },
