@@ -55,13 +55,14 @@ fun NavGraphBuilder.detailsScreen(
                                               movieId = movieId, navController = navController
                                       )
                                   },
+                                  onNavigateBack = {
+                                      navController.navigateUp()
+                                  },
                                   modifier = Modifier.semantics {
                                       contentDescription = Destination.DetailScreen.testTag
                                   },
                                   isInWatchList = movieIsInWatchList.value
-                          ) {
-                              navController.navigateUp()
-                          }
+                          )
                       }, componentOnError = { })
     }
 }

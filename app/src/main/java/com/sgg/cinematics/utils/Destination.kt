@@ -5,7 +5,7 @@ sealed class Destination(
         val testTag: String
 ) {
 
-    object TrendingScreen : Destination(route = "trending", testTag = "trending_screen")
+    object AllMoviesScreen : Destination(route = "all_movies", testTag = "all_movies_screen")
     object WatchListScreen : Destination(route = "watch_list", testTag = "watch_list_screen")
     object DetailScreen : Destination(route = "details/{movieId}", testTag = "details_screen")
     object UserProfileScreen : Destination(route = "user_profile", testTag = "user_profile_screen")

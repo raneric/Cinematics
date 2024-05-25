@@ -34,7 +34,7 @@ fun CinematicsAppScreen(
 
     cinematicsAppState.navController.addOnDestinationChangedListener { _, destination, _ ->
         destination.route?.let {
-            movieListViewModel.updateMovieList(it)
+            movieListViewModel.loadRequiredMovieList(it)
         }
     }
 
@@ -48,7 +48,7 @@ fun CinematicsAppScreen(
                                    enter = slideInVertically(initialOffsetY = { -40 })
                 ) {
                     BottomNavScreen(
-                            activeNavItem = cinematicsAppState.activeDestination,
+                            activeNavItem = cinematicsAppState.activeNavItem,
                             onDestinationChanged = cinematicsAppState::navigateTo,
                             navController = cinematicsAppState.navController)
                 }
@@ -56,14 +56,15 @@ fun CinematicsAppScreen(
 
         Row {
             if (cinematicsAppState.shouldShowNavRail) {
-                CinematicsNavigationRail(activeNavItem = cinematicsAppState.activeDestination,
+                CinematicsNavigationRail(activeNavItem = cinematicsAppState.activeNavItem,
                                          onDestinationChanged = cinematicsAppState::navigateTo)
             }
             CinematicsNavHost(
                     cinematicsAppState = cinematicsAppState,
                     connectedUser = connectedUser,
                     modifier = Modifier.padding(paddingValue),
-                    movieList = movieList.toImmutableList()
+                    movieList = movieList.toImmutableList(),
+                    movieListViewModel = movieListViewModel
             )
         }
     }

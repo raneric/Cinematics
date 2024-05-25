@@ -19,7 +19,7 @@ class MovieRepositoryImpl @Inject constructor(private val firestore: FirebaseFir
         return when (movieListFilter) {
             MovieListFilter.TRENDING  -> getTrending()
             MovieListFilter.TOP_RATED -> getTopRated()
-            MovieListFilter.LATEST    -> getLatest()
+            MovieListFilter.NEWEST    -> getLatest()
         }
     }
 

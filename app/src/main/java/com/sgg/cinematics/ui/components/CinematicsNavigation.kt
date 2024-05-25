@@ -104,7 +104,7 @@ sealed class NavItemVariant(
             textId = R.string.txt_trending,
             iconContentDescription = R.string.content_descrip_trending,
             iconId = R.drawable.icon_trending_24,
-            destination = Destination.TrendingScreen
+            destination = Destination.AllMoviesScreen
     )
 
     object WatchList : NavItemVariant(
