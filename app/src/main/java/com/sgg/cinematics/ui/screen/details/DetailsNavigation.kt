@@ -15,8 +15,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.ui.commonui.ScreenWrapper
-import com.sgg.cinematics.ui.screen.MOVIE_ID_ARGS
 import com.sgg.cinematics.utils.Destination
+
+const val MOVIE_ID_ARGS = "movieId"
 
 fun NavGraphBuilder.detailsScreen(
         navController: NavHostController,
@@ -71,10 +72,10 @@ fun navigateToDetailsScreen(
         movieId: Int,
         navController: NavHostController
 ) {
-    navController.navigate(route = Destination.DetailScreen.route.addIdArgs(
+    navController.navigate(route = Destination.DetailScreen.route.withMovieId(
             movieId))
 }
 
-private fun String.addIdArgs(id: Int): String {
-    return this.replace("{movieId}", id.toString())
+private fun String.withMovieId(id: Int): String {
+    return this.replace("{$MOVIE_ID_ARGS}", id.toString())
 }

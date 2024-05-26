@@ -76,6 +76,6 @@ class UserInfoRepositoryImpl @Inject constructor(
             movieModel: MovieModel
     ): Boolean {
         val userInfo = getUserInfo(uid)
-        return userInfo.watchList.contains(movieModel)
+        return userInfo.watchList.find { it.id == movieModel.id } != null
     }
 }

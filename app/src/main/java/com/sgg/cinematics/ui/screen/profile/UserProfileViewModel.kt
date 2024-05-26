@@ -10,6 +10,8 @@ import com.sgg.cinematics.service.AuthService
 import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,17 +21,18 @@ class UserProfileViewModel @Inject constructor(
         authService: AuthService
 ) : MainViewModel(authService) {
 
-    var uiState by mutableStateOf<UiState>(UiState.Init)
-        private set
+    private var _uiState = MutableStateFlow<UiState>(UiState.Init)
+    val uiState
+        get() = _uiState.asStateFlow()
 
     var user by mutableStateOf(UserModel())
         private set
 
     fun refreshUserInfo(uid: String) {
-        uiState = UiState.Loading
+        _uiState.value = UiState.Loading
         viewModelScope.launch() {
             user = userInfoRepository.getUserInfo(uid)
-            uiState = if (user == null) UiState.Error("Failed to fetch user Info") else UiState.Success
+            _uiState.value = if (user == null) UiState.Error("Failed to fetch user Info") else UiState.Success
         }
     }
 }

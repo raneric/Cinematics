@@ -49,8 +49,7 @@ fun CinematicsAppScreen(
                 ) {
                     BottomNavScreen(
                             activeNavItem = cinematicsAppState.activeNavItem,
-                            onDestinationChanged = cinematicsAppState::navigateTo,
-                            navController = cinematicsAppState.navController)
+                            onDestinationChanged = cinematicsAppState::navigateTo)
                 }
             }) { paddingValue ->
 

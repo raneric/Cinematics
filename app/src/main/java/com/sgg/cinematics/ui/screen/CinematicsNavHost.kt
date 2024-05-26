@@ -58,5 +58,3 @@ fun CinematicsNavHost(
         createAccountScreen(cinematicsAppState.navController)
     }
 }
-
-const val MOVIE_ID_ARGS = "movieId"

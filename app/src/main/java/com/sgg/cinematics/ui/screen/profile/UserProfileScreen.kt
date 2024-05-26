@@ -51,6 +51,7 @@ import coil.request.ImageRequest
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.userModelLists
+import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.ProfileBackgroundShape
 import com.sgg.cinematics.ui.ui.theme.ShapeCutPosition
@@ -61,12 +62,14 @@ import com.sgg.cinematics.ui.ui.theme.userBioText
 import com.sgg.cinematics.ui.ui.theme.userProfileContent
 import com.sgg.cinematics.ui.ui.theme.userProfileTitle
 import com.sgg.cinematics.utils.DarkAndLightPreview
+import com.sgg.cinematics.utils.UiState
 
 @Composable
 fun UserProfileScreen(
         user: UserModel,
         logout: () -> Unit,
         onEditClicked: () -> Unit,
+        uiState: UiState,
         modifier: Modifier = Modifier,
 ) {
 
@@ -93,39 +96,42 @@ fun UserProfileScreen(
         }
     }
 
-    UserProfileLayout(modifier = modifier
-        .padding(16.dp)
-        .background(MaterialTheme.colorScheme.surface)
-        .verticalScroll(scrollState),
-                      pictureSection = {
-                          ProfilePictureSection(user = user,
-                                                logout = logout,
-                                                fabSize = fabSize)
-                      },
-                      fab = {
-                          FloatingActionButton(
-                                  onClick = onEditClicked,
-                                  modifier = Modifier
-                                      .size(80.dp)
-                                      .graphicsLayer {
-                                          scaleX = fabScale.value
-                                          scaleY = fabScale.value
-                                      },
-                                  interactionSource = interactionSource,
-                                  elevation = FloatingActionButtonDefaults.elevation(12.dp),
-                                  containerColor = custom_green_btn_color,
-                                  contentColor = MaterialTheme.colorScheme.onPrimary,
-                                  shape = CircleShape
-                          ) {
-                              Icon(modifier = Modifier.size(32.dp),
-                                   painter = painterResource(id = R.drawable.icon_edit_32),
-                                   contentDescription = stringResource(id = R.string.content_descrip_back_fab)
-                              )
-                          }
-                      },
-                      userInfo = {
-                          UserInfoSection(user = user, fabSize = fabSize)
-                      })
+    ScreenWrapper(uiState = uiState, componentOnSuccess = {
+        UserProfileLayout(modifier = modifier
+            .padding(16.dp)
+            .background(MaterialTheme.colorScheme.surface)
+            .verticalScroll(scrollState),
+                          pictureSection = {
+                              ProfilePictureSection(user = user,
+                                                    logout = logout,
+                                                    fabSize = fabSize)
+                          },
+                          fab = {
+                              FloatingActionButton(
+                                      onClick = onEditClicked,
+                                      modifier = Modifier
+                                          .size(80.dp)
+                                          .graphicsLayer {
+                                              scaleX = fabScale.value
+                                              scaleY = fabScale.value
+                                          },
+                                      interactionSource = interactionSource,
+                                      elevation = FloatingActionButtonDefaults.elevation(12.dp),
+                                      containerColor = custom_green_btn_color,
+                                      contentColor = MaterialTheme.colorScheme.onPrimary,
+                                      shape = CircleShape
+                              ) {
+                                  Icon(modifier = Modifier.size(32.dp),
+                                       painter = painterResource(id = R.drawable.icon_edit_32),
+                                       contentDescription = stringResource(id = R.string.content_descrip_back_fab)
+                                  )
+                              }
+                          },
+                          userInfo = {
+                              UserInfoSection(user = user, fabSize = fabSize)
+                          })
+    }, componentOnError = {})
+
 }
 
 @Composable
@@ -329,6 +335,7 @@ fun UserProfileScreenPreview() {
     CinematicsTheme {
         UserProfileScreen(user = userModelLists[0],
                           logout = {},
+                          uiState = UiState.Success,
                           onEditClicked = {})
     }
 }
