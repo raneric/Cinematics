@@ -51,7 +51,7 @@ fun CinematicsNavHost(
                       connectedUser = connectedUser)
 
         userProfileScreen(navController = cinematicsAppState.navController,
-                          connectedUser = connectedUser)
+                          currentUser = connectedUser)
 
         loginScreen(cinematicsAppState.navController)
 

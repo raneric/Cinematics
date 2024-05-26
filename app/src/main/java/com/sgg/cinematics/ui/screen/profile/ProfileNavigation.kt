@@ -1,8 +1,8 @@
 package com.sgg.cinematics.ui.screen.profile
 
-import android.util.Log
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -14,32 +14,37 @@ import com.sgg.cinematics.utils.Destination
 
 fun NavGraphBuilder.userProfileScreen(
         navController: NavHostController,
-        connectedUser: FirebaseUser?
+        currentUser: FirebaseUser?
 ) {
-    Log.d("UserProfileScreen", "recomposed")
 
     composable(route = Destination.UserProfileScreen.route,
                enterTransition = { scaleIn() },
                exitTransition = { fadeOut() }
     ) {
         val viewModel = hiltViewModel<UserProfileViewModel>()
-        val user = viewModel.user
-        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
-        if (connectedUser == null) {
-            navController.navigate(Destination.LoginScreen.route) {
-                popUpTo(Destination.UserProfileScreen.route) {
-                    inclusive = true
+        val user = viewModel.user.collectAsStateWithLifecycle()
+
+        LaunchedEffect(key1 = currentUser) {
+            when {
+                currentUser == null -> {
+                    navController.navigate(Destination.LoginScreen.route) {
+                        popUpTo(Destination.UserProfileScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                }
+
+                else                -> {
+                    viewModel.refreshUserInfo(currentUser.uid!!)
                 }
             }
-        } else {
-            viewModel.refreshUserInfo(connectedUser.uid!!)
-            UserProfileScreen(user = user,
-                              uiState = uiState.value,
-                              logout = {
-                                  viewModel.logout()
-                              },
-                              onEditClicked = { })
         }
+        UserProfileScreen(user = user.value,
+                          logout = {
+                              viewModel.logout()
+                          },
+                          onEditClicked = { })
+
     }
 }
 

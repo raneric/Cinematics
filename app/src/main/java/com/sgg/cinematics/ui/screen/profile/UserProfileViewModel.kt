@@ -1,8 +1,5 @@
 package com.sgg.cinematics.ui.screen.profile
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.repository.UserInfoRepository
@@ -25,14 +22,15 @@ class UserProfileViewModel @Inject constructor(
     val uiState
         get() = _uiState.asStateFlow()
 
-    var user by mutableStateOf(UserModel())
-        private set
+    private var _user = MutableStateFlow<UserModel?>(null)
+    val user
+        get() = _user.asStateFlow()
 
     fun refreshUserInfo(uid: String) {
         _uiState.value = UiState.Loading
         viewModelScope.launch() {
-            user = userInfoRepository.getUserInfo(uid)
-            _uiState.value = if (user == null) UiState.Error("Failed to fetch user Info") else UiState.Success
+            _user.emit(userInfoRepository.getUserInfo(uid))
+            _uiState.value = if (user.value == null) UiState.Error("Failed to fetch user Info") else UiState.Success
         }
     }
 }

@@ -4,7 +4,7 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-05-25T16:03:57.600644741Z">
+        <DropdownSelection timestamp="2024-05-26T15:29:04.292400405Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/home/eric/.android/avd/Pixel_7_API_33.avd" />
@@ -21,6 +21,14 @@
       </SelectionState>
       <SelectionState runConfigName="test_navigate_to_detail_screen_and_add_to_watch_list_button()">
         <option name="selectionMode" value="DROPDOWN" />
+        <DropdownSelection timestamp="2024-05-26T15:30:51.178095087Z">
+          <Target type="DEFAULT_BOOT">
+            <handle>
+              <DeviceId pluginId="LocalEmulator" identifier="path=/home/eric/.android/avd/Pixel_7_API_33.avd" />
+            </handle>
+          </Target>
+        </DropdownSelection>
+        <DialogSelection />
       </SelectionState>
     </selectionStates>
   </component>

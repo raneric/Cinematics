@@ -1,7 +1,6 @@
 package com.sgg.cinematics.data
 
 import com.sgg.cinematics.data.model.MovieModel
-import com.sgg.cinematics.data.model.UserModel
 
 val testMovieList = listOf(
         MovieModel(
@@ -31,5 +30,3 @@ val testMovieList = listOf(
         ))
 
 var testWatchList = mutableListOf<MovieModel>()
-
-val fakeUserInfo = UserModel()

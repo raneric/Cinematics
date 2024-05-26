@@ -51,7 +51,6 @@ import coil.request.ImageRequest
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.model.UserModel
 import com.sgg.cinematics.data.userModelLists
-import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.ProfileBackgroundShape
 import com.sgg.cinematics.ui.ui.theme.ShapeCutPosition
@@ -62,14 +61,12 @@ import com.sgg.cinematics.ui.ui.theme.userBioText
 import com.sgg.cinematics.ui.ui.theme.userProfileContent
 import com.sgg.cinematics.ui.ui.theme.userProfileTitle
 import com.sgg.cinematics.utils.DarkAndLightPreview
-import com.sgg.cinematics.utils.UiState
 
 @Composable
 fun UserProfileScreen(
-        user: UserModel,
+        user: UserModel?,
         logout: () -> Unit,
         onEditClicked: () -> Unit,
-        uiState: UiState,
         modifier: Modifier = Modifier,
 ) {
 
@@ -96,13 +93,13 @@ fun UserProfileScreen(
         }
     }
 
-    ScreenWrapper(uiState = uiState, componentOnSuccess = {
+    user?.let {
         UserProfileLayout(modifier = modifier
             .padding(16.dp)
             .background(MaterialTheme.colorScheme.surface)
             .verticalScroll(scrollState),
                           pictureSection = {
-                              ProfilePictureSection(user = user,
+                              ProfilePictureSection(user = it,
                                                     logout = logout,
                                                     fabSize = fabSize)
                           },
@@ -130,8 +127,7 @@ fun UserProfileScreen(
                           userInfo = {
                               UserInfoSection(user = user, fabSize = fabSize)
                           })
-    }, componentOnError = {})
-
+    }
 }
 
 @Composable
@@ -335,7 +331,6 @@ fun UserProfileScreenPreview() {
     CinematicsTheme {
         UserProfileScreen(user = userModelLists[0],
                           logout = {},
-                          uiState = UiState.Success,
                           onEditClicked = {})
     }
 }

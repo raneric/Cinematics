@@ -4,6 +4,7 @@ import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.repository.MovieRepository
 import com.sgg.cinematics.utils.MovieListFilter
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,7 +12,9 @@ import javax.inject.Singleton
 class TestMovieRepository @Inject constructor() : MovieRepository {
 
     override fun getAllMovies(movieListFilter: MovieListFilter): Flow<List<MovieModel>> {
-        TODO("Not yet implemented")
+        return flow {
+            emit(testMovieList)
+        }
     }
 
     override suspend fun getMovie(id: Int): MovieModel {
