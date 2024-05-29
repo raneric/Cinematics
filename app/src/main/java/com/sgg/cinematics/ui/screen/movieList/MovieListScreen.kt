@@ -1,16 +1,23 @@
 package com.sgg.cinematics.ui.screen.movieList
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,7 +33,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
@@ -42,6 +49,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,6 +73,7 @@ import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
 import com.sgg.cinematics.ui.components.EmptyListScreen
 import com.sgg.cinematics.ui.components.MovieCad
+import com.sgg.cinematics.ui.components.MovieCadWithCL
 import com.sgg.cinematics.ui.components.VerticalMovieCard
 import com.sgg.cinematics.ui.screen.details.navigateToDetailsScreen
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
@@ -73,6 +82,8 @@ import com.sgg.cinematics.utils.MovieListUiMode
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
+
+const val SHARD_ANIM_KEY = "shared_anim_key"
 
 /**
  * Main movie list composable that display movie list depending on [MovieListUiMode] and [WindowWidthSizeClass]
@@ -83,6 +94,7 @@ import kotlinx.coroutines.launch
  * @param windowsWidthSizeClass
  * @param modifier
  */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieListScreen(
         cinematicsAppState: CinematicsAppState,
@@ -104,26 +116,32 @@ fun MovieListScreen(
 
     if (cinematicsAppState.windowWidthSizeClass == WindowWidthSizeClass.Compact) {
         Box(modifier = modifier.fillMaxHeight()) {
-            Crossfade(targetState = movieListUiMode,
-                      label = "Movie list animation") {
-                when (it) {
-                    MovieListUiMode.ListView     -> {
-                        VerticalMovieListScreen(
-                                movieList = movieList.toImmutableList(),
-                                modifier = Modifier.testTag(movieListUiMode.testTag)
-                        ) { movieId ->
-                            navigateToDetailsScreen(movieId = movieId,
-                                                    navController = cinematicsAppState.navController)
+            SharedTransitionLayout {
+                AnimatedContent(targetState = movieListUiMode,
+                                label = "Movie list animation") { uiMode ->
+                    when (uiMode) {
+                        MovieListUiMode.ListView     -> {
+                            VerticalMovieListScreen(
+                                    movieList = movieList.toImmutableList(),
+                                    animatedVisibilityScope = this@AnimatedContent,
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    modifier = Modifier.testTag(movieListUiMode.testTag)
+                            ) { movieId ->
+                                navigateToDetailsScreen(movieId = movieId,
+                                                        navController = cinematicsAppState.navController)
+                            }
                         }
-                    }
 
-                    MovieListUiMode.CarouselView -> {
-                        HorizontalMovieListScreen(
-                                movieList = movieList.toImmutableList(),
-                                modifier = Modifier.testTag(movieListUiMode.testTag)
-                        ) { movieId ->
-                            navigateToDetailsScreen(movieId = movieId,
-                                                    navController = cinematicsAppState.navController)
+                        MovieListUiMode.CarouselView -> {
+                            HorizontalMovieListScreen(
+                                    movieList = movieList.toImmutableList(),
+                                    animatedVisibilityScope = this@AnimatedContent,
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    modifier = Modifier.testTag(movieListUiMode.testTag)
+                            ) { movieId ->
+                                navigateToDetailsScreen(movieId = movieId,
+                                                        navController = cinematicsAppState.navController)
+                            }
                         }
                     }
                 }
@@ -170,18 +188,20 @@ fun MovieListScreen(
 
 }
 
-
 /**
- * This composable use [LazyColumn] to display movie list vertically with [MovieCad] composable
+ * This composable use [LazyColumn] to display movie list vertically with [MovieCadWithCL] composable
  *
  * @param movieList : List of the movie to display in the lazyColumn
  * @param modifier: A modifier with default value [Modifier]
  * @param onItemClicked : lambda function that will trigger the movie clicked by user and open
  * the detail screen
  */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun VerticalMovieListScreen(
         movieList: ImmutableList<MovieModel>,
+        sharedTransitionScope: SharedTransitionScope,
+        animatedVisibilityScope: AnimatedVisibilityScope,
         modifier: Modifier = Modifier,
         onItemClicked: (Int) -> Unit
 ) {
@@ -192,23 +212,34 @@ fun VerticalMovieListScreen(
             scrollState.firstVisibleItemIndex != 0
         }
     }
+
     Box {
         LazyColumn(state = scrollState,
                    modifier = modifier
         ) {
-            items(movieList) {
-                MovieCad(movie = it,
-                         modifier = Modifier
-                             .testTag(stringResource(id = R.string.test_tag_card))
-                             .clickable {
-                                 onItemClicked(it.id)
-                             })
+
+            itemsIndexed(items = movieList) { index, movie ->
+                Log.d("index_Debug", index.toString())
+                with(sharedTransitionScope) {
+                    MovieCad(movie = movie,
+                             modifier = Modifier
+                                 .sharedBounds(
+                                         sharedContentState = rememberSharedContentState(key = "${SHARD_ANIM_KEY}_$index"),
+                                         animatedVisibilityScope = animatedVisibilityScope,
+                                         enter = slideInAndFadeInByIndex(index),
+                                         exit = slideOutAndFadeOutByIndex(index)
+                                 )
+                                 .testTag(stringResource(id = R.string.test_tag_card))
+                                 .clickable {
+                                     onItemClicked(movie.id)
+                                 })
+                }
             }
         }
         AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
                            visible = showScrollButton,
-                           enter = fadeIn() + scaleIn(),
-                           exit = fadeOut() + scaleOut()
+                           enter = fadeIn(),
+                           exit = fadeOut()
         ) {
             ScrollUpButton {
                 scope.launch {
@@ -228,10 +259,12 @@ fun VerticalMovieListScreen(
  * @param onItemClicked : lambda function that will trigger the movie clicked by user and open
  * the detail screen
  */
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun HorizontalMovieListScreen(
         movieList: ImmutableList<MovieModel>,
+        sharedTransitionScope: SharedTransitionScope,
+        animatedVisibilityScope: AnimatedVisibilityScope,
         modifier: Modifier = Modifier,
         onItemClicked: (Int) -> Unit
 ) {
@@ -241,26 +274,35 @@ fun HorizontalMovieListScreen(
     if (movieList.isEmpty()) {
         EmptyListScreen()
     } else {
+
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
             AnimatedContent(targetState = pageSate.currentPage,
                             label = stringResource(id = R.string.label_backdrop_animation),
                             transitionSpec = {
-                                (fadeIn() + scaleIn()).togetherWith(fadeOut())
+                                (fadeIn() + scaleIn(initialScale = 2f)).togetherWith(fadeOut())
                             }) {
                 BackDrop(imageUrl = movieList[it].picture)
             }
             HorizontalPager(
                     state = pageSate,
                     contentPadding = PaddingValues(horizontal = 100.dp),
+                    beyondViewportPageCount = 2,
                     pageSize = PageSize.Fixed(300.dp),
                     pageSpacing = 8.dp
             ) {
-                VerticalMovieCard(movie = movieList[it],
-                                  modifier = Modifier
-                                      .testTag(stringResource(id = R.string.test_tag_card))
-                                      .clickable {
-                                          onItemClicked(movieList[it].id)
-                                      })
+                with(sharedTransitionScope) {
+                    VerticalMovieCard(movie = movieList[it],
+                                      modifier = Modifier
+                                          .sharedBounds(
+                                                  rememberSharedContentState(key = "${SHARD_ANIM_KEY}_$it"),
+                                                  animatedVisibilityScope = animatedVisibilityScope,
+                                                  enter = fadeIn(),
+                                                  exit = fadeOut())
+                                          .testTag(stringResource(id = R.string.test_tag_card))
+                                          .clickable {
+                                              onItemClicked(movieList[it].id)
+                                          })
+                }
             }
         }
     }
@@ -279,12 +321,12 @@ fun GridMovieListScreen(
                          columns = GridCells.Adaptive(minSize = 400.dp)
         ) {
             items(movieList) {
-                MovieCad(movie = it,
-                         modifier = Modifier
-                             .testTag(stringResource(id = R.string.test_tag_card))
-                             .clickable {
-                                 onItemClicked(it.id)
-                             })
+                MovieCadWithCL(movie = it,
+                               modifier = Modifier
+                                   .testTag(stringResource(id = R.string.test_tag_card))
+                                   .clickable {
+                                       onItemClicked(it.id)
+                                   })
             }
         }
         AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
@@ -364,9 +406,9 @@ fun FilterButton(
 @Preview
 @Composable
 fun MovieListScreenPreview() {
-    VerticalMovieListScreen(movieList = fakeMovieList.toImmutableList()) {
+    /* VerticalMovieListScreen(movieList = fakeMovieList.toImmutableList()) {
 
-    }
+     }*/
 }
 
 
@@ -374,9 +416,9 @@ fun MovieListScreenPreview() {
 @Composable
 fun EmptyMovieListScreenPreview() {
     CinematicsTheme {
-        VerticalMovieListScreen(fakeMovieList.toImmutableList()) {
+        /*     VerticalMovieListScreen(fakeMovieList.toImmutableList()) {
 
-        }
+             }*/
     }
 }
 
@@ -384,9 +426,9 @@ fun EmptyMovieListScreenPreview() {
 @Composable
 fun HorizontalMovieListScreenPreview() {
     CinematicsTheme {
-        HorizontalMovieListScreen(fakeMovieList.toImmutableList()) {
+        /*  HorizontalMovieListScreen(fakeMovieList.toImmutableList()) {
 
-        }
+          }*/
     }
 }
 
@@ -406,4 +448,21 @@ private fun FilterDialogPreview() {
                      selectedOption = MovieListFilter.TRENDING,
                      onOptionSelected = {})
     }
+}
+
+@Stable
+private fun slideInAndFadeInByIndex(index: Int): EnterTransition {
+    return if (index % 2 == 0) {
+        slideInHorizontally { width -> width }
+    } else {
+        slideInHorizontally { width -> -width }
+    } + fadeIn()
+}
+
+private fun slideOutAndFadeOutByIndex(index: Int): ExitTransition {
+    return if (index % 2 == 0) {
+        slideOutHorizontally { width -> width }
+    } else {
+        slideOutHorizontally { width -> -width }
+    } + fadeOut()
 }

@@ -19,6 +19,7 @@
             android:name=".ui.MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.Cinematics">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

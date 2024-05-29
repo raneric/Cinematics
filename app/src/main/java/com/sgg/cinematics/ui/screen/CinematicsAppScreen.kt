@@ -1,8 +1,10 @@
 package com.sgg.cinematics.ui.screen
 
+import android.graphics.Shader
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -11,6 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.center
+import androidx.compose.ui.graphics.RadialGradientShader
+import androidx.compose.ui.graphics.ShaderBrush
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sgg.cinematics.ui.CinematicsAppState
@@ -18,6 +25,8 @@ import com.sgg.cinematics.ui.MainViewModel
 import com.sgg.cinematics.ui.components.BottomNavScreen
 import com.sgg.cinematics.ui.components.CinematicsNavigationRail
 import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
+import com.sgg.cinematics.ui.ui.theme.gradient_inside_color
+import com.sgg.cinematics.ui.ui.theme.gradient_outside_color
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -53,7 +62,12 @@ fun CinematicsAppScreen(
                 }
             }) { paddingValue ->
 
-        Row {
+        Row(modifier = Modifier
+            .fillMaxSize()
+            .drawBehind {
+                drawRect(largeRadialGradient)
+            }
+            .padding(paddingValue)) {
             if (cinematicsAppState.shouldShowNavRail) {
                 CinematicsNavigationRail(activeNavItem = cinematicsAppState.activeNavItem,
                                          onDestinationChanged = cinematicsAppState::navigateTo)
@@ -61,10 +75,21 @@ fun CinematicsAppScreen(
             CinematicsNavHost(
                     cinematicsAppState = cinematicsAppState,
                     connectedUser = connectedUser,
-                    modifier = Modifier.padding(paddingValue),
                     movieList = movieList.toImmutableList(),
                     movieListViewModel = movieListViewModel
             )
         }
+    }
+}
+
+private val largeRadialGradient = object : ShaderBrush() {
+    override fun createShader(size: Size): Shader {
+        val biggerDimension = maxOf(size.height, size.width)
+        return RadialGradientShader(
+                colors = listOf(gradient_inside_color, gradient_outside_color),
+                center = size.center,
+                radius = biggerDimension / 2f,
+                colorStops = listOf(0f, 1f)
+        )
     }
 }
