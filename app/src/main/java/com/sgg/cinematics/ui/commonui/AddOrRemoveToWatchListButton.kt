@@ -28,10 +28,10 @@ import com.sgg.cinematics.ui.ui.theme.custom_green_btn_color
 import com.sgg.cinematics.ui.ui.theme.custom_red_button_color
 
 @Composable
-fun CustomButton(
-    modifier: Modifier = Modifier,
-    inWatchList: Boolean = false,
-    onClick: () -> Unit
+fun AddOrRemoveToWatchListButton(
+        modifier: Modifier = Modifier,
+        inWatchList: Boolean = false,
+        onClick: () -> Unit
 ) {
 
     val animatedColor by animateColorAsState(
@@ -49,7 +49,7 @@ fun CustomButton(
             contentColor = Color.White
     )
 
-    val iconId = if (inWatchList) R.drawable.icon_watched_24 else R.drawable.icon_watch_list_24
+    val iconId = if (inWatchList) R.drawable.icon_delete_24px else R.drawable.icon_watch_list_24
 
     val stringId = if (inWatchList) R.string.txt_remove_to_watch_btn else R.string.txt_add_to_watch_btn
 
@@ -76,8 +76,8 @@ fun CustomButton(
 
 @Composable
 fun CameraButton(
-    modifier: Modifier = Modifier,
-    onButtonClick: () -> Unit
+        modifier: Modifier = Modifier,
+        onButtonClick: () -> Unit
 ) {
     IconButton(modifier = modifier,
                onClick = { onButtonClick() }) {
@@ -93,7 +93,7 @@ fun CameraButton(
 @Composable
 fun CustomButtonPreview() {
     CinematicsTheme {
-        CustomButton(inWatchList = false) {
+        AddOrRemoveToWatchListButton(inWatchList = false) {
 
         }
     }

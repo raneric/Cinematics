@@ -124,9 +124,9 @@ sealed class NavItemVariant(
 @Composable
 fun BottomNavScreenPreview() {
     CinematicsTheme {
-        /*   BottomNavScreen(NavItemVariant.Trending) {
+        BottomNavScreen(activeNavItem = NavItemVariant.Trending) {
 
-           }*/
+        }
     }
 }
 

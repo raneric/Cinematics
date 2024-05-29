@@ -33,10 +33,10 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.data.fakeMovieList
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.userRatingModelLists
+import com.sgg.cinematics.ui.commonui.AddOrRemoveToWatchListButton
 import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
 import com.sgg.cinematics.ui.commonui.BackNavigationTopBar
-import com.sgg.cinematics.ui.commonui.CustomButton
 import com.sgg.cinematics.ui.components.AverageDetailRating
 import com.sgg.cinematics.ui.components.Cast
 import com.sgg.cinematics.ui.components.DETAILS_IMAGE_HEIGHT
@@ -204,16 +204,17 @@ fun DetailsContent(
                                       )
                                   })
 
-            CustomButton(inWatchList = isInWatchList,
-                         modifier = Modifier
-                             .testTag(stringResource(id = R.string.test_tag_button))
-                             .constrainAs(button) {
-                                 top.linkTo(
-                                         anchor = recommendation.bottom,
-                                         margin = SECTION_MARGIN
-                                 )
-                                 bottom.linkTo(anchor = parent.bottom, margin = 8.dp)
-                             }) {
+            AddOrRemoveToWatchListButton(inWatchList = isInWatchList,
+                                         modifier = Modifier
+                                             .testTag(stringResource(id = R.string.test_tag_button))
+                                             .constrainAs(button) {
+                                                 top.linkTo(
+                                                         anchor = recommendation.bottom,
+                                                         margin = SECTION_MARGIN
+                                                 )
+                                                 bottom.linkTo(anchor = parent.bottom,
+                                                               margin = 8.dp)
+                                             }) {
                 addOrRemoveWatchList()
             }
         }

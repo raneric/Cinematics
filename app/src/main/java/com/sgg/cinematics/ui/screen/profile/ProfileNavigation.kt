@@ -39,6 +39,7 @@ fun NavGraphBuilder.userProfileScreen(
                 }
             }
         }
+        
         UserProfileScreen(user = user.value,
                           logout = {
                               viewModel.logout()
