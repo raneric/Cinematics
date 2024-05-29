@@ -96,7 +96,6 @@ fun UserProfileScreen(
     user?.let {
         UserProfileLayout(modifier = modifier
             .padding(16.dp)
-            .background(MaterialTheme.colorScheme.surface)
             .verticalScroll(scrollState),
                           pictureSection = {
                               ProfilePictureSection(user = it,

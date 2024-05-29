@@ -1,6 +1,9 @@
 package com.sgg.cinematics.ui.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
@@ -29,7 +32,7 @@ import com.sgg.cinematics.ui.ui.theme.md_theme_light_onPrimary
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun MovieCad(
+fun MovieCadWithCL(
         movie: MovieModel,
         modifier: Modifier = Modifier
 ) {
@@ -67,8 +70,48 @@ fun MovieCad(
     }
 }
 
+@Composable
+fun MovieCad(
+        movie: MovieModel,
+        modifier: Modifier = Modifier
+) {
+    Box(modifier = modifier.height(263.dp),
+        contentAlignment = Alignment.BottomStart) {
+        Poster(movie.picture)
+        Column(modifier = Modifier
+            .offset(x = dimensionResource(id = R.dimen.low_dp)),
+               verticalArrangement = Arrangement.Bottom
+        ) {
+            Text(
+                    text = movie.title,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = md_theme_light_onPrimary,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            MovieInfo(
+                    year = movie.year,
+                    duration = movie.displayedDuration,
+                    author = movie.author,
+                    compact = false,
+            )
+            Spacer(modifier = Modifier.height(32.dp))
+            GenreRow(
+                    genres = movie.genres,
+                    compact = false,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            AverageRating(
+                    ratingStars = movie.stars,
+                    ratingValue = movie.ratingNote.toString(),
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+    }
+}
+
+
 /**
- * A card composable that is a variant of [MovieCad] with a rounded border
+ * A card composable that is a variant of [MovieCadWithCL] with a rounded border
  * @param movie: [MovieModel] object to display
  * @param modifier: A modifier with default value [Modifier]
  */
@@ -77,9 +120,9 @@ fun MovieCadRoundedBorder(
         movie: MovieModel,
         modifier: Modifier = Modifier
 ) {
-    MovieCad(movie = movie,
-             modifier = modifier
-                 .clip(MaterialTheme.shapes.small)
+    MovieCadWithCL(movie = movie,
+                   modifier = modifier
+                       .clip(MaterialTheme.shapes.small)
     )
 }
 
@@ -157,6 +200,14 @@ fun PosterPreview() {
 @Preview
 @Composable
 fun MovieCadPreview() {
+    CinematicsTheme {
+        MovieCadWithCL(fakeMovieList[0])
+    }
+}
+
+@Preview
+@Composable
+private fun MovieCadColumnPreview() {
     CinematicsTheme {
         MovieCad(fakeMovieList[0])
     }

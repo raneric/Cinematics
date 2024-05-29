@@ -10,6 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseUser
+import com.sgg.cinematics.ui.commonui.ScreenWrapper
 import com.sgg.cinematics.utils.Destination
 
 fun NavGraphBuilder.userProfileScreen(
@@ -23,7 +24,7 @@ fun NavGraphBuilder.userProfileScreen(
     ) {
         val viewModel = hiltViewModel<UserProfileViewModel>()
         val user = viewModel.user.collectAsStateWithLifecycle()
-
+        val uiState = viewModel.uiState.collectAsStateWithLifecycle()
         LaunchedEffect(key1 = currentUser) {
             when {
                 currentUser == null -> {
@@ -39,11 +40,14 @@ fun NavGraphBuilder.userProfileScreen(
                 }
             }
         }
-        UserProfileScreen(user = user.value,
-                          logout = {
-                              viewModel.logout()
-                          },
-                          onEditClicked = { })
+        ScreenWrapper(uiState = uiState.value,
+                      componentOnSuccess = {
+                          UserProfileScreen(user = user.value,
+                                            logout = {
+                                                viewModel.logout()
+                                            },
+                                            onEditClicked = { })
+                      }, componentOnError = {})
 
     }
 }
