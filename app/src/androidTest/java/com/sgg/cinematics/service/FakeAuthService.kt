@@ -10,8 +10,8 @@ class FakeAuthService @Inject constructor() : AuthService {
     override val connectedUser: Flow<FirebaseUser?> = flowOf(null)
 
     override suspend fun signInWithEmailAndPassword(
-            email: String,
-            password: String
+        email: String,
+        password: String
     ) {
         TODO("Not yet implemented")
     }

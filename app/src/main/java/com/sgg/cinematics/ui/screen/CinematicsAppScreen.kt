@@ -31,8 +31,8 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun CinematicsAppScreen(
-        modifier: Modifier = Modifier,
-        cinematicsAppState: CinematicsAppState
+    modifier: Modifier = Modifier,
+    cinematicsAppState: CinematicsAppState
 ) {
     val mainViewModel = hiltViewModel<MainViewModel>()
     val movieListViewModel = hiltViewModel<MovieListViewModel>()
@@ -48,19 +48,21 @@ fun CinematicsAppScreen(
     }
 
     Scaffold(
-            modifier = modifier,
-            snackbarHost = {
-                SnackbarHost(hostState = snackbarHostState)
-            },
-            bottomBar = {
-                AnimatedVisibility(visible = cinematicsAppState.shouldShowBottomNav,
-                                   enter = slideInVertically(initialOffsetY = { -40 })
-                ) {
-                    BottomNavScreen(
-                            activeNavItem = cinematicsAppState.activeNavItem,
-                            onDestinationChanged = cinematicsAppState::navigateTo)
-                }
-            }) { paddingValue ->
+        modifier = modifier,
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
+        bottomBar = {
+            AnimatedVisibility(
+                visible = cinematicsAppState.shouldShowBottomNav,
+                enter = slideInVertically(initialOffsetY = { -40 })
+            ) {
+                BottomNavScreen(
+                    activeNavItem = cinematicsAppState.activeNavItem,
+                    onDestinationChanged = cinematicsAppState::navigateTo
+                )
+            }
+        }) { paddingValue ->
 
         Row(modifier = Modifier
             .fillMaxSize()
@@ -69,14 +71,16 @@ fun CinematicsAppScreen(
             }
             .padding(paddingValue)) {
             if (cinematicsAppState.shouldShowNavRail) {
-                CinematicsNavigationRail(activeNavItem = cinematicsAppState.activeNavItem,
-                                         onDestinationChanged = cinematicsAppState::navigateTo)
+                CinematicsNavigationRail(
+                    activeNavItem = cinematicsAppState.activeNavItem,
+                    onDestinationChanged = cinematicsAppState::navigateTo
+                )
             }
             CinematicsNavHost(
-                    cinematicsAppState = cinematicsAppState,
-                    connectedUser = connectedUser,
-                    movieList = movieList.toImmutableList(),
-                    movieListViewModel = movieListViewModel
+                cinematicsAppState = cinematicsAppState,
+                connectedUser = connectedUser,
+                movieList = movieList.toImmutableList(),
+                movieListViewModel = movieListViewModel
             )
         }
     }
@@ -86,10 +90,10 @@ private val largeRadialGradient = object : ShaderBrush() {
     override fun createShader(size: Size): Shader {
         val biggerDimension = maxOf(size.height, size.width)
         return RadialGradientShader(
-                colors = listOf(gradient_inside_color, gradient_outside_color),
-                center = size.center,
-                radius = biggerDimension / 2f,
-                colorStops = listOf(0f, 1f)
+            colors = listOf(gradient_inside_color, gradient_outside_color),
+            center = size.center,
+            radius = biggerDimension / 2f,
+            colorStops = listOf(0f, 1f)
         )
     }
 }

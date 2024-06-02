@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-        authService: AuthService
+    authService: AuthService
 ) : MainViewModel(authService) {
 
     private var _loginUiState = MutableStateFlow<UiState>(UiState.Init)
@@ -43,8 +43,8 @@ class LoginViewModel @Inject constructor(
             viewModelScope.launch {
                 try {
                     authService.signInWithEmailAndPassword(
-                            email = user.email,
-                            password = user.password
+                        email = user.email,
+                        password = user.password
                     )
                     _loginUiState.value = UiState.Success
                 } catch (e: Exception) {

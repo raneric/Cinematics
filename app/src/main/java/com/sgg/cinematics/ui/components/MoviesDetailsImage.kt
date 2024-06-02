@@ -21,22 +21,26 @@ val DETAILS_IMAGE_HEIGHT = 221.dp
 
 @Composable
 fun MovieDetailsImage(
-        imageUrl: String,
-        modifier: Modifier = Modifier
+    imageUrl: String,
+    modifier: Modifier = Modifier
 ) {
-    Surface(shadowElevation = 8.dp,
-            shape = MaterialTheme.shapes.small,
-            modifier = modifier.size(width = DETAILS_IMAGE_WIDTH, height = DETAILS_IMAGE_HEIGHT)) {
-        AsyncImage(model = imageUrl,
-                   alignment = Alignment.Center,
-                   contentScale = ContentScale.Crop,
-                   contentDescription = stringResource(id = R.string.content_descrip_movie_image),
-                   modifier = Modifier
-                       .border(
-                               width = 5.dp,
-                               color = MaterialTheme.colorScheme.surface,
-                               shape = MaterialTheme.shapes.small,
-                       ))
+    Surface(
+        shadowElevation = 8.dp,
+        shape = MaterialTheme.shapes.small,
+        modifier = modifier.size(width = DETAILS_IMAGE_WIDTH, height = DETAILS_IMAGE_HEIGHT)
+    ) {
+        AsyncImage(
+            model = imageUrl,
+            alignment = Alignment.Center,
+            contentScale = ContentScale.Crop,
+            contentDescription = stringResource(id = R.string.content_descrip_movie_image),
+            modifier = Modifier
+                .border(
+                    width = 5.dp,
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = MaterialTheme.shapes.small,
+                )
+        )
     }
 }
 

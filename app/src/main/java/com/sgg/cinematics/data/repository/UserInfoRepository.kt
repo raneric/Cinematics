@@ -13,14 +13,14 @@ interface UserInfoRepository {
     fun deleteUserInfo(uid: String)
 
     suspend fun getWatchList(
-            uid: String,
-            movieListFilter: MovieListFilter
+        uid: String,
+        movieListFilter: MovieListFilter
     ): List<MovieModel>
 
     fun addToWatchList(movieModel: MovieModel)
 
     suspend fun isInWatchList(
-            uid: String,
-            movieModel: MovieModel
+        uid: String,
+        movieModel: MovieModel
     ): Boolean
 }

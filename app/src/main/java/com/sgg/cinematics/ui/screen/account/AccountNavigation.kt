@@ -7,17 +7,18 @@ import androidx.navigation.compose.composable
 import com.sgg.cinematics.utils.Destination
 
 fun NavGraphBuilder.createAccountScreen(navController: NavHostController) {
-    composable(route = Destination.CreateAccount.route,
-               enterTransition = null,
-               exitTransition = null
+    composable(
+        route = Destination.CreateAccount.route,
+        enterTransition = null,
+        exitTransition = null
     ) {
         CreateAccountScreen(
-                onNavigateBack = {
-                    navController.popBackStack()
-                },
-                navigateToUserProfile = {
-                    navController.navigate(Destination.UserProfileScreen.route)
-                }
+            onNavigateBack = {
+                navController.popBackStack()
+            },
+            navigateToUserProfile = {
+                navController.navigate(Destination.UserProfileScreen.route)
+            }
         )
     }
 }

@@ -64,10 +64,10 @@ import com.sgg.cinematics.utils.DarkAndLightPreview
 
 @Composable
 fun UserProfileScreen(
-        user: UserModel?,
-        logout: () -> Unit,
-        onEditClicked: () -> Unit,
-        modifier: Modifier = Modifier,
+    user: UserModel?,
+    logout: () -> Unit,
+    onEditClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     val fabSize = with(LocalDensity.current) { 86.dp.toPx() }
@@ -84,11 +84,14 @@ fun UserProfileScreen(
     LaunchedEffect(interactionSource) {
         interactionSource.interactions.collect {
             when (it) {
-                is PressInteraction.Press   -> fabScale.animateTo(targetValue = 0.8f)
-                is PressInteraction.Release -> fabScale.animateTo(targetValue = 1f,
-                                                                  animationSpec = spring(
-                                                                          stiffness = 600f,
-                                                                          dampingRatio = 0.2f))
+                is PressInteraction.Press -> fabScale.animateTo(targetValue = 0.8f)
+                is PressInteraction.Release -> fabScale.animateTo(
+                    targetValue = 1f,
+                    animationSpec = spring(
+                        stiffness = 600f,
+                        dampingRatio = 0.2f
+                    )
+                )
             }
         }
     }
@@ -98,28 +101,31 @@ fun UserProfileScreen(
             .padding(16.dp)
             .verticalScroll(scrollState),
                           pictureSection = {
-                              ProfilePictureSection(user = it,
-                                                    logout = logout,
-                                                    fabSize = fabSize)
+                              ProfilePictureSection(
+                                  user = it,
+                                  logout = logout,
+                                  fabSize = fabSize
+                              )
                           },
                           fab = {
                               FloatingActionButton(
-                                      onClick = onEditClicked,
-                                      modifier = Modifier
-                                          .size(80.dp)
-                                          .graphicsLayer {
-                                              scaleX = fabScale.value
-                                              scaleY = fabScale.value
-                                          },
-                                      interactionSource = interactionSource,
-                                      elevation = FloatingActionButtonDefaults.elevation(12.dp),
-                                      containerColor = custom_green_btn_color,
-                                      contentColor = MaterialTheme.colorScheme.onPrimary,
-                                      shape = CircleShape
+                                  onClick = onEditClicked,
+                                  modifier = Modifier
+                                      .size(80.dp)
+                                      .graphicsLayer {
+                                          scaleX = fabScale.value
+                                          scaleY = fabScale.value
+                                      },
+                                  interactionSource = interactionSource,
+                                  elevation = FloatingActionButtonDefaults.elevation(12.dp),
+                                  containerColor = custom_green_btn_color,
+                                  contentColor = MaterialTheme.colorScheme.onPrimary,
+                                  shape = CircleShape
                               ) {
-                                  Icon(modifier = Modifier.size(32.dp),
-                                       painter = painterResource(id = R.drawable.icon_edit_32),
-                                       contentDescription = stringResource(id = R.string.content_descrip_back_fab)
+                                  Icon(
+                                      modifier = Modifier.size(32.dp),
+                                      painter = painterResource(id = R.drawable.icon_edit_32),
+                                      contentDescription = stringResource(id = R.string.content_descrip_back_fab)
                                   )
                               }
                           },
@@ -131,15 +137,15 @@ fun UserProfileScreen(
 
 @Composable
 fun UserProfileLayout(
-        pictureSection: @Composable () -> Unit,
-        fab: @Composable () -> Unit,
-        userInfo: @Composable () -> Unit,
-        modifier: Modifier = Modifier
+    pictureSection: @Composable () -> Unit,
+    fab: @Composable () -> Unit,
+    userInfo: @Composable () -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     Layout(
-            contents = listOf(pictureSection, fab, userInfo),
-            modifier = modifier
+        contents = listOf(pictureSection, fab, userInfo),
+        modifier = modifier
     ) { (pictureSectionMeasurable, fabMeasurable, userInfoMeasurable),
         constraint ->
 
@@ -157,7 +163,8 @@ fun UserProfileLayout(
         val userInfoY = (picturePlaceable.height + sectionMargin).toInt()
 
         val layoutWidth = picturePlaceable.width + (fabOverflow * 2)
-        val layoutHeight = (picturePlaceable.height + sectionMargin + userInfoPlaceable.height).toInt()
+        val layoutHeight =
+            (picturePlaceable.height + sectionMargin + userInfoPlaceable.height).toInt()
 
         val fabY = picturePlaceable.height + (sectionMargin / 2).toInt() - (fabPlaceable.height / 2)
         val fabX = picturePlaceable.width - fabPlaceable.width + (fabOverflow * 2)
@@ -172,44 +179,44 @@ fun UserProfileLayout(
 
 @Composable
 fun ProfilePictureSection(
-        user: UserModel,
-        fabSize: Float,
-        logout: () -> Unit,
-        modifier: Modifier = Modifier
+    user: UserModel,
+    fabSize: Float,
+    logout: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
         Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(320.dp)
-                    .clip(MaterialTheme.shapes.medium)
-                    .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.BOTTOM_RIGHT))
-                    .background(MaterialTheme.colorScheme.onSurface)
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(320.dp)
+                .clip(MaterialTheme.shapes.medium)
+                .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.BOTTOM_RIGHT))
+                .background(MaterialTheme.colorScheme.onSurface)
         ) {
             AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .crossfade(true)
-                        .placeholder(R.drawable.default_user_profile)
-                        .data(user.pictureUrl)
-                        .build(),
-                    contentDescription = "",
-                    alignment = Alignment.Center,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(240.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, custom_green_btn_color, CircleShape),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .crossfade(true)
+                    .placeholder(R.drawable.default_user_profile)
+                    .data(user.pictureUrl)
+                    .build(),
+                contentDescription = "",
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(240.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, custom_green_btn_color, CircleShape),
             )
             Text(text = user.fullName, style = userProfileTitle)
         }
         Column {
             IconButton(onClick = logout) {
                 Icon(
-                        tint = Color.Black,
-                        painter = painterResource(id = R.drawable.icon_logout_24px),
-                        contentDescription = ""
+                    tint = Color.Black,
+                    painter = painterResource(id = R.drawable.icon_logout_24px),
+                    contentDescription = ""
                 )
             }
         }
@@ -218,51 +225,68 @@ fun ProfilePictureSection(
 
 @Composable
 fun UserInfoSection(
-        user: UserModel,
-        fabSize: Float,
-        modifier: Modifier = Modifier
+    user: UserModel,
+    fabSize: Float,
+    modifier: Modifier = Modifier
 ) {
     val spacerSize = 4.dp
     val defaultText = stringResource(id = R.string.txt_not_available)
 
-    val genderIcon = if (user.gender == "Male") R.drawable.icon_male_24px else R.drawable.icon_female_24px
+    val genderIcon =
+        if (user.gender == "Male") R.drawable.icon_male_24px else R.drawable.icon_female_24px
 
     Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(MaterialTheme.shapes.medium)
-                .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.TOP_RIGHT))
-                .background(MaterialTheme.colorScheme.onSurface)
-                .padding(10.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(MaterialTheme.shapes.medium)
+            .clip(ProfileBackgroundShape(fabSize, ShapeCutPosition.TOP_RIGHT))
+            .background(MaterialTheme.colorScheme.onSurface)
+            .padding(10.dp)
     ) {
-        Text(text = stringResource(id = R.string.txt_user_info_tittle),
-             style = userProfileTitle)
+        Text(
+            text = stringResource(id = R.string.txt_user_info_tittle),
+            style = userProfileTitle
+        )
         HorizontalDivider(color = thick_divider_color)
         Spacer(modifier = Modifier.size(spacerSize))
 
-        UserInfoItem(text = stringResource(id = R.string.txt_birth_date, user.displayedBirthDate),
-                     R.drawable.icon_birthday_date)
+        UserInfoItem(
+            text = stringResource(id = R.string.txt_birth_date, user.displayedBirthDate),
+            R.drawable.icon_birthday_date
+        )
         HorizontalDivider(color = thin_divider_color)
         Spacer(modifier = Modifier.size(spacerSize))
 
-        UserInfoItem(text = stringResource(id = R.string.txt_gender,
-                                           user.gender ?: defaultText),
-                     icon = genderIcon)
+        UserInfoItem(
+            text = stringResource(
+                id = R.string.txt_gender,
+                user.gender ?: defaultText
+            ),
+            icon = genderIcon
+        )
 
         HorizontalDivider(color = thin_divider_color)
 
         Spacer(modifier = Modifier.size(spacerSize))
 
-        UserInfoItem(text = stringResource(id = R.string.txt_email,
-                                           user.email ?: defaultText),
-                     R.drawable.icon_email)
+        UserInfoItem(
+            text = stringResource(
+                id = R.string.txt_email,
+                user.email ?: defaultText
+            ),
+            R.drawable.icon_email
+        )
         HorizontalDivider(color = thin_divider_color)
         Spacer(modifier = Modifier.size(spacerSize))
 
-        UserInfoItem(text = stringResource(id = R.string.txt_location,
-                                           user.location ?: defaultText),
-                     R.drawable.icon_location)
+        UserInfoItem(
+            text = stringResource(
+                id = R.string.txt_location,
+                user.location ?: defaultText
+            ),
+            R.drawable.icon_location
+        )
         HorizontalDivider(color = thin_divider_color)
         Spacer(modifier = Modifier.size(spacerSize))
 
@@ -272,42 +296,42 @@ fun UserInfoSection(
 
 @Composable
 fun Bio(
-        text: String,
-        modifier: Modifier = Modifier
+    text: String,
+    modifier: Modifier = Modifier
 ) {
     BioLayout(tittle = {
         Text(
-                text = stringResource(id = R.string.txt_bio_tittle),
-                style = userProfileTitle,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .background(color = MaterialTheme.colorScheme.onSurface)
-                    .widthIn(min = 30.dp)
+            text = stringResource(id = R.string.txt_bio_tittle),
+            style = userProfileTitle,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.onSurface)
+                .widthIn(min = 30.dp)
         )
     }, textBio = {
         Text(
-                text = text,
-                style = userBioText,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(
-                            BorderStroke(1.dp, thin_divider_color),
-                            shape = MaterialTheme.shapes.small
-                    )
-                    .padding(horizontal = 8.dp, vertical = 12.dp)
+            text = text,
+            style = userBioText,
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    BorderStroke(1.dp, thin_divider_color),
+                    shape = MaterialTheme.shapes.small
+                )
+                .padding(horizontal = 8.dp, vertical = 12.dp)
         )
     }, modifier = modifier)
 }
 
 @Composable
 fun BioLayout(
-        tittle: @Composable () -> Unit,
-        textBio: @Composable () -> Unit,
-        modifier: Modifier = Modifier
+    tittle: @Composable () -> Unit,
+    textBio: @Composable () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Layout(
-            contents = listOf(tittle, textBio),
-            modifier = modifier
+        contents = listOf(tittle, textBio),
+        modifier = modifier
     ) { (titleMeasurable, textMeasurable), constraint ->
         val tittlePlaceable = titleMeasurable.first()
             .measure(constraint)
@@ -336,15 +360,15 @@ fun UserProfileScreenPreview() {
 
 @Composable
 fun UserInfoItem(
-        text: String,
-        @DrawableRes icon: Int,
-        modifier: Modifier = Modifier
+    text: String,
+    @DrawableRes icon: Int,
+    modifier: Modifier = Modifier
 ) {
     Row(horizontalArrangement = Arrangement.spacedBy(16.dp), modifier = modifier) {
         Image(
-                painter = painterResource(id = icon),
-                contentDescription = "TODO",
-                modifier = Modifier.size(16.dp)
+            painter = painterResource(id = icon),
+            contentDescription = "TODO",
+            modifier = Modifier.size(16.dp)
         )
         Text(text = text, style = userProfileContent)
     }

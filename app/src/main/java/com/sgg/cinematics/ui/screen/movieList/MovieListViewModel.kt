@@ -21,10 +21,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class MovieListViewModel @Inject constructor(
-        private val movieRepository: MovieRepository,
-        private val userInfoRepository: UserInfoRepository,
-        private val uiStateRepository: PreferenceRepository,
-        authService: AuthService
+    private val movieRepository: MovieRepository,
+    private val userInfoRepository: UserInfoRepository,
+    private val uiStateRepository: PreferenceRepository,
+    authService: AuthService
 ) : MainViewModel(authService) {
 
     val uiListMode: Flow<MovieListUiMode> = uiStateRepository.movieListUiModeFlow
@@ -41,8 +41,8 @@ open class MovieListViewModel @Inject constructor(
     }
 
     fun loadRequiredMovieList(
-            destinationRoute: String,
-            filter: MovieListFilter = MovieListFilter.TRENDING
+        destinationRoute: String,
+        filter: MovieListFilter = MovieListFilter.TRENDING
     ) {
 
         _listUiState.value = UiState.Loading
@@ -60,8 +60,10 @@ open class MovieListViewModel @Inject constructor(
                 viewModelScope.launch {
                     connectedUser.collectLatest { firebaseUser ->
                         firebaseUser?.let { user ->
-                            val toWatch = userInfoRepository.getWatchList(uid = user.uid,
-                                                                          movieListFilter = filter)
+                            val toWatch = userInfoRepository.getWatchList(
+                                uid = user.uid,
+                                movieListFilter = filter
+                            )
                             _movies.emit(toWatch)
                         }
                     }

@@ -33,7 +33,8 @@ class CinematicsAppTest : BaseTest() {
             .performClick()
         composeRule.onNodeWithTag(
             testTag = R.drawable.view_list_32.toString(),
-            useUnmergedTree = true)
+            useUnmergedTree = true
+        )
             .assertIsDisplayed()
         composeRule.onNodeWithTag(testTag = MovieListUiMode.CarouselView.testTag)
             .assertIsDisplayed()
@@ -42,7 +43,8 @@ class CinematicsAppTest : BaseTest() {
             .performClick()
         composeRule.onNodeWithTag(
             testTag = R.drawable.view_carousel_32.toString(),
-            useUnmergedTree = true)
+            useUnmergedTree = true
+        )
             .assertIsDisplayed()
         composeRule.onNodeWithTag(testTag = MovieListUiMode.ListView.testTag)
             .assertIsDisplayed()
@@ -82,7 +84,8 @@ class CinematicsAppTest : BaseTest() {
 
     @Test
     fun test_display_login_in_profile_screen_when_no_user_connected() {
-        val content = composeRule.activity.getString(NavItemVariant.UserProfile.iconContentDescription)
+        val content =
+            composeRule.activity.getString(NavItemVariant.UserProfile.iconContentDescription)
         val loginScreenTestTag = composeRule.activity.getString(R.string.test_tag_login_screen)
         composeRule.onNodeWithContentDescription(label = content, useUnmergedTree = true)
             .performClick()
@@ -94,5 +97,4 @@ class CinematicsAppTest : BaseTest() {
         val cardTestTag = composeRule.activity.getString(R.string.test_tag_card)
         composeRule.onAllNodesWithTag(cardTestTag, useUnmergedTree = true)[0].performClick()
     }
-
 }

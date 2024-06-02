@@ -1,10 +1,9 @@
 package com.sgg.cinematics.utils
 
 sealed class Destination(
-        val route: String,
-        val testTag: String
+    val route: String,
+    val testTag: String
 ) {
-
     object AllMoviesScreen : Destination(route = "all_movies", testTag = "all_movies_screen")
     object WatchListScreen : Destination(route = "watch_list", testTag = "watch_list_screen")
     object DetailScreen : Destination(route = "details/{movieId}", testTag = "details_screen")

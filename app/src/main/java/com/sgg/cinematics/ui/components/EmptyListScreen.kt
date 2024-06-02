@@ -27,24 +27,33 @@ import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 fun EmptyListScreen(modifier: Modifier = Modifier) {
     Box(contentAlignment = Alignment.Center) {
         Box(modifier = modifier) {
-            Image(painter = painterResource(id = R.drawable.background),
-                  contentScale = ContentScale.Crop,
-                  modifier = Modifier.fillMaxSize(),
-                  contentDescription = "")
+            Image(
+                painter = painterResource(id = R.drawable.background),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+                contentDescription = ""
+            )
             GradientForeground(color = Color.Black, modifier = Modifier.fillMaxHeight())
         }
-        Surface(modifier = modifier
+        Surface(
+            modifier = modifier
                 .clip(MaterialTheme.shapes.large),
-                color = Color.White.copy(alpha = 0.4f)) {
-            Column(verticalArrangement = Arrangement.Center,
-                   horizontalAlignment = Alignment.CenterHorizontally) {
-                Image(modifier = Modifier.size(250.dp),
-                      painter = painterResource(id = R.drawable.empty_folder),
-                      contentDescription = "empty list")
+            color = Color.White.copy(alpha = 0.4f)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    modifier = Modifier.size(250.dp),
+                    painter = painterResource(id = R.drawable.empty_folder),
+                    contentDescription = "empty list"
+                )
                 Text(
                     text = stringResource(id = R.string.txt_no_item_found),
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.onSurface)
+                    color = MaterialTheme.colorScheme.onSurface
+                )
             }
         }
     }

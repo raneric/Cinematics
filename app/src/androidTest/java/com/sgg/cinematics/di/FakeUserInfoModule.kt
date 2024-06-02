@@ -9,8 +9,9 @@ import dagger.hilt.testing.TestInstallIn
 
 @Module
 @TestInstallIn(
-        components = [SingletonComponent::class],
-        replaces = [UserInfoRepositoryModule::class])
+    components = [SingletonComponent::class],
+    replaces = [UserInfoRepositoryModule::class]
+)
 abstract class FakeUserInfoModule {
     @Binds
     abstract fun provideUerRepository(userInfoRepository: FakeUserInfoRepository): UserInfoRepository

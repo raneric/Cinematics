@@ -13,14 +13,18 @@ import com.sgg.cinematics.ui.components.GradientForeground
 
 
 @Composable
-fun BackDrop(imageUrl: String,
-             modifier: Modifier = Modifier) {
+fun BackDrop(
+    imageUrl: String,
+    modifier: Modifier = Modifier
+) {
 
     Box(modifier = modifier) {
-        AsyncImage(model = imageUrl,
-                   contentScale = ContentScale.Crop,
-                   modifier = Modifier.fillMaxSize(),
-                   contentDescription = "")
+        AsyncImage(
+            model = imageUrl,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize(),
+            contentDescription = ""
+        )
         GradientForeground(color = Color.Black, modifier = Modifier.fillMaxHeight())
     }
 }

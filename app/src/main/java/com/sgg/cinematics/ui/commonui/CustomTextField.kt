@@ -24,13 +24,13 @@ import com.sgg.cinematics.R
 
 @Composable
 fun PasswordTextFieldWrapper(
-        value: String?,
-        isError: Boolean,
-        placeHolder: String,
-        onPasswordChange: (String) -> Unit,
-        modifier: Modifier = Modifier,
-        textFieldVariant: TextFieldVariant = TextFieldVariant.OUTLINED,
-        errorMessage: String = "",
+    value: String?,
+    isError: Boolean,
+    placeHolder: String,
+    onPasswordChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    textFieldVariant: TextFieldVariant = TextFieldVariant.OUTLINED,
+    errorMessage: String = "",
 ) {
 
     var passwordVisualTransform: VisualTransformation by remember {
@@ -46,86 +46,86 @@ fun PasswordTextFieldWrapper(
     when (textFieldVariant) {
         TextFieldVariant.FILLED   -> {
             TextField(
-                    value = value ?: "",
-                    isError = isError,
-                    onValueChange = { password ->
-                        onPasswordChange(password)
-                    },
-                    modifier = modifier.fillMaxWidth(),
-                    placeholder = {
-                        Text(
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.bodyLarge,
-                                text = placeHolder
+                value = value ?: "",
+                isError = isError,
+                onValueChange = { password ->
+                    onPasswordChange(password)
+                },
+                modifier = modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyLarge,
+                        text = placeHolder
+                    )
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_lock_24px),
+                        contentDescription = stringResource(id = R.string.content_descrip_password_icon)
+                    )
+                },
+                trailingIcon = {
+                    IconButton(onClick = {
+                        passwordVisualTransform = reversePasswordState(
+                            passwordVisualTransform
                         )
-                    },
-                    leadingIcon = {
+                    }) {
                         Icon(
-                                painter = painterResource(id = R.drawable.icon_lock_24px),
-                                contentDescription = stringResource(id = R.string.content_descrip_password_icon)
+                            painter = passwordTrailingIcon,
+                            contentDescription = stringResource(id = R.string.content_descrip_password_icon)
                         )
-                    },
-                    trailingIcon = {
-                        IconButton(onClick = {
-                            passwordVisualTransform = reversePasswordState(
-                                    passwordVisualTransform
-                            )
-                        }) {
-                            Icon(
-                                    painter = passwordTrailingIcon,
-                                    contentDescription = stringResource(id = R.string.content_descrip_password_icon)
-                            )
-                        }
+                    }
 
-                    },
-                    colors = TextFieldDefaults.colors(
-                            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(
-                                    alpha = 0.6f
-                            )
-                    ),
-                    supportingText = {
-                        if (isError) {
-                            Text(text = errorMessage)
-                        }
-                    },
-                    visualTransformation = passwordVisualTransform,
+                },
+                colors = TextFieldDefaults.colors(
+                    unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(
+                        alpha = 0.6f
+                    )
+                ),
+                supportingText = {
+                    if (isError) {
+                        Text(text = errorMessage)
+                    }
+                },
+                visualTransformation = passwordVisualTransform,
             )
         }
 
         TextFieldVariant.OUTLINED -> {
             OutlinedTextField(
-                    value = value ?: "",
-                    isError = isError,
-                    onValueChange = { password ->
-                        onPasswordChange(password)
-                    },
-                    modifier = modifier.fillMaxWidth(),
-                    placeholder = {
-                        Text(
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.bodyLarge,
-                                text = placeHolder
+                value = value ?: "",
+                isError = isError,
+                onValueChange = { password ->
+                    onPasswordChange(password)
+                },
+                modifier = modifier.fillMaxWidth(),
+                placeholder = {
+                    Text(
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyLarge,
+                        text = placeHolder
+                    )
+                },
+                trailingIcon = {
+                    IconButton(onClick = {
+                        passwordVisualTransform = reversePasswordState(
+                            passwordVisualTransform
                         )
-                    },
-                    trailingIcon = {
-                        IconButton(onClick = {
-                            passwordVisualTransform = reversePasswordState(
-                                    passwordVisualTransform
-                            )
-                        }) {
-                            Icon(
-                                    painter = passwordTrailingIcon,
-                                    contentDescription = stringResource(id = R.string.content_descrip_password_icon)
-                            )
-                        }
+                    }) {
+                        Icon(
+                            painter = passwordTrailingIcon,
+                            contentDescription = stringResource(id = R.string.content_descrip_password_icon)
+                        )
+                    }
 
-                    },
-                    supportingText = {
-                        if (isError) {
-                            Text(text = errorMessage)
-                        }
-                    },
-                    visualTransformation = passwordVisualTransform,
+                },
+                supportingText = {
+                    if (isError) {
+                        Text(text = errorMessage)
+                    }
+                },
+                visualTransformation = passwordVisualTransform,
             )
         }
     }
@@ -133,67 +133,70 @@ fun PasswordTextFieldWrapper(
 
 @Composable
 fun ControlledTextField(
-        value: String?,
-        @DrawableRes iconResId: Int,
-        @StringRes placeholderResId: Int,
-        @StringRes iconContentDescripResId: Int,
-        isValidData: (String) -> Boolean,
-        onValueChange: (String) -> Unit,
-        modifier: Modifier = Modifier,
+    value: String?,
+    @DrawableRes iconResId: Int,
+    @StringRes placeholderResId: Int,
+    @StringRes iconContentDescripResId: Int,
+    isValidData: (String) -> Boolean,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val isValidData = if (value != null) isValidData(value) else true
 
-    TextField(value = value ?: "",
-              isError = !isValidData,
-              onValueChange = { email ->
-                  onValueChange(email)
-              },
-              placeholder = {
-                  Text(
-                          color = MaterialTheme.colorScheme.onSurfaceVariant,
-                          style = MaterialTheme.typography.bodyLarge,
-                          text = stringResource(id = placeholderResId)
-                  )
-              }, colors = TextFieldDefaults.colors(
+    TextField(
+        value = value ?: "",
+        isError = !isValidData,
+        onValueChange = { email ->
+            onValueChange(email)
+        },
+        placeholder = {
+            Text(
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodyLarge,
+                text = stringResource(id = placeholderResId)
+            )
+        }, colors = TextFieldDefaults.colors(
             unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.6f)
-    ), leadingIcon = {
-        Icon(
+        ), leadingIcon = {
+            Icon(
                 painter = painterResource(id = iconResId),
                 contentDescription = stringResource(id = iconContentDescripResId)
-        )
-    }, modifier = modifier.fillMaxWidth()
+            )
+        }, modifier = modifier.fillMaxWidth()
     )
 }
 
 @Composable
 fun ControlledOutlinedTextField(
-        value: String?,
-        @DrawableRes iconResId: Int,
-        @StringRes placeholderResId: Int,
-        @StringRes iconContentDescripResId: Int,
-        isValidData: (String) -> Boolean,
-        onValueChange: (String) -> Unit,
-        modifier: Modifier = Modifier,
+    value: String?,
+    @DrawableRes iconResId: Int,
+    @StringRes placeholderResId: Int,
+    @StringRes iconContentDescripResId: Int,
+    isValidData: (String) -> Boolean,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val isValidData = if (value != null) isValidData(value) else true
 
-    OutlinedTextField(value = value ?: "",
-                      isError = !isValidData,
-                      onValueChange = { email ->
-                          onValueChange(email)
-                      },
-                      placeholder = {
-                          Text(
-                                  color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                  style = MaterialTheme.typography.bodyLarge,
-                                  text = stringResource(id = placeholderResId)
-                          )
-                      },
-                      leadingIcon = {
-                          Icon(painter = painterResource(id = iconResId),
-                               contentDescription = stringResource(id = iconContentDescripResId)
-                          )
-                      }, modifier = modifier.fillMaxWidth()
+    OutlinedTextField(
+        value = value ?: "",
+        isError = !isValidData,
+        onValueChange = { email ->
+            onValueChange(email)
+        },
+        placeholder = {
+            Text(
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.bodyLarge,
+                text = stringResource(id = placeholderResId)
+            )
+        },
+        leadingIcon = {
+            Icon(
+                painter = painterResource(id = iconResId),
+                contentDescription = stringResource(id = iconContentDescripResId)
+            )
+        }, modifier = modifier.fillMaxWidth()
     )
 }
 

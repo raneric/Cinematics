@@ -1,6 +1,5 @@
 package com.sgg.cinematics.ui.screen.movieList
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -9,14 +8,19 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -62,6 +66,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -71,10 +76,10 @@ import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.ui.CinematicsAppState
 import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
+import com.sgg.cinematics.ui.components.CarouselMovieCard
 import com.sgg.cinematics.ui.components.EmptyListScreen
 import com.sgg.cinematics.ui.components.MovieCad
 import com.sgg.cinematics.ui.components.MovieCadWithCL
-import com.sgg.cinematics.ui.components.VerticalMovieCard
 import com.sgg.cinematics.ui.screen.details.navigateToDetailsScreen
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.utils.MovieListFilter
@@ -97,10 +102,10 @@ const val SHARD_ANIM_KEY = "shared_anim_key"
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieListScreen(
-        cinematicsAppState: CinematicsAppState,
-        movieList: ImmutableList<MovieModel>,
-        modifier: Modifier = Modifier,
-        movieListViewModel: MovieListViewModel
+    cinematicsAppState: CinematicsAppState,
+    movieList: ImmutableList<MovieModel>,
+    modifier: Modifier = Modifier,
+    movieListViewModel: MovieListViewModel
 ) {
     val coroutineScope = rememberCoroutineScope()
     val movieListUiMode by movieListViewModel.uiListMode.collectAsStateWithLifecycle(initialValue = MovieListUiMode.ListView)
@@ -117,52 +122,61 @@ fun MovieListScreen(
     if (cinematicsAppState.windowWidthSizeClass == WindowWidthSizeClass.Compact) {
         Box(modifier = modifier.fillMaxHeight()) {
             SharedTransitionLayout {
-                AnimatedContent(targetState = movieListUiMode,
-                                label = "Movie list animation") { uiMode ->
+                AnimatedContent(
+                    targetState = movieListUiMode,
+                    label = "Movie list animation"
+                ) { uiMode ->
                     when (uiMode) {
-                        MovieListUiMode.ListView     -> {
-                            VerticalMovieListScreen(
-                                    movieList = movieList.toImmutableList(),
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    modifier = Modifier.testTag(movieListUiMode.testTag)
+                        MovieListUiMode.ListView -> {
+                            ColumnMovieListScreen(
+                                movieList = movieList.toImmutableList(),
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                                modifier = Modifier.testTag(movieListUiMode.testTag)
                             ) { movieId ->
-                                navigateToDetailsScreen(movieId = movieId,
-                                                        navController = cinematicsAppState.navController)
+                                cinematicsAppState.navController.navigateToDetailsScreen(movieId = movieId)
                             }
                         }
 
                         MovieListUiMode.CarouselView -> {
-                            HorizontalMovieListScreen(
-                                    movieList = movieList.toImmutableList(),
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    modifier = Modifier.testTag(movieListUiMode.testTag)
+                            CarouselMovieListScreen(
+                                movieList = movieList.toImmutableList(),
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                                modifier = Modifier.testTag(movieListUiMode.testTag)
                             ) { movieId ->
-                                navigateToDetailsScreen(movieId = movieId,
-                                                        navController = cinematicsAppState.navController)
+                                cinematicsAppState.navController.navigateToDetailsScreen(movieId = movieId)
                             }
                         }
                     }
                 }
             }
 
-            AnimatedVisibility(modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp),
-                               visible = movieList.isNotEmpty(),
-                               enter = scaleIn(animationSpec = spring(dampingRatio =
-                                                                      Spring.DampingRatioMediumBouncy))) {
+            AnimatedVisibility(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
+                visible = movieList.isNotEmpty(),
+                enter = scaleIn(
+                    animationSpec = spring(
+                        dampingRatio =
+                        Spring.DampingRatioMediumBouncy
+                    )
+                )
+            ) {
                 MovieDisplaySwitchFab(
-                        fabIcon = movieListUiMode.fabIcon) {
+                    fabIcon = movieListUiMode.fabIcon
+                ) {
                     coroutineScope.launch {
                         movieListViewModel.switchListViewMode(movieListUiMode.switch())
                     }
                 }
             }
 
-            FilterButton(onClick = { filterDialogVisibility = true },
-                         modifier = Modifier.align(Alignment.TopEnd))
+            FilterButton(
+                onClick = { filterDialogVisibility = true },
+                modifier = Modifier.align(Alignment.TopEnd)
+            )
 
             AnimatedVisibility(filterDialogVisibility) {
                 FilterDialog(onDismissRequest = { filterDialogVisibility = false },
@@ -170,19 +184,21 @@ fun MovieListScreen(
                              onOptionSelected = {
                                  selectedFilter = it
                                  movieListViewModel.loadRequiredMovieList(
-                                         destinationRoute = activeDestinationRoute,
-                                         filter = it)
+                                     destinationRoute = activeDestinationRoute,
+                                     filter = it
+                                 )
                              })
             }
         }
     } else {
         Box {
             GridMovieListScreen(movieList = movieList.toImmutableList()) { movieId ->
-                navigateToDetailsScreen(movieId = movieId,
-                                        navController = cinematicsAppState.navController)
+                cinematicsAppState.navController.navigateToDetailsScreen(movieId = movieId)
             }
-            FilterButton(onClick = {},
-                         modifier = Modifier.align(Alignment.TopEnd))
+            FilterButton(
+                onClick = {},
+                modifier = Modifier.align(Alignment.TopEnd)
+            )
         }
     }
 
@@ -198,12 +214,12 @@ fun MovieListScreen(
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun VerticalMovieListScreen(
-        movieList: ImmutableList<MovieModel>,
-        sharedTransitionScope: SharedTransitionScope,
-        animatedVisibilityScope: AnimatedVisibilityScope,
-        modifier: Modifier = Modifier,
-        onItemClicked: (Int) -> Unit
+fun ColumnMovieListScreen(
+    movieList: ImmutableList<MovieModel>,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier,
+    onItemClicked: (Int) -> Unit
 ) {
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -214,20 +230,20 @@ fun VerticalMovieListScreen(
     }
 
     Box {
-        LazyColumn(state = scrollState,
-                   modifier = modifier
+        LazyColumn(
+            state = scrollState,
+            modifier = modifier
         ) {
 
             itemsIndexed(items = movieList) { index, movie ->
-                Log.d("index_Debug", index.toString())
                 with(sharedTransitionScope) {
                     MovieCad(movie = movie,
                              modifier = Modifier
                                  .sharedBounds(
-                                         sharedContentState = rememberSharedContentState(key = "${SHARD_ANIM_KEY}_$index"),
-                                         animatedVisibilityScope = animatedVisibilityScope,
-                                         enter = slideInAndFadeInByIndex(index),
-                                         exit = slideOutAndFadeOutByIndex(index)
+                                     sharedContentState = rememberSharedContentState(key = "${SHARD_ANIM_KEY}_${movie.id}"),
+                                     animatedVisibilityScope = animatedVisibilityScope,
+                                     enter = slideInAndFadeInByIndex(index),
+                                     exit = slideOutAndFadeOutByIndex(index)
                                  )
                                  .testTag(stringResource(id = R.string.test_tag_card))
                                  .clickable {
@@ -236,10 +252,17 @@ fun VerticalMovieListScreen(
                 }
             }
         }
-        AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
-                           visible = showScrollButton,
-                           enter = fadeIn(),
-                           exit = fadeOut()
+        AnimatedVisibility(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            visible = showScrollButton,
+            enter = slideInVertically(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                )
+            )
+                    + fadeIn(),
+            exit = slideOutVertically() + fadeOut()
         ) {
             ScrollUpButton {
                 scope.launch {
@@ -252,7 +275,7 @@ fun VerticalMovieListScreen(
 
 /**
  * This composable use [HorizontalPager] to display movie list vertically with
- *  [VerticalMovieCard] composable
+ *  [CarouselMovieCard] composable
  *
  * @param movieList : List of the movie to display in the lazyColumn
  * @param modifier: A modifier with default value [Modifier]
@@ -261,12 +284,12 @@ fun VerticalMovieListScreen(
  */
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun HorizontalMovieListScreen(
-        movieList: ImmutableList<MovieModel>,
-        sharedTransitionScope: SharedTransitionScope,
-        animatedVisibilityScope: AnimatedVisibilityScope,
-        modifier: Modifier = Modifier,
-        onItemClicked: (Int) -> Unit
+fun CarouselMovieListScreen(
+    movieList: ImmutableList<MovieModel>,
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope,
+    modifier: Modifier = Modifier,
+    onItemClicked: (Int) -> Unit
 ) {
 
     val pageSate = rememberPagerState(pageCount = { movieList.size })
@@ -274,7 +297,6 @@ fun HorizontalMovieListScreen(
     if (movieList.isEmpty()) {
         EmptyListScreen()
     } else {
-
         Box(contentAlignment = Alignment.Center, modifier = modifier) {
             AnimatedContent(targetState = pageSate.currentPage,
                             label = stringResource(id = R.string.label_backdrop_animation),
@@ -284,20 +306,21 @@ fun HorizontalMovieListScreen(
                 BackDrop(imageUrl = movieList[it].picture)
             }
             HorizontalPager(
-                    state = pageSate,
-                    contentPadding = PaddingValues(horizontal = 100.dp),
-                    beyondViewportPageCount = 2,
-                    pageSize = PageSize.Fixed(300.dp),
-                    pageSpacing = 8.dp
+                state = pageSate,
+                contentPadding = PaddingValues(horizontal = 100.dp),
+                beyondViewportPageCount = 2,
+                pageSize = PageSize.Fixed(300.dp),
+                pageSpacing = 8.dp
             ) {
                 with(sharedTransitionScope) {
-                    VerticalMovieCard(movie = movieList[it],
+                    CarouselMovieCard(movie = movieList[it],
                                       modifier = Modifier
                                           .sharedBounds(
-                                                  rememberSharedContentState(key = "${SHARD_ANIM_KEY}_$it"),
-                                                  animatedVisibilityScope = animatedVisibilityScope,
-                                                  enter = fadeIn(),
-                                                  exit = fadeOut())
+                                              sharedContentState = rememberSharedContentState(
+                                                  key = "${SHARD_ANIM_KEY}_${movieList[it].id}"
+                                              ),
+                                              animatedVisibilityScope = animatedVisibilityScope
+                                          )
                                           .testTag(stringResource(id = R.string.test_tag_card))
                                           .clickable {
                                               onItemClicked(movieList[it].id)
@@ -310,15 +333,16 @@ fun HorizontalMovieListScreen(
 
 @Composable
 fun GridMovieListScreen(
-        movieList: ImmutableList<MovieModel>,
-        modifier: Modifier = Modifier,
-        onItemClicked: (Int) -> Unit
+    movieList: ImmutableList<MovieModel>,
+    modifier: Modifier = Modifier,
+    onItemClicked: (Int) -> Unit
 ) {
     val scrollState = rememberLazyGridState()
     val scope = rememberCoroutineScope()
     Box(modifier = modifier) {
-        LazyVerticalGrid(state = scrollState,
-                         columns = GridCells.Adaptive(minSize = 400.dp)
+        LazyVerticalGrid(
+            state = scrollState,
+            columns = GridCells.Adaptive(minSize = 400.dp)
         ) {
             items(movieList) {
                 MovieCadWithCL(movie = it,
@@ -329,10 +353,11 @@ fun GridMovieListScreen(
                                    })
             }
         }
-        AnimatedVisibility(modifier = Modifier.align(Alignment.BottomCenter),
-                           visible = scrollState.firstVisibleItemIndex != 0,
-                           enter = fadeIn() + scaleIn(),
-                           exit = fadeOut() + scaleOut()
+        AnimatedVisibility(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            visible = scrollState.firstVisibleItemIndex != 0,
+            enter = fadeIn() + scaleIn(),
+            exit = fadeOut() + scaleOut()
         ) {
             ScrollUpButton {
                 scope.launch {
@@ -350,8 +375,9 @@ fun ScrollUpButton(onClick: () -> Unit) {
         onClick()
     }) {
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            Icon(painter = painterResource(id = R.drawable.icon_arrow_circle_up_24px),
-                 contentDescription = ""
+            Icon(
+                painter = painterResource(id = R.drawable.icon_arrow_circle_up_24px),
+                contentDescription = ""
             )
             Text(text = stringResource(id = R.string.txt_scroll_up))
         }
@@ -360,29 +386,37 @@ fun ScrollUpButton(onClick: () -> Unit) {
 
 @Composable
 fun FilterDialog(
-        onDismissRequest: () -> Unit,
-        onOptionSelected: (MovieListFilter) -> Unit,
-        selectedOption: MovieListFilter,
-        modifier: Modifier = Modifier
+    onDismissRequest: () -> Unit,
+    onOptionSelected: (MovieListFilter) -> Unit,
+    selectedOption: MovieListFilter,
+    modifier: Modifier = Modifier
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Surface(shape = MaterialTheme.shapes.medium) {
-            Column(modifier = modifier
-                .selectableGroup()
-                .widthIn(max = 170.dp)
-                .padding(horizontal = 16.dp,
-                         vertical = 8.dp)) {
-                Text(text = "Filter by",
-                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                     style = MaterialTheme.typography.headlineSmall)
+            Column(
+                modifier = modifier
+                    .selectableGroup()
+                    .widthIn(max = 170.dp)
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 8.dp
+                    )
+            ) {
+                Text(
+                    text = "Filter by",
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    style = MaterialTheme.typography.headlineSmall
+                )
                 HorizontalDivider()
                 MovieListFilter.values()
                     .forEach { filter ->
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             RadioButton(selected = filter == selectedOption,
                                         onClick = { onOptionSelected(filter) })
-                            Text(text = stringResource(id = filter.labelStringResId),
-                                 style = MaterialTheme.typography.labelLarge)
+                            Text(
+                                text = stringResource(id = filter.labelStringResId),
+                                style = MaterialTheme.typography.labelLarge
+                            )
                         }
                     }
             }
@@ -392,14 +426,18 @@ fun FilterDialog(
 
 @Composable
 fun FilterButton(
-        onClick: () -> Unit,
-        modifier: Modifier = Modifier
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    IconButton(onClick = onClick,
-               modifier = modifier) {
-        Icon(painter = painterResource(id = R.drawable.icon_filter_list_24),
-             contentDescription = "",
-             modifier = Modifier.size(32.dp))
+    IconButton(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.icon_filter_list_24),
+            contentDescription = "",
+            modifier = Modifier.size(32.dp)
+        )
     }
 }
 
@@ -452,17 +490,22 @@ private fun FilterDialogPreview() {
 
 @Stable
 private fun slideInAndFadeInByIndex(index: Int): EnterTransition {
+    val animationSpec: FiniteAnimationSpec<IntOffset> = spring(
+        dampingRatio = Spring.DampingRatioLowBouncy,
+        stiffness = Spring.StiffnessLow
+    )
     return if (index % 2 == 0) {
-        slideInHorizontally { width -> width }
+        slideInHorizontally(animationSpec = animationSpec) { width -> width / 2 }
     } else {
-        slideInHorizontally { width -> -width }
+        slideInHorizontally(animationSpec = animationSpec)
     } + fadeIn()
 }
 
 private fun slideOutAndFadeOutByIndex(index: Int): ExitTransition {
+    val animationSpec: FiniteAnimationSpec<IntOffset> = tween(easing = LinearOutSlowInEasing)
     return if (index % 2 == 0) {
-        slideOutHorizontally { width -> width }
+        slideOutHorizontally(animationSpec = animationSpec) { width -> width }
     } else {
-        slideOutHorizontally { width -> -width }
+        slideOutHorizontally(animationSpec = animationSpec) { width -> -width }
     } + fadeOut()
 }

@@ -33,8 +33,8 @@ import com.sgg.cinematics.ui.ui.theme.md_theme_light_onPrimary
  */
 @Composable
 fun MovieCadWithCL(
-        movie: MovieModel,
-        modifier: Modifier = Modifier
+    movie: MovieModel,
+    modifier: Modifier = Modifier
 ) {
 
     Box(modifier = modifier.height(263.dp)) {
@@ -72,37 +72,40 @@ fun MovieCadWithCL(
 
 @Composable
 fun MovieCad(
-        movie: MovieModel,
-        modifier: Modifier = Modifier
+    movie: MovieModel,
+    modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier.height(263.dp),
-        contentAlignment = Alignment.BottomStart) {
+    Box(
+        modifier = modifier.height(263.dp),
+        contentAlignment = Alignment.BottomStart
+    ) {
         Poster(movie.picture)
-        Column(modifier = Modifier
-            .offset(x = dimensionResource(id = R.dimen.low_dp)),
-               verticalArrangement = Arrangement.Bottom
+        Column(
+            modifier = Modifier
+                .offset(x = dimensionResource(id = R.dimen.low_dp)),
+            verticalArrangement = Arrangement.Bottom
         ) {
             Text(
-                    text = movie.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    color = md_theme_light_onPrimary,
+                text = movie.title,
+                style = MaterialTheme.typography.titleLarge,
+                color = md_theme_light_onPrimary,
             )
             Spacer(modifier = Modifier.height(16.dp))
             MovieInfo(
-                    year = movie.year,
-                    duration = movie.displayedDuration,
-                    author = movie.author,
-                    compact = false,
+                year = movie.year,
+                duration = movie.displayedDuration,
+                author = movie.author,
+                compact = false,
             )
             Spacer(modifier = Modifier.height(32.dp))
             GenreRow(
-                    genres = movie.genres,
-                    compact = false,
+                genres = movie.genres,
+                compact = false,
             )
             Spacer(modifier = Modifier.height(16.dp))
             AverageRating(
-                    ratingStars = movie.stars,
-                    ratingValue = movie.ratingNote.toString(),
+                ratingStars = movie.stars,
+                ratingValue = movie.ratingNote.toString(),
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -117,23 +120,25 @@ fun MovieCad(
  */
 @Composable
 fun MovieCadRoundedBorder(
-        movie: MovieModel,
-        modifier: Modifier = Modifier
+    movie: MovieModel,
+    modifier: Modifier = Modifier
 ) {
-    MovieCadWithCL(movie = movie,
-                   modifier = modifier
-                       .clip(MaterialTheme.shapes.small)
+    MovieCadWithCL(
+        movie = movie,
+        modifier = modifier
+            .clip(MaterialTheme.shapes.small)
     )
 }
 
 @Composable
 fun MovieCadRoundedBorderCompact(
-        movie: MovieModel,
-        modifier: Modifier = Modifier
+    movie: MovieModel,
+    modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier
-        .size(width = 348.dp, height = 210.dp)
-        .clip(MaterialTheme.shapes.small)
+    Box(
+        modifier = modifier
+            .size(width = 348.dp, height = 210.dp)
+            .clip(MaterialTheme.shapes.small)
     ) {
         Poster(movie.picture)
         ConstraintLayout(modifier = Modifier.offset(x = 12.dp)) {
@@ -174,16 +179,18 @@ fun MovieCadRoundedBorderCompact(
  */
 @Composable
 fun Poster(
-        pictureUrl: String,
-        modifier: Modifier = Modifier
+    pictureUrl: String,
+    modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier
-        .height(263.dp)
+    Box(
+        modifier = modifier
+            .height(263.dp)
     ) {
-        AsyncImage(model = pictureUrl,
-                   alignment = Alignment.Center,
-                   contentScale = ContentScale.Crop,
-                   contentDescription = "", modifier = Modifier.matchParentSize()
+        AsyncImage(
+            model = pictureUrl,
+            alignment = Alignment.Center,
+            contentScale = ContentScale.Crop,
+            contentDescription = "", modifier = Modifier.matchParentSize()
         )
         GradientForeground(color = Color.Black, modifier = Modifier.height(263.dp))
     }

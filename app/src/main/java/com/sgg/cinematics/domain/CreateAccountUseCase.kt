@@ -16,15 +16,15 @@ const val USER_FILES_ROOT_FOLDER = "userFiles"
 
 @Singleton
 class CreateAccountUseCase @Inject constructor(
-        private val userInfoRepository: UserInfoRepository,
-        private val authService: AuthService,
-        private val firebaseStorage: FirebaseStorage
+    private val userInfoRepository: UserInfoRepository,
+    private val authService: AuthService,
+    private val firebaseStorage: FirebaseStorage
 ) {
 
     suspend operator fun invoke(
-            userInfo: UserModel,
-            authData: AuthData,
-            pictureProfileUri: Uri
+        userInfo: UserModel,
+        authData: AuthData,
+        pictureProfileUri: Uri
     ) {
         when (val createdUser = authService.createUser(authData)) {
             null -> {
@@ -40,8 +40,8 @@ class CreateAccountUseCase @Inject constructor(
     }
 
     private suspend fun uploadAndGetUrl(
-            pictureUri: Uri,
-            uid: String
+        pictureUri: Uri,
+        uid: String
     ): String? {
         var url: String? = null
         if (pictureUri != Uri.EMPTY) {

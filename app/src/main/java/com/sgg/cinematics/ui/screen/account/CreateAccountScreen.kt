@@ -97,9 +97,9 @@ import java.util.Objects
 
 @Composable
 fun CreateAccountScreen(
-        modifier: Modifier = Modifier,
-        onNavigateBack: () -> Unit,
-        navigateToUserProfile: () -> Unit
+    modifier: Modifier = Modifier,
+    onNavigateBack: () -> Unit,
+    navigateToUserProfile: () -> Unit
 ) {
 
     val scrollState = rememberScrollState()
@@ -134,27 +134,34 @@ fun CreateAccountScreen(
 
     LaunchedEffect(key1 = Unit) {
         launch {
-            pictureAnimatable.animateTo(targetValue = 1f,
-                                        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy))
+            pictureAnimatable.animateTo(
+                targetValue = 1f,
+                animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
+            )
         }
         launch {
-            leftOffsetAnimatable.animateTo(targetValue = 0f,
-                                           animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy))
+            leftOffsetAnimatable.animateTo(
+                targetValue = 0f,
+                animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy)
+            )
 
         }
         launch {
-            rightOffsetAnimatable.animateTo(targetValue = 0f,
-                                            animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy))
+            rightOffsetAnimatable.animateTo(
+                targetValue = 0f,
+                animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy)
+            )
         }
     }
 
     Box {
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp),
-               horizontalAlignment = Alignment.CenterHorizontally,
-               modifier = modifier
-                   .fillMaxSize()
-                   .padding(16.dp)
-                   .verticalScroll(scrollState)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .verticalScroll(scrollState)
         ) {
             ProfilePicture(modifier = Modifier.scale(pictureAnimatable.value),
                            photoUri = photoUri,
@@ -203,22 +210,26 @@ fun CreateAccountScreen(
 
             Row(modifier = Modifier.offset(x = leftOffsetAnimatable.value.dp)) {
                 Spacer(modifier = Modifier.size(32.dp))
-                Button(onClick = { viewModel.createAccount() },
-                       colors = ButtonDefaults.buttonColors(md_theme_light_secondary),
-                       shape = MaterialTheme.shapes.small,
-                       modifier = Modifier.fillMaxWidth()
+                Button(
+                    onClick = { viewModel.createAccount() },
+                    colors = ButtonDefaults.buttonColors(md_theme_light_secondary),
+                    shape = MaterialTheme.shapes.small,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(color = md_theme_light_onSecondary,
-                         style = MaterialTheme.typography.labelLarge,
-                         text = stringResource(id = R.string.txt_create_account_button)
+                    Text(
+                        color = md_theme_light_onSecondary,
+                        style = MaterialTheme.typography.labelLarge,
+                        text = stringResource(id = R.string.txt_create_account_button)
                     )
                 }
             }
         }
         BackNavigationFab(onNavigateBack = onNavigateBack)
-        AnimatedVisibility(visible = uiState.value is UiState.Loading,
-                           enter = fadeIn(),
-                           exit = fadeOut()) {
+        AnimatedVisibility(
+            visible = uiState.value is UiState.Loading,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
             LoadingScreen(modifier = Modifier.background(color = Color.Black.copy(alpha = 0.6f)))
         }
     }
@@ -233,9 +244,9 @@ fun CreateAccountScreen(
  */
 @Composable
 fun ProfilePicture(
-        photoUri: Uri,
-        onPictureUpdated: (Uri) -> Unit,
-        modifier: Modifier = Modifier
+    photoUri: Uri,
+    onPictureUpdated: (Uri) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
 
@@ -245,67 +256,72 @@ fun ProfilePicture(
         mutableStateOf(false)
     }
 
-    val photoPickerLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri ->
-        uri?.let {
-            onPictureUpdated(it)
+    val photoPickerLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.PickVisualMedia()) { uri ->
+            uri?.let {
+                onPictureUpdated(it)
+            }
         }
-    }
 
-    val cameraLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicture()) { approved ->
-        if (approved) {
-            onPictureUpdated(photoFileUri)
-        } else {
-            Toast.makeText(context, R.string.txt_error_permission, Toast.LENGTH_SHORT)
-                .show()
+    val cameraLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.TakePicture()) { approved ->
+            if (approved) {
+                onPictureUpdated(photoFileUri)
+            } else {
+                Toast.makeText(context, R.string.txt_error_permission, Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
-    }
 
-    val permissionLauncher = rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) { approved ->
-        if (approved) {
-            cameraLauncher.launch(photoFileUri)
-        } else {
-            Toast.makeText(context, R.string.txt_error_permission, Toast.LENGTH_SHORT)
-                .show()
+    val permissionLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.RequestPermission()) { approved ->
+            if (approved) {
+                cameraLauncher.launch(photoFileUri)
+            } else {
+                Toast.makeText(context, R.string.txt_error_permission, Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
-    }
 
     Box(modifier = modifier.padding(8.dp)) {
-        AsyncImage(modifier = Modifier
-            .size(200.dp)
-            .clip(CircleShape)
-            .border(BorderStroke(4.dp, MaterialTheme.colorScheme.outline), CircleShape)
-            .padding(4.dp)
-            .align(alignment = Alignment.Center),
-                   model = ImageRequest.Builder(LocalContext.current)
-                       .crossfade(true)
-                       .placeholder(R.drawable.default_user_profile)
-                       .data(photoUri)
-                       .build(),
-                   contentScale = ContentScale.Crop,
-                   contentDescription = ""
+        AsyncImage(
+            modifier = Modifier
+                .size(200.dp)
+                .clip(CircleShape)
+                .border(BorderStroke(4.dp, MaterialTheme.colorScheme.outline), CircleShape)
+                .padding(4.dp)
+                .align(alignment = Alignment.Center),
+            model = ImageRequest.Builder(LocalContext.current)
+                .crossfade(true)
+                .placeholder(R.drawable.default_user_profile)
+                .data(photoUri)
+                .build(),
+            contentScale = ContentScale.Crop,
+            contentDescription = ""
         )
         CameraButton(modifier = Modifier.align(alignment = Alignment.BottomEnd),
                      onButtonClick = { pickPhotoDialogIsVisible = true })
         if (pickPhotoDialogIsVisible) {
             PhotoPickerDialog(
-                    onCameraOptionClick = {
-                        photoFileUri = createFileUri(context)
-                        launchCamera(context = context,
-                                     photoFileUri = photoFileUri,
-                                     cameraLauncher = cameraLauncher,
-                                     permissionLauncher = permissionLauncher
+                onCameraOptionClick = {
+                    photoFileUri = createFileUri(context)
+                    launchCamera(
+                        context = context,
+                        photoFileUri = photoFileUri,
+                        cameraLauncher = cameraLauncher,
+                        permissionLauncher = permissionLauncher
+                    )
+                    pickPhotoDialogIsVisible = false
+                },
+                onPhotoPickerOptionClick = {
+                    photoPickerLauncher.launch(
+                        PickVisualMediaRequest(
+                            ActivityResultContracts.PickVisualMedia.ImageOnly
                         )
-                        pickPhotoDialogIsVisible = false
-                    },
-                    onPhotoPickerOptionClick = {
-                        photoPickerLauncher.launch(
-                                PickVisualMediaRequest(
-                                        ActivityResultContracts.PickVisualMedia.ImageOnly
-                                )
-                        )
-                        pickPhotoDialogIsVisible = false
-                    },
-                    onDismissRequest = { pickPhotoDialogIsVisible = false }
+                    )
+                    pickPhotoDialogIsVisible = false
+                },
+                onDismissRequest = { pickPhotoDialogIsVisible = false }
             )
         }
     }
@@ -313,34 +329,39 @@ fun ProfilePicture(
 
 @Composable
 fun PhotoPickerDialog(
-        onCameraOptionClick: () -> Unit,
-        onPhotoPickerOptionClick: () -> Unit,
-        onDismissRequest: () -> Unit,
-        modifier: Modifier = Modifier
+    onCameraOptionClick: () -> Unit,
+    onPhotoPickerOptionClick: () -> Unit,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Dialog(onDismissRequest = onDismissRequest) {
         Card {
-            Column(modifier = modifier.padding(8.dp),
-                   horizontalAlignment = Alignment.CenterHorizontally
+            Column(
+                modifier = modifier.padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                OutlinedButton(modifier = Modifier.fillMaxWidth(),
-                               shape = MaterialTheme.shapes.small,
-                               onClick = onCameraOptionClick
+                OutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.small,
+                    onClick = onCameraOptionClick
                 ) {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Icon(painter = painterResource(id = R.drawable.icon_camera_24px),
-                             contentDescription = ""
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_camera_24px),
+                            contentDescription = ""
                         )
                         Text(text = stringResource(id = R.string.txt_camera_option))
                     }
                 }
-                OutlinedButton(modifier = Modifier.fillMaxWidth(),
-                               shape = MaterialTheme.shapes.small,
-                               onClick = onPhotoPickerOptionClick
+                OutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = MaterialTheme.shapes.small,
+                    onClick = onPhotoPickerOptionClick
                 ) {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        Icon(painter = painterResource(id = R.drawable.icon_upload_24px),
-                             contentDescription = ""
+                        Icon(
+                            painter = painterResource(id = R.drawable.icon_upload_24px),
+                            contentDescription = ""
                         )
                         Text(text = stringResource(id = R.string.txt_upload_option))
                     }
@@ -359,25 +380,27 @@ fun PhotoPickerDialog(
  */
 @Composable
 fun UserFullName(
-        userInfo: UserModel,
-        onValueChange: (UserModel) -> Unit,
-        modifier: Modifier = Modifier,
+    userInfo: UserModel,
+    onValueChange: (UserModel) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Row(modifier = modifier,
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Icon(tint = MaterialTheme.colorScheme.onSurface,
-             painter = painterResource(id = R.drawable.icon_profile_24),
-             contentDescription = ""
+        Icon(
+            tint = MaterialTheme.colorScheme.onSurface,
+            painter = painterResource(id = R.drawable.icon_profile_24),
+            contentDescription = ""
         )
         Column {
             OutlinedTextField(value = userInfo.firstName,
                               modifier = Modifier.fillMaxWidth(),
                               label = {
                                   Text(
-                                          text = stringResource(id = R.string.label_first_name),
-                                          style = MaterialTheme.typography.bodyLarge
+                                      text = stringResource(id = R.string.label_first_name),
+                                      style = MaterialTheme.typography.bodyLarge
                                   )
                               },
                               onValueChange = { firstName ->
@@ -387,8 +410,8 @@ fun UserFullName(
                               modifier = Modifier.fillMaxWidth(),
                               label = {
                                   Text(
-                                          text = stringResource(id = R.string.label_last_name),
-                                          style = MaterialTheme.typography.bodyLarge
+                                      text = stringResource(id = R.string.label_last_name),
+                                      style = MaterialTheme.typography.bodyLarge
                                   )
                               },
                               onValueChange = { lastName ->
@@ -408,18 +431,20 @@ fun UserFullName(
  */
 @Composable
 fun UserEmail(
-        userInfo: UserModel,
-        emailValidation: (String) -> Boolean,
-        onValueChange: (UserModel) -> Unit,
-        modifier: Modifier = Modifier
+    userInfo: UserModel,
+    emailValidation: (String) -> Boolean,
+    onValueChange: (UserModel) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier,
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Icon(tint = MaterialTheme.colorScheme.onSurface,
-             painter = painterResource(id = R.drawable.icon_mail_24px),
-             contentDescription = ""
+        Icon(
+            tint = MaterialTheme.colorScheme.onSurface,
+            painter = painterResource(id = R.drawable.icon_mail_24px),
+            contentDescription = ""
         )
         ControlledOutlinedTextField(value = userInfo.email,
                                     iconResId = R.drawable.icon_mail_24px,
@@ -444,9 +469,9 @@ fun UserEmail(
  */
 @Composable
 fun PasswordInputs(
-        authData: AuthData,
-        onValueChange: (AuthData) -> Unit,
-        modifier: Modifier = Modifier
+    authData: AuthData,
+    onValueChange: (AuthData) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     val passwordConfirmation = remember {
@@ -454,24 +479,32 @@ fun PasswordInputs(
     }
 
     val passwordError = remember {
-        mutableStateOf(InputError(haveError = false,
-                                  messageResourceId = R.string.password_pattern_error)
+        mutableStateOf(
+            InputError(
+                haveError = false,
+                messageResourceId = R.string.password_pattern_error
+            )
         )
     }
 
     val confirmationPasswordError = remember {
-        mutableStateOf(InputError(haveError = false,
-                                  messageResourceId = R.string.password_confirmation_error)
+        mutableStateOf(
+            InputError(
+                haveError = false,
+                messageResourceId = R.string.password_confirmation_error
+            )
         )
     }
 
-    Row(modifier = modifier,
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Icon(tint = MaterialTheme.colorScheme.onSurface,
-             painter = painterResource(id = R.drawable.icon_key_24px),
-             contentDescription = ""
+        Icon(
+            tint = MaterialTheme.colorScheme.onSurface,
+            painter = painterResource(id = R.drawable.icon_key_24px),
+            contentDescription = ""
         )
         Column {
             PasswordTextFieldWrapper(value = authData.password,
@@ -480,7 +513,8 @@ fun PasswordInputs(
                                      placeHolder = stringResource(id = R.string.placeholder_password),
                                      onPasswordChange = { password ->
                                          onValueChange(authData.copy(password = password))
-                                         passwordError.value.haveError = !validatePassword(authData.password)
+                                         passwordError.value.haveError =
+                                             !validatePassword(authData.password)
                                      })
             PasswordTextFieldWrapper(value = passwordConfirmation.value,
                                      isError = confirmationPasswordError.value.haveError,
@@ -488,7 +522,8 @@ fun PasswordInputs(
                                      placeHolder = stringResource(id = R.string.placeholder_confirm_password),
                                      onPasswordChange = {
                                          passwordConfirmation.value = it
-                                         confirmationPasswordError.value.haveError = passwordConfirmation.value != authData.password
+                                         confirmationPasswordError.value.haveError =
+                                             passwordConfirmation.value != authData.password
                                      })
         }
     }
@@ -504,9 +539,9 @@ fun PasswordInputs(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BirthDatePicker(
-        userInfo: UserModel,
-        onDateSelected: (UserModel) -> Unit,
-        modifier: Modifier = Modifier,
+    userInfo: UserModel,
+    onDateSelected: (UserModel) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
 
     var selectedValue by remember {
@@ -525,19 +560,22 @@ fun BirthDatePicker(
 
     val displayedDate = if (userInfo.birthDate == null) "" else userInfo.displayedBirthDate
 
-    Row(modifier = modifier,
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Icon(tint = MaterialTheme.colorScheme.onSurface,
-             painter = painterResource(id = R.drawable.icon_birth_24px),
-             contentDescription = ""
+        Icon(
+            tint = MaterialTheme.colorScheme.onSurface,
+            painter = painterResource(id = R.drawable.icon_birth_24px),
+            contentDescription = ""
         )
 
         OutlinedTextField(modifier = Modifier.weight(0.9f),
                           label = {
-                              Text(text = stringResource(id = R.string.label_birth_date),
-                                   style = MaterialTheme.typography.bodyLarge
+                              Text(
+                                  text = stringResource(id = R.string.label_birth_date),
+                                  style = MaterialTheme.typography.bodyLarge
                               )
                           },
                           value = displayedDate,
@@ -547,8 +585,9 @@ fun BirthDatePicker(
                    onClick = {
                        datePickerDialogIsVisible = true
                    }) {
-            Icon(painter = painterResource(id = R.drawable.icon_calendar_24px),
-                 contentDescription = ""
+            Icon(
+                painter = painterResource(id = R.drawable.icon_calendar_24px),
+                contentDescription = ""
             )
         }
 
@@ -575,17 +614,19 @@ fun BirthDatePicker(
 
 @Composable
 fun GenderInput(
-        userInfo: UserModel,
-        onValueChange: (UserModel) -> Unit,
-        modifier: Modifier = Modifier
+    userInfo: UserModel,
+    onValueChange: (UserModel) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier,
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Icon(tint = MaterialTheme.colorScheme.onSurface,
-             painter = painterResource(id = R.drawable.icon_men_24px),
-             contentDescription = ""
+        Icon(
+            tint = MaterialTheme.colorScheme.onSurface,
+            painter = painterResource(id = R.drawable.icon_men_24px),
+            contentDescription = ""
         )
         CustomDropdownMenu(modifier = Modifier.fillMaxWidth(),
                            selectedValue = userInfo.gender ?: "",
@@ -601,34 +642,39 @@ fun GenderInput(
 
 @Composable
 fun Location(
-        onValueChange: (String) -> Unit,
-        modifier: Modifier = Modifier
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier,
+    Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Icon(tint = MaterialTheme.colorScheme.onSurface,
-             painter = painterResource(id = R.drawable.icon_home_pin_24px),
-             contentDescription = ""
+        Icon(
+            tint = MaterialTheme.colorScheme.onSurface,
+            painter = painterResource(id = R.drawable.icon_home_pin_24px),
+            contentDescription = ""
         )
-        OutlinedTextField(value = "",
-                          modifier = Modifier.fillMaxWidth(),
-                          label = {
-                              Text(text = stringResource(id = R.string.label_location),
-                                   style = MaterialTheme.typography.bodyLarge
-                              )
-                          },
-                          trailingIcon = {
-                              IconButton(onClick = {
-                                  //TODO implement reverse geocoding
-                              }) {
-                                  Icon(painter = painterResource(id = R.drawable.icon_my_location_24px),
-                                       contentDescription = ""
-                                  )
-                              }
-                          },
-                          onValueChange = onValueChange
+        OutlinedTextField(
+            value = "",
+            modifier = Modifier.fillMaxWidth(),
+            label = {
+                Text(
+                    text = stringResource(id = R.string.label_location),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
+            trailingIcon = {
+                IconButton(onClick = {
+                    //TODO implement reverse geocoding
+                }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.icon_my_location_24px),
+                        contentDescription = ""
+                    )
+                }
+            },
+            onValueChange = onValueChange
         )
     }
 }
@@ -663,8 +709,8 @@ private fun PhotoPickerDialogPreview() {
 private fun createFileUri(context: Context): Uri {
     val file = context.createImageFile()
     return FileProvider.getUriForFile(
-            Objects.requireNonNull(context),
-            BuildConfig.APPLICATION_ID + ".provider", file
+        Objects.requireNonNull(context),
+        BuildConfig.APPLICATION_ID + ".provider", file
     )
 }
 
@@ -674,20 +720,21 @@ private fun Context.createImageFile(): File {
             .currentDateAsString()
     }"
     return File.createTempFile(
-            fileName,
-            ".jpg",
-            externalCacheDir
+        fileName,
+        ".jpg",
+        externalCacheDir
     )
 }
 
 private fun launchCamera(
-        context: Context,
-        photoFileUri: Uri,
-        cameraLauncher: ActivityResultLauncher<Uri>,
-        permissionLauncher: ActivityResultLauncher<String>
+    context: Context,
+    photoFileUri: Uri,
+    cameraLauncher: ActivityResultLauncher<Uri>,
+    permissionLauncher: ActivityResultLauncher<String>
 ) {
-    val permissionCheckResult = ContextCompat.checkSelfPermission(context,
-                                                                  Manifest.permission.CAMERA
+    val permissionCheckResult = ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.CAMERA
     )
     if (permissionCheckResult == PackageManager.PERMISSION_GRANTED) {
         cameraLauncher.launch(photoFileUri)

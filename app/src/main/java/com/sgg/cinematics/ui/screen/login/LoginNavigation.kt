@@ -46,28 +46,38 @@ fun NavGraphBuilder.loginScreen(navController: NavHostController) {
                     login = { loginViewModel.login() },
                     onNavigateBack = {
                         navController.popBackStack(
-                                route = Destination.AllMoviesScreen.route,
-                                inclusive = false)
+                            route = Destination.AllMoviesScreen.route,
+                            inclusive = false
+                        )
                     },
                     onCreateAccountClick = { navController.navigate(Destination.CreateAccount.route) })
 
         AnimatedVisibility(
-                visible = loadingState.value is UiState.Loading, enter = fadeIn()
+            visible = loadingState.value is UiState.Loading, enter = fadeIn()
         ) {
             LoadingScreen(
-                    modifier = Modifier.background(
-                            color = Color.Black.copy(alpha = 0.6f)
-                    )
+                modifier = Modifier.background(
+                    color = Color.Black.copy(alpha = 0.6f)
+                )
             )
         }
         if (loadingState.value is UiState.Error) {
             Toast.makeText(
-                    LocalContext.current,
-                    (loadingState.value as UiState.Error).error,
-                    Toast.LENGTH_LONG
+                LocalContext.current,
+                (loadingState.value as UiState.Error).error,
+                Toast.LENGTH_LONG
             )
                 .show()
         }
-
     }
+}
+
+fun NavHostController.navigateToLoginScreen() {
+    val startDestinationId = this.graph.startDestinationId
+    navigate(route = Destination.LoginScreen.route,
+             builder = {
+                 popUpTo(startDestinationId) {
+                     saveState = true
+                 }
+             })
 }

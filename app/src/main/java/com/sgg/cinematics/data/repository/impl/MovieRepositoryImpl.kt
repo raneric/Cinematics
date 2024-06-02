@@ -14,7 +14,7 @@ import javax.inject.Inject
 const val MOVIE_COLLECTION = "movies"
 
 class MovieRepositoryImpl @Inject constructor(private val firestore: FirebaseFirestore) :
-        MovieRepository {
+    MovieRepository {
     override fun getAllMovies(movieListFilter: MovieListFilter): Flow<List<MovieModel>> {
         return when (movieListFilter) {
             MovieListFilter.TRENDING  -> getTrending()

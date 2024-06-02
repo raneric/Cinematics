@@ -9,12 +9,12 @@ interface AuthService {
     val connectedUser: Flow<FirebaseUser?>
 
     suspend fun signInWithEmailAndPassword(
-            email: String,
-            password: String
+        email: String,
+        password: String
     )
 
     suspend fun createUser(
-            authData: AuthData
+        authData: AuthData
     ): FirebaseUser?
 
     fun signOut()

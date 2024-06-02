@@ -88,6 +88,7 @@
 
     <string name="password_confirmation_error">Password doesn\'t match</string>
     <string name="password_pattern_error">Password must have uppercase, lowercase, digit and special characters and at least 8 characters</string>
+    <string name="login_request">You must be logged in or create account to see your watch list</string>
 
     <string-array name="gender_list">
         <item>Male</item>

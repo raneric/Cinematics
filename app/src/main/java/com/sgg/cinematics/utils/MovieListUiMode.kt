@@ -13,12 +13,14 @@ sealed class MovieListUiMode(
         CarouselView -> ListView
     }
 
-    object ListView : MovieListUiMode(fabIcon = R.drawable.view_carousel_32,
-                                      testTag = "list_view_mode"
+    object ListView : MovieListUiMode(
+        fabIcon = R.drawable.view_carousel_32,
+        testTag = "list_view_mode"
     )
 
-    object CarouselView : MovieListUiMode(fabIcon = R.drawable.view_list_32,
-                                          testTag = "carousel_view_mode"
+    object CarouselView : MovieListUiMode(
+        fabIcon = R.drawable.view_list_32,
+        testTag = "carousel_view_mode"
     )
 
 }

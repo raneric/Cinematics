@@ -14,8 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
-        private val userInfoRepository: UserInfoRepository,
-        authService: AuthService
+    private val userInfoRepository: UserInfoRepository,
+    authService: AuthService
 ) : MainViewModel(authService) {
 
     private var _uiState = MutableStateFlow<UiState>(UiState.Init)
@@ -30,7 +30,8 @@ class UserProfileViewModel @Inject constructor(
         _uiState.value = UiState.Loading
         viewModelScope.launch() {
             _user.emit(userInfoRepository.getUserInfo(uid))
-            _uiState.value = if (user.value == null) UiState.Error("Failed to fetch user Info") else UiState.Success
+            _uiState.value =
+                if (user.value == null) UiState.Error("Failed to fetch user Info") else UiState.Success
         }
     }
 }

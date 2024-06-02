@@ -31,8 +31,12 @@ object DataStoreModule {
             corruptionHandler = ReplaceFileCorruptionHandler(
                 produceNewData = { emptyPreferences() }
             ),
-            migrations = listOf(SharedPreferencesMigration(context = context,
-                                                           sharedPreferencesName = UI_STATE_PREFERENCES)),
+            migrations = listOf(
+                SharedPreferencesMigration(
+                    context = context,
+                    sharedPreferencesName = UI_STATE_PREFERENCES
+                )
+            ),
             scope = CoroutineScope(Dispatchers.IO + SupervisorJob()),
             produceFile = { context.preferencesDataStoreFile(UI_STATE_PREFERENCES) }
         )

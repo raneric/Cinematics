@@ -18,7 +18,7 @@ object FirebaseModule {
 
     @Provides
     fun provideFirebaseAuth() = Firebase.auth
-    
+
     @Provides
     fun provideFirebaseStorage() = Firebase.storage
 }

@@ -20,11 +20,13 @@ class MainActivity : ComponentActivity() {
         setContent {
 
             val windowSizeClass = calculateWindowSizeClass(activity = this)
-            val cinematicsAppState = rememberCinematicsAppState(windowWidthSizeClass = windowSizeClass.widthSizeClass)
+            val cinematicsAppState =
+                rememberCinematicsAppState(windowWidthSizeClass = windowSizeClass.widthSizeClass)
 
             CinematicsTheme {
                 CinematicsAppScreen(cinematicsAppState = cinematicsAppState)
             }
+
         }
     }
 }

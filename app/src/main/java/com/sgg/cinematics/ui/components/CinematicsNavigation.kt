@@ -22,9 +22,9 @@ import com.sgg.cinematics.utils.Destination
 
 
 private val navItemList = listOf(
-        NavItemVariant.Trending,
-        NavItemVariant.WatchList,
-        NavItemVariant.UserProfile
+    NavItemVariant.Trending,
+    NavItemVariant.WatchList,
+    NavItemVariant.UserProfile
 )
 
 /**
@@ -37,9 +37,9 @@ private val navItemList = listOf(
  */
 @Composable
 fun BottomNavScreen(
-        modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_bottom_nav)),
-        activeNavItem: NavItemVariant,
-        onDestinationChanged: (Destination) -> Unit,
+    modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_bottom_nav)),
+    activeNavItem: NavItemVariant,
+    onDestinationChanged: (Destination) -> Unit,
 ) {
     NavigationBar(modifier = modifier, tonalElevation = 5.dp) {
         navItemList.take(5)
@@ -47,8 +47,8 @@ fun BottomNavScreen(
                 NavigationBarItem(selected = navItem == activeNavItem,
                                   icon = {
                                       Icon(
-                                              painter = painterResource(id = navItem.iconId),
-                                              contentDescription = stringResource(id = navItem.iconContentDescription)
+                                          painter = painterResource(id = navItem.iconId),
+                                          contentDescription = stringResource(id = navItem.iconContentDescription)
                                       )
                                   },
                                   label = { Text(text = stringResource(id = navItem.textId)) },
@@ -61,23 +61,23 @@ fun BottomNavScreen(
 
 @Composable
 fun CinematicsNavigationRail(
-        modifier: Modifier = Modifier,
-        activeNavItem: NavItemVariant,
-        onDestinationChanged: (Destination) -> Unit,
+    modifier: Modifier = Modifier,
+    activeNavItem: NavItemVariant,
+    onDestinationChanged: (Destination) -> Unit,
 ) {
     NavigationRail(modifier = modifier.padding(vertical = 50.dp)) {
         navItemList.forEach { navItem ->
             NavigationRailItem(
-                    selected = navItem == activeNavItem,
-                    onClick = {
-                        onDestinationChanged(navItem.destination)
-                    },
-                    icon = {
-                        Icon(
-                                painter = painterResource(id = navItem.iconId),
-                                contentDescription = stringResource(id = navItem.iconContentDescription)
-                        )
-                    }
+                selected = navItem == activeNavItem,
+                onClick = {
+                    onDestinationChanged(navItem.destination)
+                },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = navItem.iconId),
+                        contentDescription = stringResource(id = navItem.iconContentDescription)
+                    )
+                }
             )
         }
     }
@@ -92,30 +92,30 @@ fun CinematicsNavigationRail(
  * @param route: String rout for the navigation destination
  */
 sealed class NavItemVariant(
-        @StringRes val textId: Int,
-        @StringRes val iconContentDescription: Int,
-        @DrawableRes val iconId: Int,
-        val destination: Destination
+    @StringRes val textId: Int,
+    @StringRes val iconContentDescription: Int,
+    @DrawableRes val iconId: Int,
+    val destination: Destination
 ) {
     object Trending : NavItemVariant(
-            textId = R.string.txt_trending,
-            iconContentDescription = R.string.content_descrip_trending,
-            iconId = R.drawable.icon_trending_24,
-            destination = Destination.AllMoviesScreen
+        textId = R.string.txt_trending,
+        iconContentDescription = R.string.content_descrip_trending,
+        iconId = R.drawable.icon_trending_24,
+        destination = Destination.AllMoviesScreen
     )
 
     object WatchList : NavItemVariant(
-            textId = R.string.txt_watch_list,
-            iconContentDescription = R.string.content_descrip_watch_list,
-            iconId = R.drawable.icon_watch_list_24,
-            destination = Destination.WatchListScreen
+        textId = R.string.txt_watch_list,
+        iconContentDescription = R.string.content_descrip_watch_list,
+        iconId = R.drawable.icon_watch_list_24,
+        destination = Destination.WatchListScreen
     )
 
     object UserProfile : NavItemVariant(
-            textId = R.string.txt_user_profile,
-            iconContentDescription = R.string.content_descrip_user_profile,
-            iconId = R.drawable.icon_profile_24,
-            destination = Destination.UserProfileScreen
+        textId = R.string.txt_user_profile,
+        iconContentDescription = R.string.content_descrip_user_profile,
+        iconId = R.drawable.icon_profile_24,
+        destination = Destination.UserProfileScreen
     )
 }
 
@@ -135,7 +135,7 @@ fun BottomNavScreenPreview() {
 fun CinematicsNavigationRailPreview() {
     CinematicsTheme {
         CinematicsNavigationRail(
-                activeNavItem = navItemList[0],
-                onDestinationChanged = {})
+            activeNavItem = navItemList[0],
+            onDestinationChanged = {})
     }
 }

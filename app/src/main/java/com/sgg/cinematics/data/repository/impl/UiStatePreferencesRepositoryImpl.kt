@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Singleton
 class UiStatePreferencesRepositoryImpl @Inject constructor(private val dataStore: DataStore<Preferences>) :
-        PreferenceRepository {
+    PreferenceRepository {
 
     override val movieListUiModeFlow = dataStore.data.catch { exception ->
         if (exception is IOException) {

@@ -41,13 +41,13 @@ fun NavDestination.activeNavItem(): NavItemVariant {
 
 fun NavDestination.isInBottomNavDestination(): Boolean {
     return this.route == Destination.AllMoviesScreen.route ||
-           this.route == Destination.WatchListScreen.route ||
-           this.route == Destination.UserProfileScreen.route
+            this.route == Destination.WatchListScreen.route ||
+            this.route == Destination.UserProfileScreen.route
 }
 
 fun NavDestination.isIntListDestination(): Boolean {
     return this.route == Destination.AllMoviesScreen.route ||
-           this.route == Destination.WatchListScreen.route
+            this.route == Destination.WatchListScreen.route
 }
 
 fun NavHostController.navigateIfNotMovieList(navItem: NavItemVariant) {
@@ -58,5 +58,5 @@ fun NavHostController.navigateIfNotMovieList(navItem: NavItemVariant) {
 
 fun NavItemVariant.isInMovieList(): Boolean {
     return this == NavItemVariant.Trending ||
-           this == NavItemVariant.WatchList
+            this == NavItemVariant.WatchList
 }

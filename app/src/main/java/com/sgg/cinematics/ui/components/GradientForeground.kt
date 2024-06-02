@@ -12,8 +12,10 @@ import androidx.compose.ui.graphics.Color
  * A gradient shade composable used as shade
  */
 @Composable
-fun GradientForeground(color: Color,
-                       modifier: Modifier = Modifier) {
+fun GradientForeground(
+    color: Color,
+    modifier: Modifier = Modifier
+) {
     val colorStop = arrayOf(
         0.0f to Color.Transparent,
         0.3f to color.copy(alpha = 0.3f),
@@ -21,8 +23,10 @@ fun GradientForeground(color: Color,
         1f to color
     )
     val brush = Brush.verticalGradient(colorStops = colorStop)
-    Box(modifier = modifier
+    Box(
+        modifier = modifier
             .fillMaxWidth()
-            .background(brush)) {
+            .background(brush)
+    ) {
     }
 }

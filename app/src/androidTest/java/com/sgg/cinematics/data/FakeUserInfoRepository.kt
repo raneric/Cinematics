@@ -24,8 +24,8 @@ class FakeUserInfoRepository @Inject constructor() : UserInfoRepository {
     }
 
     override suspend fun getWatchList(
-            uid: String,
-            movieListFilter: MovieListFilter
+        uid: String,
+        movieListFilter: MovieListFilter
     ): List<MovieModel> {
         return fakeUserInfo.watchList
     }
@@ -37,23 +37,23 @@ class FakeUserInfoRepository @Inject constructor() : UserInfoRepository {
     }
 
     override suspend fun isInWatchList(
-            uid: String,
-            movieModel: MovieModel
+        uid: String,
+        movieModel: MovieModel
     ): Boolean {
         return fakeUserInfo.watchList.find { it.id == movieModel.id } != null
     }
 }
 
 private var fakeUserInfo = UserModel(
-        id = "1213",
-        firstName = "John",
-        lastName = "Doe",
-        email = "test@test.ts",
-        location = "Antananarivo",
-        birthDate = LocalDate.of(1989, 8, 23)
-            .toMillis(),
-        bio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue.",
-        gender = "Male",
-        pictureUrl = null,
-        watchList = mutableListOf()
+    id = "1213",
+    firstName = "John",
+    lastName = "Doe",
+    email = "test@test.ts",
+    location = "Antananarivo",
+    birthDate = LocalDate.of(1989, 8, 23)
+        .toMillis(),
+    bio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue.",
+    gender = "Male",
+    pictureUrl = null,
+    watchList = mutableListOf()
 )

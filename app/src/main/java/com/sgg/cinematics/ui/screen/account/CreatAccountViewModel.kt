@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreatAccountViewModel @Inject constructor(
-        private val createAccountUseCase: CreateAccountUseCase
+    private val createAccountUseCase: CreateAccountUseCase
 ) : ViewModel() {
 
     var uiState = mutableStateOf<UiState>(UiState.Init)
@@ -50,9 +50,11 @@ class CreatAccountViewModel @Inject constructor(
             uiState.value = UiState.Error(throwable.message.toString())
         }
         viewModelScope.launch(exeptionHandler) {
-            createAccountUseCase(userInfo = userInfo,
-                                 authData = authData,
-                                 pictureProfileUri = profilePictureUri)
+            createAccountUseCase(
+                userInfo = userInfo,
+                authData = authData,
+                pictureProfileUri = profilePictureUri
+            )
             uiState.value = UiState.Success
         }
     }

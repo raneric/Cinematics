@@ -20,38 +20,43 @@ import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun CinematicsNavHost(
-        connectedUser: FirebaseUser?,
-        cinematicsAppState: CinematicsAppState,
-        movieList: ImmutableList<MovieModel>,
-        modifier: Modifier = Modifier,
-        movieListViewModel: MovieListViewModel
+    connectedUser: FirebaseUser?,
+    cinematicsAppState: CinematicsAppState,
+    movieList: ImmutableList<MovieModel>,
+    modifier: Modifier = Modifier,
+    movieListViewModel: MovieListViewModel
 ) {
 
     NavHost(
-            navController = cinematicsAppState.navController,
-            startDestination = Destination.AllMoviesScreen.route,
-            modifier = modifier,
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None }
+        navController = cinematicsAppState.navController,
+        startDestination = Destination.AllMoviesScreen.route,
+        modifier = modifier,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None }
     ) {
 
         trendingListScreen(
-                cinematicsAppState = cinematicsAppState,
-                movieList = movieList,
-                movieListViewModel = movieListViewModel
+            cinematicsAppState = cinematicsAppState,
+            movieList = movieList,
+            movieListViewModel = movieListViewModel
         )
 
         watchListScreen(
-                cinematicsAppState = cinematicsAppState,
-                movieList = movieList,
-                movieListViewModel = movieListViewModel
+            cinematicsAppState = cinematicsAppState,
+            movieList = movieList,
+            currentUser = connectedUser,
+            movieListViewModel = movieListViewModel
         )
 
-        detailsScreen(navController = cinematicsAppState.navController,
-                      connectedUser = connectedUser)
+        detailsScreen(
+            navController = cinematicsAppState.navController,
+            connectedUser = connectedUser
+        )
 
-        userProfileScreen(navController = cinematicsAppState.navController,
-                          currentUser = connectedUser)
+        userProfileScreen(
+            cinematicsAppState = cinematicsAppState,
+            currentUser = connectedUser
+        )
 
         loginScreen(cinematicsAppState.navController)
 

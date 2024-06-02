@@ -18,9 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsViewModel @Inject constructor(
-        private val movieRepository: MovieRepository,
-        private val userInfoRepository: UserInfoRepository,
-        authService: AuthService
+    private val movieRepository: MovieRepository,
+    private val userInfoRepository: UserInfoRepository,
+    authService: AuthService
 ) : MainViewModel(authService) {
 
     private var _detailsUiState = MutableStateFlow<UiState>(UiState.Loading)
@@ -34,14 +34,6 @@ class DetailsViewModel @Inject constructor(
     val selectedMovie
         get() = _selectedMovie.asStateFlow()
 
-    fun addToWatchList(movie: MovieModel) {
-        isInWatchList.value = true
-    }
-
-    fun removeToWatchList(movie: MovieModel) {
-        isInWatchList.value = false
-    }
-
     suspend fun loadMovieInfo(movieId: Int) {
         _detailsUiState.value = UiState.Loading
         try {
@@ -54,7 +46,7 @@ class DetailsViewModel @Inject constructor(
     }
 
     suspend fun loadIfInWatchList(
-            uid: String?
+        uid: String?
     ) {
         if (uid != null && _selectedMovie.value != null) {
             isInWatchList.value = userInfoRepository.isInWatchList(uid, _selectedMovie.value!!)
@@ -76,7 +68,7 @@ class DetailsViewModel @Inject constructor(
                     user?.apply {
                         val currentList = this.watchList.toMutableList()
                         if (isInWatchList.value) {
-                            currentList.remove(selectedMovie.value!!)
+                            currentList.removeIf { it.id == selectedMovie.value?.id }
                         } else {
                             currentList.add(selectedMovie.value!!)
                         }

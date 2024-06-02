@@ -20,8 +20,8 @@ import com.sgg.cinematics.utils.Destination
 const val MOVIE_ID_ARGS = "movieId"
 
 fun NavGraphBuilder.detailsScreen(
-        navController: NavHostController,
-        connectedUser: FirebaseUser?,
+    navController: NavHostController,
+    connectedUser: FirebaseUser?,
 ) {
     composable(route = Destination.DetailScreen.route,
                arguments = listOf(navArgument(MOVIE_ID_ARGS) { type = NavType.IntType }),
@@ -47,33 +47,33 @@ fun NavGraphBuilder.detailsScreen(
         ScreenWrapper(uiState = detailsUiState.value,
                       componentOnSuccess = {
                           DetailsScreen(
-                                  movie = uiData.value!!,
-                                  addOrRemoveToWatchList = {
-                                      detailsViewModel.addOrRemoveToWatchList(connectedUser?.uid)
-                                  },
-                                  onRecommendationItemClicked = { movieId ->
-                                      navigateToDetailsScreen(
-                                              movieId = movieId, navController = navController
-                                      )
-                                  },
-                                  onNavigateBack = {
-                                      navController.navigateUp()
-                                  },
-                                  modifier = Modifier.semantics {
-                                      contentDescription = Destination.DetailScreen.testTag
-                                  },
-                                  isInWatchList = movieIsInWatchList.value
+                              movie = uiData.value!!,
+                              addOrRemoveToWatchList = {
+                                  detailsViewModel.addOrRemoveToWatchList(connectedUser?.uid)
+                              },
+                              onRecommendationItemClicked = { movieId ->
+                                  navController.navigateToDetailsScreen(movieId = movieId)
+                              },
+                              onNavigateBack = {
+                                  navController.navigateUp()
+                              },
+                              modifier = Modifier.semantics {
+                                  contentDescription = Destination.DetailScreen.testTag
+                              },
+                              isInWatchList = movieIsInWatchList.value
                           )
-                      }, componentOnError = { })
+                      })
     }
 }
 
-fun navigateToDetailsScreen(
-        movieId: Int,
-        navController: NavHostController
+fun NavHostController.navigateToDetailsScreen(
+    movieId: Int,
 ) {
-    navController.navigate(route = Destination.DetailScreen.route.withMovieId(
-            movieId))
+    navigate(
+        route = Destination.DetailScreen.route.withMovieId(
+            movieId
+        )
+    )
 }
 
 private fun String.withMovieId(id: Int): String {

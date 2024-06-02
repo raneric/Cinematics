@@ -15,7 +15,7 @@ const val USER_COLLECTION = "userInfo"
 
 
 class UserInfoRepositoryImpl @Inject constructor(
-        private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore
 ) : UserInfoRepository {
     override suspend fun getUserInfo(uid: String): UserModel {
         return firestore.collection(USER_COLLECTION)
@@ -46,8 +46,8 @@ class UserInfoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getWatchList(
-            uid: String,
-            movieListFilter: MovieListFilter
+        uid: String,
+        movieListFilter: MovieListFilter
     ): List<MovieModel> {
         val userInfo = getUserInfo(uid)
         return when (movieListFilter) {
@@ -72,8 +72,8 @@ class UserInfoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun isInWatchList(
-            uid: String,
-            movieModel: MovieModel
+        uid: String,
+        movieModel: MovieModel
     ): Boolean {
         val userInfo = getUserInfo(uid)
         return userInfo.watchList.find { it.id == movieModel.id } != null

@@ -21,38 +21,40 @@ import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomDropdownMenu(
-        selectedValue: String,
-        optionList: List<String>,
-        textLabel: String,
-        onValueChange: (String) -> Unit,
-        modifier: Modifier = Modifier,
+    selectedValue: String,
+    optionList: List<String>,
+    textLabel: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var isExpanded by remember {
         mutableStateOf(false)
     }
 
     ExposedDropdownMenuBox(
-            modifier = modifier,
-            expanded = isExpanded,
-            onExpandedChange = { isExpanded = it }) {
+        modifier = modifier,
+        expanded = isExpanded,
+        onExpandedChange = { isExpanded = it }) {
         OutlinedTextField(
-                modifier = Modifier.menuAnchor(),
-                value = selectedValue,
-                label = {
-                    Text(text = textLabel,
-                         style = MaterialTheme.typography.bodyLarge)
-                },
-                readOnly = true,
-                onValueChange = {},
-                trailingIcon = {
-                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
-                }
+            modifier = Modifier.menuAnchor(),
+            value = selectedValue,
+            label = {
+                Text(
+                    text = textLabel,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
+            readOnly = true,
+            onValueChange = {},
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpanded)
+            }
         )
         ExposedDropdownMenu(
-                expanded = isExpanded,
-                onDismissRequest = {
-                    isExpanded = false
-                }) {
+            expanded = isExpanded,
+            onDismissRequest = {
+                isExpanded = false
+            }) {
             optionList.forEach { value ->
                 DropdownMenuItem(text = { Text(text = value) },
                                  onClick = {

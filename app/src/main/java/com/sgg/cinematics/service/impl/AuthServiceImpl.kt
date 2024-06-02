@@ -1,6 +1,5 @@
 package com.sgg.cinematics.service.impl
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.data.model.AuthData
@@ -22,19 +21,18 @@ class AuthServiceImpl @Inject constructor(private val firebaseAuth: FirebaseAuth
         }
 
     override suspend fun signInWithEmailAndPassword(
-            email: String,
-            password: String
+        email: String,
+        password: String
     ) {
         firebaseAuth.signInWithEmailAndPassword(email, password)
-            .addOnSuccessListener {
-                Log.d("LOGIN_DEBUG", "LOGIN SUCCESS with ${it.user?.email}")
-            }
             .await()
     }
 
     override suspend fun createUser(authData: AuthData): FirebaseUser? {
-        var authResult = firebaseAuth.createUserWithEmailAndPassword(authData.email,
-                                                                     authData.password)
+        var authResult = firebaseAuth.createUserWithEmailAndPassword(
+            authData.email,
+            authData.password
+        )
             .addOnFailureListener {
                 throw AuthException("Failed to create user with email ${authData.email}")
             }

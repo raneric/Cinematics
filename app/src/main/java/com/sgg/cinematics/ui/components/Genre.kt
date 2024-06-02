@@ -18,10 +18,12 @@ import com.sgg.cinematics.ui.ui.theme.genreTypo
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_onPrimary
 
 @Composable
-fun GenreRow(genres: List<String>,
-             color: Color = md_theme_light_onPrimary,
-             compact: Boolean = false,
-             modifier: Modifier = Modifier) {
+fun GenreRow(
+    genres: List<String>,
+    color: Color = md_theme_light_onPrimary,
+    compact: Boolean = false,
+    modifier: Modifier = Modifier
+) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         genres.forEach {
             Genre(text = it, compact = compact, color = color)
@@ -30,23 +32,29 @@ fun GenreRow(genres: List<String>,
 }
 
 @Composable
-fun Genre(text: String,
-          color: Color,
-          compact: Boolean,
-          modifier: Modifier = Modifier) {
+fun Genre(
+    text: String,
+    color: Color,
+    compact: Boolean,
+    modifier: Modifier = Modifier
+) {
 
     val textStyle = if (compact)
         genreTypo.copy(fontSize = 9.sp)
     else
         genreTypo
 
-    Text(text = text.uppercase(),
-         color = color,
-         style = textStyle,
-         modifier = modifier
-                 .border(border = BorderStroke(2.dp, color),
-                         shape = MaterialTheme.shapes.extraLarge)
-                 .padding(horizontal = 8.dp, vertical = 5.dp))
+    Text(
+        text = text.uppercase(),
+        color = color,
+        style = textStyle,
+        modifier = modifier
+            .border(
+                border = BorderStroke(2.dp, color),
+                shape = MaterialTheme.shapes.extraLarge
+            )
+            .padding(horizontal = 8.dp, vertical = 5.dp)
+    )
 }
 
 @Preview(showBackground = true, backgroundColor = 0XFF000000)

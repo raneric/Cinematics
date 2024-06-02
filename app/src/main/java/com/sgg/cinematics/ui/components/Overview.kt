@@ -46,8 +46,8 @@ val OVERVIEW_HEIGHT = 100.dp
  */
 @Composable
 fun Overview(
-        text: String,
-        modifier: Modifier = Modifier
+    text: String,
+    modifier: Modifier = Modifier
 ) {
 
     var overviewSate: OverviewState by remember {
@@ -56,23 +56,27 @@ fun Overview(
 
     var textHeight by remember { mutableIntStateOf(0) }
 
-    Box(modifier = modifier
-        .testTag(stringResource(id = R.string.test_tag_overview))
-        .fillMaxWidth()
-        .then(overviewSate.boxModifier)) {
+    Box(
+        modifier = modifier
+            .testTag(stringResource(id = R.string.test_tag_overview))
+            .fillMaxWidth()
+            .then(overviewSate.boxModifier)
+    ) {
         Text(style = MaterialTheme.typography.bodyMedium,
              text = text,
              modifier = Modifier
                  .then(overviewSate.textModifier)
                  .onGloballyPositioned { textHeight = it.size.height }
                  .animateContentSize(
-                         animationSpec = spring(
-                                 dampingRatio = Spring.DampingRatioMediumBouncy,
-                                 stiffness = Spring.StiffnessMedium
-                         )
+                     animationSpec = spring(
+                         dampingRatio = Spring.DampingRatioMediumBouncy,
+                         stiffness = Spring.StiffnessMedium
+                     )
                  ))
-        OverviewHider(overviewSate = overviewSate,
-                      modifier = Modifier.align(Alignment.BottomCenter)) {
+        OverviewHider(
+            overviewSate = overviewSate,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
             overviewSate = overviewSate.reverseState()
         }
     }
@@ -86,23 +90,30 @@ fun Overview(
  */
 @Composable
 fun OverviewHider(
-        overviewSate: OverviewState,
-        modifier: Modifier = Modifier,
-        expand: () -> Unit
+    overviewSate: OverviewState,
+    modifier: Modifier = Modifier,
+    expand: () -> Unit
 ) {
     AnimatedVisibility(
-            visible = overviewSate.isCollapsed(),
-            enter = fadeIn(),
-            exit = fadeOut()) {
-        GradientForeground(color = MaterialTheme.colorScheme.surface,
-                           modifier = Modifier.height(OVERVIEW_HEIGHT))
+        visible = overviewSate.isCollapsed(),
+        enter = fadeIn(),
+        exit = fadeOut()
+    ) {
+        GradientForeground(
+            color = MaterialTheme.colorScheme.surface,
+            modifier = Modifier.height(OVERVIEW_HEIGHT)
+        )
     }
 
-    IconButton(onClick = expand,
-               modifier = modifier) {
-        Icon(painter = painterResource(id = overviewSate.buttonIcon),
-             contentDescription = stringResource(id = R.string.content_descrip_read_more),
-             tint = MaterialTheme.colorScheme.onSurface)
+    IconButton(
+        onClick = expand,
+        modifier = modifier
+    ) {
+        Icon(
+            painter = painterResource(id = overviewSate.buttonIcon),
+            contentDescription = stringResource(id = R.string.content_descrip_read_more),
+            tint = MaterialTheme.colorScheme.onSurface
+        )
     }
 }
 
@@ -115,9 +126,9 @@ fun OverviewHider(
  *  @param textModifier : modifier for the Text composable
  */
 sealed class OverviewState(
-        @DrawableRes val buttonIcon: Int,
-        val boxModifier: Modifier,
-        val textModifier: Modifier = Modifier
+    @DrawableRes val buttonIcon: Int,
+    val boxModifier: Modifier,
+    val textModifier: Modifier = Modifier
 ) {
 
     abstract fun reverseState(): OverviewState
@@ -125,17 +136,21 @@ sealed class OverviewState(
     fun isCollapsed() = this is Collapsed
 
     object Collapsed :
-            OverviewState(buttonIcon = R.drawable.chevron_double_down,
-                          boxModifier = Modifier.heightIn(max = OVERVIEW_HEIGHT)) {
+        OverviewState(
+            buttonIcon = R.drawable.chevron_double_down,
+            boxModifier = Modifier.heightIn(max = OVERVIEW_HEIGHT)
+        ) {
         override fun reverseState(): OverviewState {
             return Expanded
         }
     }
 
     object Expanded :
-            OverviewState(buttonIcon = R.drawable.chevron_double_up,
-                          boxModifier = Modifier.heightIn(min = OVERVIEW_HEIGHT),
-                          textModifier = Modifier.padding(bottom = 40.dp)) {
+        OverviewState(
+            buttonIcon = R.drawable.chevron_double_up,
+            boxModifier = Modifier.heightIn(min = OVERVIEW_HEIGHT),
+            textModifier = Modifier.padding(bottom = 40.dp)
+        ) {
         override fun reverseState(): OverviewState {
             return Collapsed
         }

@@ -17,12 +17,14 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun Cast(
-        userModels: List<String>,
-        modifier: Modifier = Modifier
+    userModels: List<String>,
+    modifier: Modifier = Modifier
 ) {
-    LazyRow(modifier = modifier,
-            contentPadding = PaddingValues(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+    LazyRow(
+        modifier = modifier,
+        contentPadding = PaddingValues(horizontal = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
         items(userModels) {
             CastItem(imageUrl = it)
         }
@@ -31,14 +33,16 @@ fun Cast(
 
 @Composable
 fun CastItem(
-        imageUrl: String,
-        modifier: Modifier = Modifier
+    imageUrl: String,
+    modifier: Modifier = Modifier
 ) {
-    Image(painter = rememberAsyncImagePainter(model = imageUrl),
-          contentDescription = "cast image",
-          alignment = Alignment.Center,
-          contentScale = ContentScale.Crop,
-          modifier = modifier
-              .size(width = 70.dp, height = 70.dp)
-              .clip(CircleShape))
+    Image(
+        painter = rememberAsyncImagePainter(model = imageUrl),
+        contentDescription = "cast image",
+        alignment = Alignment.Center,
+        contentScale = ContentScale.Crop,
+        modifier = modifier
+            .size(width = 70.dp, height = 70.dp)
+            .clip(CircleShape)
+    )
 }

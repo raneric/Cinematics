@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 open class MainViewModel @Inject constructor(
-        protected val authService: AuthService
+    protected val authService: AuthService
 ) : ViewModel() {
 
     val connectedUser = authService.connectedUser

@@ -24,7 +24,8 @@ class DetailsScreenTest : BaseTest() {
 
     @Test
     fun details_screen_with_movie_in_watch_list() {
-        val removeToWatchListButtonText = composeRule.activity.getString(R.string.txt_remove_to_watch_btn)
+        val removeToWatchListButtonText =
+            composeRule.activity.getString(R.string.txt_remove_to_watch_btn)
         composeRule.setContent {
             DetailsContent(movie = fakeMovieList[0],
                            isInWatchList = true,
