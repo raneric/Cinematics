@@ -14,7 +14,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseUser
-import com.sgg.cinematics.ui.commonui.ScreenWrapper
+import com.sgg.cinematics.ui.components.ScreenWrapper
 import com.sgg.cinematics.utils.Destination
 
 const val MOVIE_ID_ARGS = "movieId"

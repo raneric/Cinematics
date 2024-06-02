@@ -11,7 +11,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseUser
 import com.sgg.cinematics.ui.CinematicsAppState
-import com.sgg.cinematics.ui.commonui.ScreenWrapper
+import com.sgg.cinematics.ui.components.ScreenWrapper
 import com.sgg.cinematics.utils.Destination
 
 fun NavGraphBuilder.userProfileScreen(

@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.components
+package com.sgg.cinematics.ui.commonui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

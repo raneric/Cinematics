@@ -74,8 +74,8 @@ import com.sgg.cinematics.R
 import com.sgg.cinematics.data.fakeMovieList
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.ui.CinematicsAppState
-import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.commonui.MovieDisplaySwitchFab
+import com.sgg.cinematics.ui.components.BackDrop
 import com.sgg.cinematics.ui.components.CarouselMovieCard
 import com.sgg.cinematics.ui.components.EmptyListScreen
 import com.sgg.cinematics.ui.components.MovieCad

@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.commonui
+package com.sgg.cinematics.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
-import com.sgg.cinematics.ui.components.GradientForeground
+import com.sgg.cinematics.ui.commonui.GradientForeground
 
 
 @Composable

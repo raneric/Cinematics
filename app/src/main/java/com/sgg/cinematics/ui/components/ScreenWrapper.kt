@@ -1,7 +1,8 @@
-package com.sgg.cinematics.ui.commonui
+package com.sgg.cinematics.ui.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.sgg.cinematics.ui.commonui.LoadingScreen
 import com.sgg.cinematics.utils.UiState
 
 
@@ -18,8 +19,8 @@ import com.sgg.cinematics.utils.UiState
  */
 @Composable
 fun ScreenWrapper(
-        uiState: UiState,
-        componentOnSuccess: @Composable () -> Unit
+    uiState: UiState,
+    componentOnSuccess: @Composable () -> Unit
 ) {
 
     if (uiState is UiState.Loading) {

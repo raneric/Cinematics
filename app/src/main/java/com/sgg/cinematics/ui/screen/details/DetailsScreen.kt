@@ -34,13 +34,13 @@ import com.sgg.cinematics.data.fakeMovieList
 import com.sgg.cinematics.data.model.MovieModel
 import com.sgg.cinematics.data.userRatingModelLists
 import com.sgg.cinematics.ui.commonui.AddOrRemoveToWatchListButton
-import com.sgg.cinematics.ui.commonui.BackDrop
 import com.sgg.cinematics.ui.commonui.BackNavigationFab
 import com.sgg.cinematics.ui.commonui.BackNavigationTopBar
+import com.sgg.cinematics.ui.commonui.GenreRow
 import com.sgg.cinematics.ui.components.AverageDetailRating
+import com.sgg.cinematics.ui.components.BackDrop
 import com.sgg.cinematics.ui.components.Cast
 import com.sgg.cinematics.ui.components.DETAILS_IMAGE_HEIGHT
-import com.sgg.cinematics.ui.components.GenreRow
 import com.sgg.cinematics.ui.components.MovieCadRoundedBorderCompact
 import com.sgg.cinematics.ui.components.MovieDetailsImage
 import com.sgg.cinematics.ui.components.MovieInfoDetails

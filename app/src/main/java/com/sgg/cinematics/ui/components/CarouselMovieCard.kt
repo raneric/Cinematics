@@ -20,6 +20,7 @@ import coil.compose.AsyncImage
 import com.sgg.cinematics.R
 import com.sgg.cinematics.data.fakeMovieList
 import com.sgg.cinematics.data.model.MovieModel
+import com.sgg.cinematics.ui.commonui.GenreRow
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_tertiary
 

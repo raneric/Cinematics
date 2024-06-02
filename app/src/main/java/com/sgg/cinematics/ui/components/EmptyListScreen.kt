@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sgg.cinematics.R
+import com.sgg.cinematics.ui.commonui.GradientForeground
 import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 
 @Composable

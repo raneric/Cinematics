@@ -1,4 +1,4 @@
-package com.sgg.cinematics.ui.components
+package com.sgg.cinematics.ui.commonui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border

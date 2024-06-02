@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sgg.cinematics.R
+import com.sgg.cinematics.ui.ui.theme.CinematicsTheme
 import com.sgg.cinematics.ui.ui.theme.md_theme_light_onPrimary
 
 @Composable
@@ -59,5 +61,21 @@ fun MovieInfoDetails(
             color = textColor,
             style = MaterialTheme.typography.labelMedium
         )
+    }
+}
+
+@Preview
+@Composable
+private fun MovieInfoPreview() {
+    CinematicsTheme {
+        MovieInfo(year = 2023, duration = "1h10m", author = "William")
+    }
+}
+
+@Preview
+@Composable
+private fun MovieInfoDetailsPreview() {
+    CinematicsTheme {
+        MovieInfoDetails(year = 2023, duration = "1h10m", author = "William")
     }
 }
