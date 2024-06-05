@@ -51,6 +51,16 @@ import com.sgg.cinematics.ui.ui.theme.md_theme_light_tertiary
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
+/**
+ * A composable function that displays the details of a movie.
+ *
+ * @param movie : [MovieModel] object movie to display.
+ * @param isInWatchList : Whether the movie is in the user's watch list.
+ * @param addOrRemoveToWatchList : A lambda function that is invoked when the user clicks the add/remove from watch list button.
+ * @param onRecommendationItemClicked : A lambda function that is invoked when the user clicks a recommendation item.
+ * @param onNavigateBack : A lambda function that is invoked when the user clicks the back button.
+ * @param modifier : An optional modifier to apply to the composable.
+ */
 @Composable
 fun DetailsScreen(
     movie: MovieModel,
@@ -139,6 +149,7 @@ fun DetailsLayout(
 
 /**
  * This composable hold all screen details section using constraint layout
+ *
  * @param isInWatchList : Boolean flag if movie is watched or not
  * @param addOrRemoveWatchList : add or remove button listener that lift state
  * @param movie : [MovieModel] object to display

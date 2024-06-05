@@ -262,7 +262,7 @@ fun ColumnMovieListScreen(
                 )
             )
                     + fadeIn(),
-            exit = slideOutVertically() + fadeOut()
+            exit = slideOutVertically { height -> height / 2 } + fadeOut()
         ) {
             ScrollUpButton {
                 scope.launch {
