@@ -3,6 +3,7 @@ package com.sgg.cinematics.ui.screen.details
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -92,7 +93,7 @@ fun DetailsScreen(
 
         AnimatedVisibility(
             visible = shouldShowFab,
-            enter = fadeIn(),
+            enter = slideInHorizontally() + fadeIn(),
             exit = fadeOut()
         ) {
             BackNavigationFab(onNavigateBack = onNavigateBack)
