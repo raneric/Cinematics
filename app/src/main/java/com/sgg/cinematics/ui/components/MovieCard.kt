@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,48 +32,10 @@ import com.sgg.cinematics.ui.ui.theme.md_theme_light_onPrimary
 
 /**
  * A card composable that display movies information and using [Poster] as background
+ *
  * @param movie: [MovieModel] object to display
  * @param modifier: A modifier with default value [Modifier]
  */
-@Composable
-fun MovieCadWithCL(
-    movie: MovieModel,
-    modifier: Modifier = Modifier
-) {
-
-    Box(modifier = modifier.height(263.dp)) {
-        Poster(movie.picture)
-        ConstraintLayout(modifier = Modifier.offset(x = dimensionResource(id = R.dimen.low_dp))) {
-            val (tittle, movieInfo, genre, rating) = createRefs()
-            Text(text = movie.title,
-                 style = MaterialTheme.typography.titleLarge,
-                 color = md_theme_light_onPrimary,
-                 modifier = Modifier.constrainAs(tittle) {
-                     top.linkTo(anchor = parent.top, margin = 76.dp)
-                 }
-            )
-            MovieInfo(year = movie.year,
-                      duration = movie.displayedDuration,
-                      author = movie.author,
-                      compact = false,
-                      modifier = Modifier.constrainAs(movieInfo) {
-                          top.linkTo(tittle.bottom, margin = 16.dp)
-                      })
-            GenreRow(genres = movie.genres,
-                     compact = false,
-                     modifier = Modifier.constrainAs(genre) {
-                         top.linkTo(movieInfo.bottom, margin = 32.dp)
-                     })
-            AverageRating(ratingStars = movie.stars,
-                          ratingValue = movie.ratingNote.toString(),
-                          modifier = Modifier.constrainAs(rating) {
-                              top.linkTo(genre.bottom, margin = 8.dp)
-                          }
-            )
-        }
-    }
-}
-
 @Composable
 fun MovieCad(
     movie: MovieModel,
@@ -116,7 +80,7 @@ fun MovieCad(
 
 
 /**
- * A card composable that is a variant of [MovieCadWithCL] with a rounded border
+ * A card composable that is a variant of [MovieCad] with a rounded border
  * @param movie: [MovieModel] object to display
  * @param modifier: A modifier with default value [Modifier]
  */
@@ -125,7 +89,7 @@ fun MovieCadRoundedBorder(
     movie: MovieModel,
     modifier: Modifier = Modifier
 ) {
-    MovieCadWithCL(
+    MovieCad(
         movie = movie,
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
@@ -143,33 +107,36 @@ fun MovieCadRoundedBorderCompact(
             .clip(MaterialTheme.shapes.small)
     ) {
         Poster(movie.picture)
-        ConstraintLayout(modifier = Modifier.offset(x = 12.dp)) {
-            val (tittle, movieInfo, genre, rating) = createRefs()
-            Text(text = movie.title,
-                 style = MaterialTheme.typography.titleLarge,
-                 color = md_theme_light_onPrimary,
-                 modifier = Modifier.constrainAs(tittle) {
-                     top.linkTo(anchor = parent.top, margin = 50.dp)
-                 }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .offset(x = dimensionResource(id = R.dimen.low_dp)),
+            verticalArrangement = Arrangement.Bottom
+        ) {
+            Text(
+                modifier = Modifier.widthIn(max = 200.dp),
+                text = movie.title,
+                style = MaterialTheme.typography.titleLarge,
+                color = md_theme_light_onPrimary
             )
-            MovieInfo(year = movie.year,
-                      duration = movie.displayedDuration,
-                      author = movie.author,
-                      compact = true,
-                      modifier = Modifier.constrainAs(movieInfo) {
-                          top.linkTo(tittle.bottom, margin = 12.dp)
-                      })
-            GenreRow(genres = movie.genres,
-                     compact = true,
-                     modifier = Modifier.constrainAs(genre) {
-                         top.linkTo(movieInfo.bottom, margin = 24.dp)
-                     })
-            AverageRating(ratingStars = movie.stars,
-                          ratingValue = movie.ratingNote.toString(),
-                          modifier = Modifier.constrainAs(rating) {
-                              top.linkTo(genre.bottom, margin = 8.dp)
-                          }
+            Spacer(modifier = Modifier.height(8.dp))
+            MovieInfo(
+                year = movie.year,
+                duration = movie.displayedDuration,
+                author = movie.author,
+                compact = true
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            GenreRow(
+                genres = movie.genres,
+                compact = true
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            AverageRating(
+                ratingStars = movie.stars,
+                ratingValue = movie.ratingNote.toString()
+            )
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -195,6 +162,52 @@ fun Poster(
             contentDescription = "", modifier = Modifier.matchParentSize()
         )
         GradientForeground(color = Color.Black, modifier = Modifier.height(263.dp))
+    }
+}
+
+/**
+ * A card composable that display movies information and using [Poster] as background
+ * and using [ConstraintLayout] to display the information
+ * @param movie: [MovieModel] object to display
+ * @param modifier: A modifier with default value [Modifier]
+ */
+@Composable
+@Deprecated("Please use MovieCard")
+fun MovieCadWithCL(
+    movie: MovieModel,
+    modifier: Modifier = Modifier
+) {
+
+    Box(modifier = modifier.height(263.dp)) {
+        Poster(movie.picture)
+        ConstraintLayout(modifier = Modifier.offset(x = dimensionResource(id = R.dimen.low_dp))) {
+            val (tittle, movieInfo, genre, rating) = createRefs()
+            Text(text = movie.title,
+                 style = MaterialTheme.typography.titleLarge,
+                 color = md_theme_light_onPrimary,
+                 modifier = Modifier.constrainAs(tittle) {
+                     top.linkTo(anchor = parent.top, margin = 76.dp)
+                 }
+            )
+            MovieInfo(year = movie.year,
+                      duration = movie.displayedDuration,
+                      author = movie.author,
+                      compact = false,
+                      modifier = Modifier.constrainAs(movieInfo) {
+                          top.linkTo(tittle.bottom, margin = 16.dp)
+                      })
+            GenreRow(genres = movie.genres,
+                     compact = false,
+                     modifier = Modifier.constrainAs(genre) {
+                         top.linkTo(movieInfo.bottom, margin = 32.dp)
+                     })
+            AverageRating(ratingStars = movie.stars,
+                          ratingValue = movie.ratingNote.toString(),
+                          modifier = Modifier.constrainAs(rating) {
+                              top.linkTo(genre.bottom, margin = 8.dp)
+                          }
+            )
+        }
     }
 }
 
