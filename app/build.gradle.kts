@@ -7,15 +7,11 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val compose_version = "1.4.0"
 val nav_version = "2.7.7"
-val mui3_version = "1.1.2"
 val hilt_version = "2.44"
 val coroutines_version = "1.7.3"
 val mockitoKotlinVersion = "5.1.0"
 val play_service_auth_version = "20.7.0"
-val kotlin_immutable_collection_version = "0.3.7"
-val core_version = "1.13.1"
 
 android {
     namespace = "com.sgg.cinematics"
@@ -33,6 +29,7 @@ android {
             useSupportLibrary = true
         }
     }
+
     buildFeatures {
         compose = true
     }
@@ -40,6 +37,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.6"
     }
+
     buildTypes {
         getByName("release") {
             isMinifyEnabled = true
@@ -51,94 +49,96 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
     }
-    packagingOptions {
+
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
 
 dependencies {
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
-    implementation("androidx.compose.ui:ui:$compose_version")
-    val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
+    implementation(libs.androidx.lifecycle)
+    implementation(libs.androidx.compose.ui)
+    val composeBom = platform(libs.androidx.compose.boom)
     implementation(composeBom)
 
 
-    implementation("androidx.compose.material3:material3:$mui3_version")
+    implementation(libs.androidx.compose.mui3)
 
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation(libs.coil.kt)
 
     //Firebase dependency
-    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
-    implementation("com.google.firebase:firebase-storage")
-    implementation("com.google.firebase:firebase-crashlytics")
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-firestore")
-    implementation("com.google.firebase:firebase-auth")
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.firebase.storage)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth)
 
     // Kotlin immutable collections
-    implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:$kotlin_immutable_collection_version")
+    implementation(libs.jetbrains.kotlinx.collections)
 
     //Google play service
-    implementation("com.google.android.gms:play-services-auth:$play_service_auth_version")
+    implementation(libs.google.android.gms)
 
     //kotlin reflection
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.20")
+    implementation(libs.jetbrains.kotlinx.reflection)
 
     // Android Studio Preview support
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation(libs.androidx.compose.preview)
+    debugImplementation(libs.androidx.compose.tooling)
 
-    implementation("androidx.compose.foundation:foundation:1.7.0-beta01")
+    implementation(libs.androidx.compose.fondation)
 
     // hilt dependency
-    implementation("com.google.dagger:hilt-android:$hilt_version")
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
+    implementation(libs.google.dagger.hilt)
+    implementation(libs.androidx.hilt.navigation)
+    kapt(libs.google.dagger.hilt.compiler)
 
     // Navigation in compose dependency
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.androidx.compose.navigation)
 
-    implementation("androidx.activity:activity-compose:1.8.1")
+    implementation(libs.androidx.activity)
 
     // Constraint layout dependency
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation(libs.androidx.constraintlayout)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+    implementation(libs.androidx.lifecycle.compose)
 
-    implementation("androidx.palette:palette-ktx:1.0.0")
+    implementation(libs.androidx.datastore)
 
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(libs.andoirdx.core.ktx)
+    implementation(libs.androidx.appcompat)
 
-    implementation("androidx.core:core-ktx:$core_version")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-
-    implementation("com.google.android.material:material:1.9.0")
-    implementation("androidx.compose.material3:material3-window-size-class:1.1.0")
+    implementation(libs.google.android.material)
+    implementation(libs.androidx.compose.mui3.winsize)
 
     // UI Tests
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version")
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    testImplementation(libs.junit4)
+    testImplementation(libs.jetbrains.kotlinx.coroutins.test)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation(libs.androidx.test.ext)
+    androidTestImplementation(libs.androidx.test.espresso)
 
     // Hilt testing dependency
-    androidTestImplementation("com.google.dagger:hilt-android-testing:$hilt_version")
+    androidTestImplementation(libs.google.dagger.hilt.android)
     // Make Hilt generate code in the androidTest folder
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:$hilt_version")
+    kaptAndroidTest(libs.google.dagger.hilt.android.compiler)
 
-    androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
+    androidTestImplementation(libs.androidx.compose.navigation.test)
 
     androidTestImplementation(composeBom)
 
