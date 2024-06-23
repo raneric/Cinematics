@@ -29,7 +29,7 @@ compose_boom = "2024.05.00"
 
 [libraries]
 andoirdx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core" }
-androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx:2.3.1", version.ref = "lifecycle_runtime" }
+androidx-lifecycle = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle_runtime" }
 androidx-lifecycle-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle_runtime_compose" }
 androidx-compose-mui3 = { group = "androidx.compose.material3", name = "material3", version.ref = "mui3" }
 androidx-compose-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
@@ -59,11 +59,11 @@ firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth" }
 
-google-android-gms = { group = "google.android.gms", name = "play-services-auth", version.ref = "play_service_auth" }
+google-android-gms = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "play_service_auth" }
 google-android-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 google-dagger-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 google-dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt_compiler" }
-google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
 google-dagger-hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
 google-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase_boom" }
 
