@@ -49,6 +49,7 @@ androidx-datastore = { group = "androidx.datastore", name = "datastore-preferenc
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompact" }
 androidx-test-ext = { group = "androidx.test.ext", name = "junit", version.ref = "test_ext" }
 androidx-test-espresso = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso_core" }
+androidx-palette = { group = "androidx.palette", name = "palette-ktx", version.ref = "palette" }
 
 coil-kt = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 
@@ -72,8 +73,6 @@ jetbrains-kotlinx-reflection = { group = "org.jetbrains.kotlin", name = "kotlin-
 jetbrains-kotlinx-coroutins-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
 
 junit4 = { group = "junit", name = "junit:4.13.2", version.ref = "junit" }
-
-androidx-palette = { group = "androidx.palette", name = "palette-ktx", version.ref = "palette" }
 
 [plugins]
 

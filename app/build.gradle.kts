@@ -7,12 +7,6 @@ plugins {
     id("com.google.firebase.crashlytics")
 }
 
-val nav_version = "2.7.7"
-val hilt_version = "2.44"
-val coroutines_version = "1.7.3"
-val mockitoKotlinVersion = "5.1.0"
-val play_service_auth_version = "20.7.0"
-
 android {
     namespace = "com.sgg.cinematics"
     compileSdk = 34
