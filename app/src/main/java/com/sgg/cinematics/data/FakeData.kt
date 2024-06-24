@@ -144,21 +144,6 @@ val fakeMovieList = listOf(
     )
 )
 
-var watchList = mutableListOf(
-    MovieModel(
-        id = 10,
-        title = "Star wars the last jedi",
-        year = 2019,
-        duration = 2.4,
-        genres = listOf("Action", "Drama", "Horor"),
-        ratingNote = 4.5,
-        picture = "https://firebasestorage.googleapis.com/v0/b/travelmantics-5312e.appspot.com/o/movies%2Fstar_wars_the_last_jedi.jpg?alt=media&token=b35faf1b-025d-49ac-8b2a-6511196f26cb",
-        stars = 4,
-        author = "Cathy Yan",
-        overview = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eu ipsum nulla. Maecenas aliquam consequat dui non ullamcorper. Curabitur laoreet finibus facilisis. Morbi sit amet sollicitudin odio, at lobortis erat. Nunc eget arcu nunc. Quisque placerat metus tempus, varius lacus at, varius est. Maecenas auctor dui a eros malesuada congue. Donec nec venenatis libero."
-    )
-)
-
 val userModelLists = persistentListOf(
     UserModel(
         id = "1",

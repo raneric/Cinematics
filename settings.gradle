@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Cinematics"
 include ':app'
+include ':baselineprofile'

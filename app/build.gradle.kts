@@ -5,6 +5,7 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
+    alias(libs.plugins.baselineprofile)
 }
 
 android {
@@ -64,6 +65,8 @@ android {
 dependencies {
     implementation(libs.androidx.lifecycle)
     implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.profileinstaller)
+    "baselineProfile"(project(":baselineprofile"))
     val composeBom = platform(libs.androidx.compose.boom)
     implementation(composeBom)
 
