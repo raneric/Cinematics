@@ -3,6 +3,8 @@ package com.sgg.cinematics.ui.screen.details
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -14,13 +16,14 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseUser
+import com.sgg.cinematics.ui.CinematicsAppState
 import com.sgg.cinematics.ui.components.ScreenWrapper
 import com.sgg.cinematics.utils.Destination
 
 const val MOVIE_ID_ARGS = "movieId"
 
 fun NavGraphBuilder.detailsScreen(
-    navController: NavHostController,
+    cinematicsAppState: CinematicsAppState,
     connectedUser: FirebaseUser?,
 ) {
     composable(route = Destination.DetailScreen.route,
@@ -33,7 +36,7 @@ fun NavGraphBuilder.detailsScreen(
 
         val detailsViewModel = hiltViewModel<DetailsViewModel>()
 
-        var movieIsInWatchList = detailsViewModel.isInWatchList
+        var movieIsInWatchList by detailsViewModel.isInWatchList
         val detailsUiState = detailsViewModel.detailsUiState.collectAsStateWithLifecycle()
         val uiData = detailsViewModel.selectedMovie.collectAsStateWithLifecycle()
 
@@ -52,15 +55,15 @@ fun NavGraphBuilder.detailsScreen(
                                   detailsViewModel.addOrRemoveToWatchList(connectedUser?.uid)
                               },
                               onRecommendationItemClicked = { movieId ->
-                                  navController.navigateToDetailsScreen(movieId = movieId)
+                                  cinematicsAppState.navController.navigateToDetailsScreen(movieId = movieId)
                               },
                               onNavigateBack = {
-                                  navController.navigateUp()
+                                  cinematicsAppState.navController.navigateUp()
                               },
                               modifier = Modifier.semantics {
                                   contentDescription = Destination.DetailScreen.testTag
                               },
-                              isInWatchList = movieIsInWatchList.value
+                              isInWatchList = movieIsInWatchList
                           )
                       })
     }

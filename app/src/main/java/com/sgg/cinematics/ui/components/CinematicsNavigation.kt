@@ -35,7 +35,7 @@ private val navItemList = listOf(
  * @param modifier: A modifier with default value [Modifier]
  */
 @Composable
-fun BottomNavScreen(
+fun CinematicsNavigationBar(
     modifier: Modifier = Modifier.testTag(stringResource(id = R.string.test_tag_bottom_nav)),
     activeNavItem: NavItemVariant,
     onDestinationChanged: (Destination) -> Unit,
@@ -123,7 +123,7 @@ sealed class NavItemVariant(
 @Composable
 fun BottomNavScreenPreview() {
     CinematicsTheme {
-        BottomNavScreen(activeNavItem = NavItemVariant.Trending) {
+        CinematicsNavigationBar(activeNavItem = NavItemVariant.Trending) {
 
         }
     }

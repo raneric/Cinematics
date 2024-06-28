@@ -1,5 +1,6 @@
 package com.sgg.cinematics.ui
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -20,12 +21,14 @@ import com.sgg.cinematics.utils.isInBottomNavDestination
 
 @Composable
 fun rememberCinematicsAppState(
-    navController: NavHostController = rememberNavController(),
-    windowWidthSizeClass: WindowWidthSizeClass
+    windowWidthSizeClass: WindowWidthSizeClass,
+    snackbarHostState: SnackbarHostState = SnackbarHostState(),
+    navController: NavHostController = rememberNavController()
 ) =
     remember(navController, windowWidthSizeClass) {
         CinematicsAppState(
             navController = navController,
+            snackbarHostState = snackbarHostState,
             windowWidthSizeClass = windowWidthSizeClass
         )
     }
@@ -33,6 +36,7 @@ fun rememberCinematicsAppState(
 @Stable
 class CinematicsAppState(
     val navController: NavHostController,
+    val snackbarHostState: SnackbarHostState,
     val windowWidthSizeClass: WindowWidthSizeClass,
 ) {
     val activeNavItem: NavItemVariant
@@ -49,7 +53,6 @@ class CinematicsAppState(
     private val currentDestinationIsInNavDestination: Boolean
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination?.isInBottomNavDestination()
             ?: true
-
 
     fun navigateTo(destination: Destination) {
         val navOption = navOptions {

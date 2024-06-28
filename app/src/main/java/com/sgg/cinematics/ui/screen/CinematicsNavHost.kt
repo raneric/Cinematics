@@ -49,7 +49,7 @@ fun CinematicsNavHost(
         )
 
         detailsScreen(
-            navController = cinematicsAppState.navController,
+            cinematicsAppState = cinematicsAppState,
             connectedUser = connectedUser
         )
 
@@ -58,7 +58,7 @@ fun CinematicsNavHost(
             currentUser = connectedUser
         )
 
-        loginScreen(cinematicsAppState.navController)
+        loginScreen(cinematicsAppState)
 
         createAccountScreen(cinematicsAppState.navController)
     }

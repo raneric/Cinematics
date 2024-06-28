@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Size
@@ -22,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sgg.cinematics.ui.CinematicsAppState
 import com.sgg.cinematics.ui.MainViewModel
-import com.sgg.cinematics.ui.components.BottomNavScreen
+import com.sgg.cinematics.ui.components.CinematicsNavigationBar
 import com.sgg.cinematics.ui.components.CinematicsNavigationRail
 import com.sgg.cinematics.ui.screen.movieList.MovieListViewModel
 import com.sgg.cinematics.ui.ui.theme.gradient_inside_color
@@ -38,7 +36,6 @@ fun CinematicsAppScreen(
     val movieListViewModel = hiltViewModel<MovieListViewModel>()
 
     val connectedUser by mainViewModel.connectedUser.collectAsStateWithLifecycle(initialValue = null)
-    val snackbarHostState = remember { SnackbarHostState() }
     val movieList by movieListViewModel.movies.collectAsStateWithLifecycle()
 
     cinematicsAppState.navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -50,14 +47,14 @@ fun CinematicsAppScreen(
     Scaffold(
         modifier = modifier,
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
+            SnackbarHost(hostState = cinematicsAppState.snackbarHostState)
         },
         bottomBar = {
             AnimatedVisibility(
                 visible = cinematicsAppState.shouldShowBottomNav,
                 enter = slideInVertically(initialOffsetY = { -40 })
             ) {
-                BottomNavScreen(
+                CinematicsNavigationBar(
                     activeNavItem = cinematicsAppState.activeNavItem,
                     onDestinationChanged = cinematicsAppState::navigateTo
                 )
