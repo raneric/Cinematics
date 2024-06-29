@@ -4,8 +4,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -16,9 +18,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseUser
+import com.sgg.cinematics.R
 import com.sgg.cinematics.ui.CinematicsAppState
 import com.sgg.cinematics.ui.components.ScreenWrapper
 import com.sgg.cinematics.utils.Destination
+import kotlinx.coroutines.launch
 
 const val MOVIE_ID_ARGS = "movieId"
 
@@ -39,6 +43,9 @@ fun NavGraphBuilder.detailsScreen(
         var movieIsInWatchList by detailsViewModel.isInWatchList
         val detailsUiState = detailsViewModel.detailsUiState.collectAsStateWithLifecycle()
         val uiData = detailsViewModel.selectedMovie.collectAsStateWithLifecycle()
+        val scope = rememberCoroutineScope()
+        val loginRequestMessage = stringResource(id = R.string.login_request)
+        val actionLabelLogin = stringResource(id = R.string.action_label_login)
 
         LaunchedEffect(Unit) {
             movieId?.let { movieId ->
@@ -52,7 +59,18 @@ fun NavGraphBuilder.detailsScreen(
                           DetailsScreen(
                               movie = uiData.value!!,
                               addOrRemoveToWatchList = {
-                                  detailsViewModel.addOrRemoveToWatchList(connectedUser?.uid)
+                                  if (connectedUser != null) {
+                                      detailsViewModel.addOrRemoveToWatchList(connectedUser.uid)
+                                  } else {
+                                      scope.launch {
+                                          cinematicsAppState.displaySnackBar(
+                                              message = loginRequestMessage,
+                                              actionLabel = actionLabelLogin
+                                          ) {
+                                              cinematicsAppState.navigateTo(Destination.LoginScreen)
+                                          }
+                                      }
+                                  }
                               },
                               onRecommendationItemClicked = { movieId ->
                                   cinematicsAppState.navController.navigateToDetailsScreen(movieId = movieId)

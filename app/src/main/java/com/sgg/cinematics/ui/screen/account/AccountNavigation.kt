@@ -4,9 +4,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.sgg.cinematics.ui.CinematicsAppState
 import com.sgg.cinematics.utils.Destination
 
-fun NavGraphBuilder.createAccountScreen(navController: NavHostController) {
+fun NavGraphBuilder.createAccountScreen(cinematicsAppState: CinematicsAppState) {
     composable(
         route = Destination.CreateAccount.route,
         enterTransition = null,
@@ -14,10 +15,10 @@ fun NavGraphBuilder.createAccountScreen(navController: NavHostController) {
     ) {
         CreateAccountScreen(
             onNavigateBack = {
-                navController.popBackStack()
+                cinematicsAppState.navController.popBackStack()
             },
             navigateToUserProfile = {
-                navController.navigate(Destination.UserProfileScreen.route)
+                cinematicsAppState.navController.navigate(Destination.UserProfileScreen.route)
             }
         )
     }

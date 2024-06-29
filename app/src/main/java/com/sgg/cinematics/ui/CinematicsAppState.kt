@@ -1,6 +1,8 @@
 package com.sgg.cinematics.ui
 
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -36,8 +38,8 @@ fun rememberCinematicsAppState(
 @Stable
 class CinematicsAppState(
     val navController: NavHostController,
-    val snackbarHostState: SnackbarHostState,
     val windowWidthSizeClass: WindowWidthSizeClass,
+    val snackbarHostState: SnackbarHostState,
 ) {
     val activeNavItem: NavItemVariant
         @Composable get() {
@@ -68,4 +70,21 @@ class CinematicsAppState(
         }
     }
 
+    suspend fun displaySnackBar(
+        message: String,
+        actionLabel: String? = null,
+        action: () -> Unit = {}
+    ) {
+        val snackBarResult =
+            snackbarHostState.showSnackbar(
+                message = message,
+                actionLabel = actionLabel,
+                duration = if (actionLabel == null) SnackbarDuration.Short else SnackbarDuration.Long
+            )
+        when (snackBarResult) {
+            SnackbarResult.ActionPerformed -> action()
+
+            SnackbarResult.Dismissed       -> snackbarHostState.currentSnackbarData?.dismiss()
+        }
+    }
 }

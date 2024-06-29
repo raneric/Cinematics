@@ -78,6 +78,8 @@
     <string name="label_top_rated_radio_button">Top rated</string>"
     <string name="label_newest_radio_button">Newest</string>
 
+    <string name="action_label_login">Login</string>
+
     <string name="test_tag_card">card_test_tag</string>
     <string name="test_tag_overview">overview_test_tag</string>
     <string name="test_tag_button">button_test_tag</string>
@@ -88,7 +90,7 @@
 
     <string name="password_confirmation_error">Password doesn\'t match</string>
     <string name="password_pattern_error">Password must have uppercase, lowercase, digit and special characters and at least 8 characters</string>
-    <string name="login_request">You must be logged in or create account to see your watch list</string>
+    <string name="login_request">You must be logged in or create account to have watch list</string>
 
     <string-array name="gender_list">
         <item>Male</item>

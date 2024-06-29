@@ -58,8 +58,12 @@ fun CinematicsNavHost(
             currentUser = connectedUser
         )
 
-        loginScreen(cinematicsAppState)
+        loginScreen(
+            cinematicsAppState = cinematicsAppState
+        )
 
-        createAccountScreen(cinematicsAppState.navController)
+        createAccountScreen(
+            cinematicsAppState = cinematicsAppState
+        )
     }
 }

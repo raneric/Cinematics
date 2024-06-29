@@ -53,30 +53,22 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun addOrRemoveToWatchList(uid: String?) {
+    fun addOrRemoveToWatchList(uid: String) {
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
             _detailsUiState.value = UiState.Error(throwable.message.toString())
         }
-        when (uid) {
-            null -> {
-                TODO("Shown snack bar if uid if null")
-            }
-
-            else -> {
-                viewModelScope.launch(exceptionHandler) {
-                    val user = userInfoRepository.getUserInfo(uid)
-                    user?.apply {
-                        val currentList = this.watchList.toMutableList()
-                        if (isInWatchList.value) {
-                            currentList.removeIf { it.id == selectedMovie.value?.id }
-                        } else {
-                            currentList.add(selectedMovie.value!!)
-                        }
-                        val newUserInfo = this.copy(watchList = currentList)
-                        userInfoRepository.addOrUpdateUserInfo(newUserInfo)
-                        isInWatchList.value = !isInWatchList.value
-                    }
+        viewModelScope.launch(exceptionHandler) {
+            val user = userInfoRepository.getUserInfo(uid)
+            user?.run {
+                val currentList = this.watchList.toMutableList()
+                if (isInWatchList.value) {
+                    currentList.removeIf { it.id == selectedMovie.value?.id }
+                } else {
+                    currentList.add(selectedMovie.value!!)
                 }
+                val newUserInfo = this.copy(watchList = currentList)
+                userInfoRepository.addOrUpdateUserInfo(newUserInfo)
+                isInWatchList.value = !isInWatchList.value
             }
         }
     }
