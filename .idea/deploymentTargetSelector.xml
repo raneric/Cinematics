@@ -16,9 +16,6 @@
       <SelectionState runConfigName="test_fab_view_switch_with_default_carousel()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="test_click_fab_view_switch_carousel_list_and_list_carousel()">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="test_navigate_to_detail_screen_and_add_to_watch_list_button()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
@@ -27,7 +24,7 @@
       </SelectionState>
       <SelectionState runConfigName="Generate Baseline Profile for app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-06-24T17:52:20.132259458Z">
+        <DropdownSelection timestamp="2024-07-01T16:29:09.220365956Z">
           <Target type="DEFAULT_BOOT">
             <handle>
               <DeviceId pluginId="LocalEmulator" identifier="path=/home/eric/.android/avd/Pixel_7_API_33.avd" />
@@ -35,6 +32,9 @@
           </Target>
         </DropdownSelection>
         <DialogSelection />
+      </SelectionState>
+      <SelectionState runConfigName="StartupBenchmarks">
+        <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
   </component>

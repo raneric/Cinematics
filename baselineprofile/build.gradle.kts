@@ -23,9 +23,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+   
     targetProjectPath = ":app"
-
 }
 
 // This is the configuration block for the Baseline Profile plugin.
@@ -39,6 +38,7 @@ dependencies {
     implementation(libs.androidx.test.espresso)
     implementation(libs.androidx.uiautomator)
     implementation(libs.androidx.benchmark.macro.junit4)
+    implementation(project(":app"))
 }
 
 androidComponents {
