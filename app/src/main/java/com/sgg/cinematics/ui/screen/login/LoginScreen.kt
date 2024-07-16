@@ -103,7 +103,7 @@ fun SinInSignUpButton(
             Icon(
                 tint = md_theme_light_onSecondary,
                 painter = painterResource(id = R.drawable.icon_login_24px),
-                contentDescription = ""
+                contentDescription = null
             )
             Text(
                 color = md_theme_light_onSecondary,
@@ -126,7 +126,7 @@ fun SinInSignUpButton(
             Image(
                 painter = painterResource(id = R.drawable.icon_gmail),
                 modifier = Modifier.size(24.dp),
-                contentDescription = ""
+                contentDescription = null
             )
             Text(
                 color = md_theme_light_onSecondary,

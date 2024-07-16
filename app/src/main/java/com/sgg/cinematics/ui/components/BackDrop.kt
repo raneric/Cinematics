@@ -22,7 +22,7 @@ fun BackDrop(
             model = imageUrl,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
-            contentDescription = ""
+            contentDescription = null
         )
         GradientForeground(color = Color.Black, modifier = Modifier.fillMaxHeight())
     }

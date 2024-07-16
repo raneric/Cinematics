@@ -57,6 +57,8 @@
     <string name="content_descrip_password_icon">Password icon</string>
     <string name="content_descrip_mail_icon">Mail icon</string>
     <string name="content_descrip_top_rated">top rated movies</string>
+    <string name="content_descrip_photo_profile">Your profile picture</string>
+
 
     <string name="label_movie_year">Year: %1$s</string>
     <string name="label_movie_duration">Duration: %1$s</string>

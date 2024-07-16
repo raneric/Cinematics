@@ -377,7 +377,7 @@ fun ScrollUpButton(onClick: () -> Unit) {
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             Icon(
                 painter = painterResource(id = R.drawable.icon_arrow_circle_up_24px),
-                contentDescription = ""
+                contentDescription = null
             )
             Text(text = stringResource(id = R.string.txt_scroll_up))
         }
@@ -435,7 +435,7 @@ fun FilterButton(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.icon_filter_list_24),
-            contentDescription = "",
+            contentDescription = null,
             modifier = Modifier.size(32.dp)
         )
     }

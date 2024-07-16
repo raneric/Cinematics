@@ -65,7 +65,7 @@ fun AddOrRemoveToWatchListButton(
         Row {
             Icon(
                 painter = painterResource(id = iconId),
-                contentDescription = ""
+                contentDescription = null
             )
             Text(
                 text = stringResource(id = stringId),
@@ -86,7 +86,7 @@ fun CameraButton(
             modifier = Modifier.size(32.dp),
             painter = painterResource(id = R.drawable.icon_photo_camera_24px),
             tint = MaterialTheme.colorScheme.primary,
-            contentDescription = ""
+            contentDescription = null
         )
     }
 }

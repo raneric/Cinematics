@@ -201,7 +201,7 @@ fun ProfilePictureSection(
                     .placeholder(R.drawable.default_user_profile)
                     .data(user.pictureUrl)
                     .build(),
-                contentDescription = "",
+                contentDescription = stringResource(id = R.string.content_descrip_photo_profile),
                 alignment = Alignment.Center,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -216,7 +216,7 @@ fun ProfilePictureSection(
                 Icon(
                     tint = Color.Black,
                     painter = painterResource(id = R.drawable.icon_logout_24px),
-                    contentDescription = ""
+                    contentDescription = null
                 )
             }
         }

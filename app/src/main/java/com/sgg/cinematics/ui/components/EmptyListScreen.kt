@@ -32,7 +32,7 @@ fun EmptyListScreen(modifier: Modifier = Modifier) {
                 painter = painterResource(id = R.drawable.background),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize(),
-                contentDescription = ""
+                contentDescription = null
             )
             GradientForeground(color = Color.Black, modifier = Modifier.fillMaxHeight())
         }

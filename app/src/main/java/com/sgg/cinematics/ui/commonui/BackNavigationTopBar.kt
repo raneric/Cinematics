@@ -29,7 +29,7 @@ fun BackNavigationTopBar(
             .padding(horizontal = 8.dp)) {
         IconButton(onClick = onNavigateBack) {
             Icon(painter = painterResource(id = com.google.android.material.R.drawable.ic_arrow_back_black_24),
-                 contentDescription = "")
+                 contentDescription = null)
         }
     }
 }

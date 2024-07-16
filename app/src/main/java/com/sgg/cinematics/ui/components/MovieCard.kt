@@ -159,7 +159,7 @@ fun Poster(
             model = pictureUrl,
             alignment = Alignment.Center,
             contentScale = ContentScale.Crop,
-            contentDescription = "", modifier = Modifier.matchParentSize()
+            contentDescription = null, modifier = Modifier.matchParentSize()
         )
         GradientForeground(color = Color.Black, modifier = Modifier.height(263.dp))
     }

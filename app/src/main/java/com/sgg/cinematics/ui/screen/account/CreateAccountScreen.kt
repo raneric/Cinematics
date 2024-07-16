@@ -297,7 +297,7 @@ fun ProfilePicture(
                 .data(photoUri)
                 .build(),
             contentScale = ContentScale.Crop,
-            contentDescription = ""
+            contentDescription = stringResource(id = R.string.content_descrip_photo_profile)
         )
         CameraButton(modifier = Modifier.align(alignment = Alignment.BottomEnd),
                      onButtonClick = { pickPhotoDialogIsVisible = true })
@@ -348,7 +348,7 @@ fun PhotoPickerDialog(
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_camera_24px),
-                            contentDescription = ""
+                            contentDescription = null
                         )
                         Text(text = stringResource(id = R.string.txt_camera_option))
                     }
@@ -361,7 +361,7 @@ fun PhotoPickerDialog(
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         Icon(
                             painter = painterResource(id = R.drawable.icon_upload_24px),
-                            contentDescription = ""
+                            contentDescription = null
                         )
                         Text(text = stringResource(id = R.string.txt_upload_option))
                     }
@@ -392,7 +392,7 @@ fun UserFullName(
         Icon(
             tint = MaterialTheme.colorScheme.onSurface,
             painter = painterResource(id = R.drawable.icon_profile_24),
-            contentDescription = ""
+            contentDescription = null
         )
         Column {
             OutlinedTextField(value = userInfo.firstName,
@@ -444,7 +444,7 @@ fun UserEmail(
         Icon(
             tint = MaterialTheme.colorScheme.onSurface,
             painter = painterResource(id = R.drawable.icon_mail_24px),
-            contentDescription = ""
+            contentDescription = null
         )
         ControlledOutlinedTextField(value = userInfo.email,
                                     iconResId = R.drawable.icon_mail_24px,
@@ -504,7 +504,7 @@ fun PasswordInputs(
         Icon(
             tint = MaterialTheme.colorScheme.onSurface,
             painter = painterResource(id = R.drawable.icon_key_24px),
-            contentDescription = ""
+            contentDescription = null
         )
         Column {
             PasswordTextFieldWrapper(value = authData.password,
@@ -568,7 +568,7 @@ fun BirthDatePicker(
         Icon(
             tint = MaterialTheme.colorScheme.onSurface,
             painter = painterResource(id = R.drawable.icon_birth_24px),
-            contentDescription = ""
+            contentDescription = null
         )
 
         OutlinedTextField(modifier = Modifier.weight(0.9f),
@@ -587,7 +587,7 @@ fun BirthDatePicker(
                    }) {
             Icon(
                 painter = painterResource(id = R.drawable.icon_calendar_24px),
-                contentDescription = ""
+                contentDescription = null
             )
         }
 
@@ -626,7 +626,7 @@ fun GenderInput(
         Icon(
             tint = MaterialTheme.colorScheme.onSurface,
             painter = painterResource(id = R.drawable.icon_men_24px),
-            contentDescription = ""
+            contentDescription = null
         )
         CustomDropdownMenu(modifier = Modifier.fillMaxWidth(),
                            selectedValue = userInfo.gender ?: "",
@@ -653,7 +653,7 @@ fun Location(
         Icon(
             tint = MaterialTheme.colorScheme.onSurface,
             painter = painterResource(id = R.drawable.icon_home_pin_24px),
-            contentDescription = ""
+            contentDescription = null
         )
         OutlinedTextField(
             value = "",
@@ -670,7 +670,7 @@ fun Location(
                 }) {
                     Icon(
                         painter = painterResource(id = R.drawable.icon_my_location_24px),
-                        contentDescription = ""
+                        contentDescription = null
                     )
                 }
             },
